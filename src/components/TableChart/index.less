@@ -1,0 +1,67 @@
+.tableChart {
+  width: 80%;
+  margin: 0 auto;
+
+  mark {
+    background-color: yellow;
+    color: black;
+  }
+  &__category {
+    tr {
+      &.hover {
+        &:hover {
+          cursor: pointer;
+          filter: brightness(0.9);
+        }
+      }
+    }
+  }
+  table {
+    width: 100%;
+    margin-bottom: 25px;
+    tr,
+    th,
+    td {
+      padding: 5px;
+      text-align: center;
+      border: 1px solid #ccc;
+    }
+    tr > *:first-child {
+      min-width: 150px;
+      font-weight: bold;
+    }
+    tbody > tr {
+      background-color: #fff;
+    }
+
+    .tableContent {
+      width: 100%;
+      max-height: 300px;
+      overflow: auto;
+      text-align: left;
+
+      &__configs {
+        position: relative;
+        margin-left: 10px;
+        &::before {
+          position: absolute;
+          left: -10px;
+          content: '-';
+        }
+      }
+    }
+  }
+
+  &__difference {
+    color: red;
+    font-weight: 700;
+    background-color: rgba(255, 255, 15, 0.727) !important;
+  }
+}
+
+.noData {
+  margin-top: 50px;
+  color: rgb(136, 132, 132);
+  font-size: 18px;
+  text-align: center;
+}

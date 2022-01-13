@@ -1,0 +1,47 @@
+.login {
+  width: 55%;
+  min-width: 310px;
+  .loginForm {
+    margin-top: 38px;
+    input:-webkit-autofill,
+    input:focus:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 100px @primary-color inset !important;
+      box-shadow: 0 0 0 100px @primary-color inset !important;
+      -webkit-text-fill-color: white !important;
+    }
+
+    &__input{color:red}
+    :global {
+      .ant-input {
+        all: unset !important;
+        width: 80% !important;
+        margin-top: 16px !important;
+        padding-bottom: 14px !important;
+        font-weight: normal !important;
+        font-size: 18px !important;
+        line-height: 22px;
+        background-color: @primary-color !important;
+        border: none !important;
+        border-bottom: 1px solid #5c677d !important;
+        outline: none !important;
+        color: white !important;
+        ::placeholder, ::-ms-input-placeholder , ::-ms-input-placeholder {
+          /* Chrome, Firefox, Opera, Safari 10.1+ */
+          color: white !important;
+          opacity: 0.5 !important; /* Firefox */
+        }
+      }
+
+      .ant-input:focus {
+        outline: none !important;
+      }
+    }
+  }
+}
+
+.loginBtn {
+  width: 80%;
+  background: #0196d7;
+  border-radius: 10px;
+  margin-top:36px;
+}

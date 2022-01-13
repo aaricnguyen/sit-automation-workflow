@@ -1,0 +1,240 @@
+@import '~antd/es/style/themes/default.less';
+@import './assets/fonts.less';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  ::-webkit-scrollbar {
+    z-index: 1;
+    width: 10px;
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #00adef;
+    border: 2px solid #fff;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #048abf;
+  }
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  color: @text-color-primary;
+  font-size: 14px;
+  font-family: 'Cisco Sans', sans-serif !important;
+  line-height: 18px;
+}
+
+.colorWeak {
+  filter: invert(80%);
+}
+
+.ant-layout {
+  position: absolute;
+  width: 100%;
+  min-height: 100%;
+}
+
+canvas {
+  display: block;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+@media (max-width: @screen-xs) {
+  .ant-table {
+    width: 100%;
+    overflow-x: auto;
+    &-thead > tr,
+    &-tbody > tr {
+      > th,
+      > td {
+        white-space: pre;
+        > span {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+// Compatible with IE11
+@media screen and(-ms-high-contrast: active), (-ms-high-contrast: none) {
+  body .ant-design-pro > .ant-layout {
+    min-height: 100vh;
+  }
+}
+
+.heading-1 {
+  font-weight: bold;
+  font-size: 46px;
+  line-height: 50px;
+}
+.heading-2 {
+  font-weight: bold;
+  font-size: 34px;
+  line-height: 38px;
+}
+.heading-3 {
+  font-weight: bold;
+  font-size: 22px;
+  line-height: 26px;
+}
+.heading-4 {
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 24px;
+}
+.heading-5 {
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 16px;
+}
+.paragraph-2 {
+  font-size: 18px;
+  line-height: 22px;
+}
+.paragraph-1 {
+  font-size: 22px;
+  line-height: 26px;
+}
+
+//custom input
+.ant-select,
+.ant-radio-group {
+  min-width: 90px !important;
+}
+.ant-input,
+.ant-select-selector {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  // min-width: 220px !important;
+  height: 40px !important;
+  padding-right: 12px !important;
+  padding-left: 12px !important;
+  font-weight: bold !important;
+  font-size: 12px !important;
+  border-radius: 10px !important;
+  &::placeholder {
+    font-weight: normal !important;
+  }
+}
+
+.ant-select-selector {
+  input {
+    height: 100% !important;
+  }
+}
+
+.ant-select-item.ant-select-item-option.ant-select-item-option-selected {
+  color: #039fd9 !important;
+  background: rgba(3, 159, 217, 0.1) !important;
+}
+
+.ant-input-password {
+  all: unset !important;
+  display: inline-flex !important;
+  .ant-input {
+    border: 1px solid #d9d9d9 !important;
+  }
+  .ant-input-suffix {
+    transform: translateX(-200%) !important;
+  }
+}
+.ant-input-affix-wrapper {
+  all: unset !important;
+  display: inline-flex !important;
+  .ant-input {
+    width: 280px !important;
+    border: 1px solid #d9d9d9 !important;
+  }
+  .ant-input-suffix {
+    transform: translateX(-200%) !important;
+  }
+}
+.ant-form-item {
+  margin-bottom: 20px;
+}
+//custom button
+.ant-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+  min-height: 40px;
+  padding-right: 20px;
+  padding-left: 20px;
+  font-size: 14px;
+  text-transform: capitalize;
+  border-radius: 10px;
+  cursor: pointer;
+  &[disabled] {
+    color: white;
+    background: @primary-color !important;
+    opacity: 0.4;
+    &:hover {
+      color: white !important;
+      filter: brightness(0.8) !important;
+    }
+  }
+}
+
+.btn-primary--small {
+  min-height: 30px;
+  color: white;
+  background: @primary-color;
+  &:extend(.btn);
+  &:hover {
+    filter: brightness(1.2) !important;
+  }
+}
+
+.btn-secondary {
+  color: white;
+  background: #6e7d94;
+  &:extend(.btn);
+  &:hover {
+    filter: brightness(1.2) !important;
+  }
+}
+.btn-secondary--small {
+  min-height: 30px;
+  color: white;
+  background: #6e7d94;
+  &:extend(.btn);
+  &:hover {
+    filter: brightness(1.2) !important;
+  }
+}
+
+.card {
+  padding: 40px;
+  background: #fff;
+  border: none;
+  border-radius: 10px;
+  box-shadow: -11px 9px 21px rgba(173, 182, 217, 0.170884);
+}
+
+.alert-success {
+  svg {
+    fill: @success-color;
+  }
+  .ant-notification-notice-message {
+    color: @success-color !important;
+    // font-weight: bold;
+  }
+}
