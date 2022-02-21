@@ -1,4 +1,4 @@
-import { getSuggestions, search, getSearchDataDetail } from '@/services/search';
+import { getSearchDataDetail, getSuggestions, search } from '@/services/search';
 import { notification } from 'antd';
 
 export const initialSearchState = {
@@ -57,12 +57,12 @@ export default {
         const { statusCode, data } = response;
         if (statusCode !== 200) throw response;
         const { type, result: { dataCombine } = {} } = data;
-        if (type === '1') {
+        if (type === '1' && 'dataCombine' in data.result) {
           yield put({
             type: 'config/save',
             payload: {
               internalCustomerId: dataCombine.data[0].cust_id,
-              id: dataCombine.data[0].cust_id ,
+              id: dataCombine.data[0].cust_id,
               chartHistories: [{ typeChart: 3, id: dataCombine.data[0].cust_id }],
             },
           });
