@@ -232,7 +232,7 @@ const ChartContainer = ({
           </Select>
         )}
         <div className={styles.chartContainer__actions}>
-          <span
+          {/* <span
             onClick={() => handlePrevious()}
             className={
               typeChart <= chartHistories[0].typeChart && styles.chartContainer__actions__disabled
@@ -248,6 +248,14 @@ const ChartContainer = ({
             }
           >
             Next
+          </span> */}
+          <span
+            onClick={() => handlePrevious()}
+            className={
+              typeChart <= chartHistories[0].typeChart && styles.chartContainer__actions__disabled
+            }
+          >
+            Previous Chart
           </span>
         </div>
       </Row>

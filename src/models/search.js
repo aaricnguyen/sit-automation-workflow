@@ -56,6 +56,17 @@ export default {
         const response = yield call(getSearchDataDetail, payload);
         const { statusCode, data } = response;
         if (statusCode !== 200) throw response;
+        const { type, result: { dataCombine } = {} } = data;
+        if (type === '1') {
+          yield put({
+            type: 'config/save',
+            payload: {
+              internalCustomerId: dataCombine.data[0].cust_id,
+              id: dataCombine.data[0].cust_id ,
+              chartHistories: [{ typeChart: 3, id: dataCombine.data[0].cust_id }],
+            },
+          });
+        }
         yield put({
           type: 'save',
           payload: {

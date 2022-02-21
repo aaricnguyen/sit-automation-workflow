@@ -29,7 +29,6 @@ const UploadChartContainer = ({
 
   useEffect(() => {
     let data = chartHistories.find((item) => item.typeChart === typeChart);
-
     if (typeChart === 1) {
       data = {
         id: externalCustomerId,
@@ -115,7 +114,8 @@ const UploadChartContainer = ({
       case 3:
         return 'Number of configuration enabled';
       default:
-        return 'Match percentage (%)';
+        // return 'Match percentage (%)';
+        return 'Customer Score';
     }
   };
 
@@ -198,15 +198,14 @@ const UploadChartContainer = ({
         <div className={styles.chartContainer__actions}>
           <span
             onClick={() => handlePrevious()}
-            className={typeChart <= 1 && styles.chartContainer__actions__disabled}
+            className={typeChart <= 3 && styles.chartContainer__actions__disabled}
           >
             Previous
           </span>
           <span
             onClick={() => handleNext()}
             className={
-              typeChart !== 4 &&
-              typeChart >= chartHistories.length &&
+              typeChart >= chartHistories.length + 2 &&
               styles.chartContainer__actions__disabled
             }
           >

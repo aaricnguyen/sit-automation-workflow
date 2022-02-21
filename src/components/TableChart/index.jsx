@@ -36,7 +36,7 @@ export default function TableChart({
   };
 
   if (!Object.keys(dataConfig).length && typeChart === 5)
-    return <div className={styles.noData}>No data to display</div>;
+    return <div className={styles.noData}>Customer config is not present</div>;
   return (
     <div className={styles.tableChart}>
       {typeChart === 4 && (

@@ -1,5 +1,10 @@
+import {
+  getChartData,
+  getCustomerCompareByIdChart,
+  getInternalCustomers,
+  search,
+} from '@/services/configs';
 import { uploadConfig } from '@/services/uploadConfig';
-import { getCustomerCompareByIdChart, getChartData, search } from '@/services/configs';
 import { notification } from 'antd';
 
 export const initialState = {
@@ -8,10 +13,13 @@ export const initialState = {
   externalCustomerId: null,
   internalCustomerId: null,
   id: '',
-  typeChart: 1,
+  typeChart: 3,
   chartData: [],
-  chartHistories: [{ typeChart: 1 }],
+  chartHistories: [],
   dataSearch: [],
+  internalCustomerList: [],
+  matchPercent: 0,
+  dataUniq: [],
 };
 
 export default {
@@ -47,26 +55,31 @@ export default {
       let response = {};
       try {
         response = yield call(uploadConfig, payload);
-        const { statusCode, data: { externalCustomer, totalConfig = [], dataCombine = {} } = {} } =
-          response;
-        if (statusCode !== 200) throw response;
-        response = yield call(getCustomerCompareByIdChart, {
-          id: externalCustomer.cust_id,
-        });
         const {
-          statusCode: statusCode2,
-          data: { chartData = [] },
+          statusCode,
+          data: { externalCustomer, totalConfig = [], dataCombine = {}, dataUniq = [] } = {},
         } = response;
-        if (statusCode2 !== 200) throw response;
+        if (statusCode !== 200) throw response;
+        // response = yield call(getCustomerCompareByIdChart, {
+        //   id: externalCustomer.cust_id,
+        // });
+        // const {
+        //   statusCode: statusCode2,
+        //   data: { chartData = [] },
+        // } = response;
+        // if (statusCode2 !== 200) throw response;
         yield put({
           type: 'save',
           payload: {
             externalCustomerId: externalCustomer.cust_id,
-            chartData,
-            typeChart: 1,
-            chartHistories: [{ typeChart: 1 }],
+            // chartData,
+            typeChart: 3,
+            internalCustomerId: dataCombine.data[0].cust_id,
+            id: dataCombine.data[0].cust_id ,
+            chartHistories: [{ typeChart: 3, id: dataCombine.data[0].cust_id }],
             totalConfig,
             dataCombine,
+            dataUniq,
           },
         });
         notification.success({
@@ -92,7 +105,7 @@ export default {
         }
         const {
           statusCode,
-          data: { chartData = [] },
+          data: { chartData = [], matchPercent },
         } = response;
         // yield call(delay, 100);
         if (statusCode !== 200) throw response;
@@ -100,6 +113,32 @@ export default {
           type: 'save',
           payload: {
             chartData,
+            matchPercent,
+          },
+        });
+      } catch (error) {
+        if (error.message)
+          notification.error({
+            message: error.message,
+          });
+      }
+    },
+
+    *getInternalCustomerList({ payload }, { call, put }) {
+      try {
+        const response = yield call(getInternalCustomers, payload);
+        const { statusCode, data } = response;
+        if (statusCode !== 200) throw response;
+        yield put({
+          type: 'save',
+          payload: {
+            internalCustomerList: [
+              {
+                cust_id: 'none',
+                cust_segment: 0,
+              },
+              ...data,
+            ],
           },
         });
       } catch (error) {
@@ -110,7 +149,6 @@ export default {
       }
     },
   },
-
   reducers: {
     save(state, action) {
       return {

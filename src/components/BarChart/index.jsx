@@ -27,7 +27,7 @@ const CustomTooltip = ({ active, payload, label }) => {
           <span>Value :</span>
           <span>{data.value}</span>
         </div>
-        {'valueOf100' in data && (
+        {/* {'valueOf100' in data && (
           <div className="custom-tooltip__item">
             <span>Number of matches 100% :</span>
             <span>{data.valueOf100}</span>
@@ -50,7 +50,7 @@ const CustomTooltip = ({ active, payload, label }) => {
             <span>Number of matches below 80% :</span>
             <span>{data.valueOfBelow80}</span>
           </div>
-        )}
+        )} */}
       </div>
     );
   }

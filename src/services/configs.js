@@ -38,3 +38,11 @@ export async function search(data) {
     params: data,
   });
 }
+
+//  =============== internal customer list ===============
+export async function getInternalCustomers(data) {
+  return request(`/api/internal-customers`, {
+    method: 'GET',
+    params: data,
+  });
+}

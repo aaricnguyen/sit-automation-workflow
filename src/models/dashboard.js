@@ -66,7 +66,9 @@ const GlobalModel = {
         yield put({
           type: 'save',
           payload: {
-            chartData,
+            chartData: Array.isArray(chartData)
+              ? chartData.filter((item) => item.cust_id !== 'others')
+              : chartData,
             pagination,
           },
         });
