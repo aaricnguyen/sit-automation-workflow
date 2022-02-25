@@ -9,8 +9,8 @@
 export default {
   dev: {
     '/api/': {
-      target:  'http://10.78.96.161:8000',  // cisco staging server
-      // target: 'http://localhost:4500',
+      // target:  'http://10.78.96.161:8000',  // cisco staging server
+      target: 'http://localhost:4500',
       changeOrigin: true,
       pathRewrite: {
         '^': '',

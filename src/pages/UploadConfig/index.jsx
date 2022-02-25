@@ -23,7 +23,6 @@ const UploadConfig = ({
 }) => {
   const [custSegment, setCustSegment] = useState(0);
   const [showChart, setShowChart] = useState(false);
-
   const handleUpload = async (file) => {
     setShowChart(false)
     const formData = new FormData();

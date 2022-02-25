@@ -34,7 +34,6 @@ const SearchPage = (props) => {
       });
     };
   }, [data, type]);
-
   const _renderDetail = () => {
     switch (type) {
       case SEARCH_CASE.SEARCH_CASE_1:
@@ -46,8 +45,8 @@ const SearchPage = (props) => {
         return <FeatureSearch searchDetail={searchDetail} />;
       case SEARCH_CASE.SEARCH_CASE_3:
         return <FeatureAndCustomerCombination searchDetail={searchDetail} />;
-        case SEARCH_CASE.SEARCH_CASE_4:
-          return <NegativeFeatureSearch searchDetail={searchDetail} />;
+      case SEARCH_CASE.SEARCH_CASE_4:
+        return <NegativeFeatureSearch searchDetail={searchDetail} />;
       case SEARCH_CASE.SEARCH_CASE_5:
         return <XorFeatureSearch searchDetail={searchDetail} />;
       case SEARCH_CASE.SEARCH_CASE_6:

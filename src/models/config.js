@@ -5,6 +5,7 @@ import {
   search,
 } from '@/services/configs';
 import { uploadConfig } from '@/services/uploadConfig';
+import { uploadTemplate } from '@/services/uploadTemplate';
 import { notification } from 'antd';
 
 export const initialState = {
@@ -50,10 +51,10 @@ export default {
           });
       }
     },
-
     *uploadConfig({ payload }, { call, put }) {
       let response = {};
       try {
+        console.log(payload);
         response = yield call(uploadConfig, payload);
         const {
           statusCode,
@@ -68,6 +69,7 @@ export default {
         //   data: { chartData = [] },
         // } = response;
         // if (statusCode2 !== 200) throw response;
+
         yield put({
           type: 'save',
           payload: {
@@ -75,7 +77,7 @@ export default {
             // chartData,
             typeChart: 3,
             internalCustomerId: dataCombine.data[0].cust_id,
-            id: dataCombine.data[0].cust_id ,
+            id: dataCombine.data[0].cust_id,
             chartHistories: [{ typeChart: 3, id: dataCombine.data[0].cust_id }],
             totalConfig,
             dataCombine,
@@ -93,7 +95,31 @@ export default {
       }
       return response;
     },
+    *uploadTemplate({ payload }, { call, put }) {
+      let response = {};
+      try {
+        console.log(payload);
+        response = yield call(uploadTemplate, payload);
+        const { statusCode, data } = response;
+        if (statusCode !== 200) throw response;
 
+        yield put({
+          type: 'save',
+          payload: {
+            data,
+          },
+        });
+        notification.success({
+          message: 'Template file uploaded successfully.',
+        });
+      } catch (error) {
+        if (error.message)
+          notification.error({
+            message: error.message,
+          });
+      }
+      return response;
+    },
     *getDataChart({ payload }, { call, put }) {
       try {
         const { typeChart } = payload;

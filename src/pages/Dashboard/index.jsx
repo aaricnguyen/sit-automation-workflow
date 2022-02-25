@@ -3,11 +3,13 @@ import OverviewList from '@/components/OverviewList';
 import InsightList from '@/components/InsightList';
 import PageLoading from '@/components/PageLoading';
 import { PageContainer } from '@ant-design/pro-layout';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import styles from './index.less';
 
-const Dashboard = ({ loading, dispatch }) => {
+const Dashboard = ({ loading, dispatch, typeChart, id, chartHistories }) => {
+  const [chartId, setChartId] = useState('all');
+
   useEffect(() => {
     dispatch({
       type: 'dashboard/updateData',
@@ -16,6 +18,15 @@ const Dashboard = ({ loading, dispatch }) => {
       },
     });
   }, []);
+
+  useEffect(() => {
+    if (typeChart === 2) {
+      setChartId(id);
+    } else if (typeChart === 1) {
+      setChartId('all');
+    }
+  }, [id, typeChart]);
+
   return (
     <PageContainer>
       <div className={styles.dashboardContainer}>
@@ -26,7 +37,7 @@ const Dashboard = ({ loading, dispatch }) => {
             <OverviewList />
             <div className={styles.mainContentWrapper}>
               <ChartContainer />
-              <InsightList />
+              <InsightList chartId={chartId} />
             </div>
           </>
         )}
@@ -35,6 +46,12 @@ const Dashboard = ({ loading, dispatch }) => {
   );
 };
 
-export default connect(({ loading }) => ({
-  loading: loading.effects['dashboard/updateData'],
-}))(Dashboard);
+export default connect(
+  ({ dashboard: { chartData = [], chartHistories = [], typeChart = 1, id = '' }, loading }) => ({
+    chartData,
+    typeChart,
+    id,
+    chartHistories,
+    loading: loading.effects['dashboard/updateData'],
+  }),
+)(Dashboard);

@@ -32,7 +32,6 @@ const SummaryInfo = ({
 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const { data = [], type = '' } = dataCombine;
-
   const showModal = () => {
     setIsModalVisible(true);
   };

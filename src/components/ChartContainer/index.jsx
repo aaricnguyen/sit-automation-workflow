@@ -23,7 +23,6 @@ const ChartContainer = ({
   const [typeDisplay, setTypeDisplay] = useState('top10');
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(20);
-
   const {
     // SIT_PROFILE_COMPARE,
     INTERNAL_CHART,
@@ -38,6 +37,7 @@ const ChartContainer = ({
 
   useEffect(() => {
     let data = chartHistories.find((item) => item.typeChart === typeChart);
+
     if (typeChart === INTERNAL_CHART) {
       data = {
         ...data,
@@ -99,6 +99,7 @@ const ChartContainer = ({
         setPage(1);
         setPerPage(20);
       }
+
       const historyChart = chartHistories.find((item) => item.typeChart === typeChart - 1);
       dispatch({
         type: 'dashboard/save',

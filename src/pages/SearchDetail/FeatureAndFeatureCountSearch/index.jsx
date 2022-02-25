@@ -8,11 +8,7 @@ export const COVERED_BY_COMBINATION = 'COVERED_BY_COMBINATION';
 
 const FeatureAndFeatureCountSearch = ({ searchDetail = {} }) => {
   const { result = {}, data = {} } = searchDetail;
-  const {
-    totalExternalCustomer,
-    externalCustomerConditionSatisfy,
-    dataCombine,
-  } = result;
+  const { totalExternalCustomer, externalCustomerConditionSatisfy, dataCombine } = result;
 
   const { conditions = [], features = [] } = data;
   // const percent =0

@@ -13,13 +13,13 @@ const SearchPage = (props) => {
       query: { q = '' },
     },
   } = history;
+
   useEffect(() => {
     dispatch({
       type: 'search/search',
       payload: { q },
     });
   }, [q]);
-
   const _renderLink = ({ type, data }) => {
     let title = '';
     const link = `/search-detail?${queryString.stringify({ type, data: JSON.stringify(data) })}`;

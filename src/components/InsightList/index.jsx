@@ -1,16 +1,24 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'umi';
 import styles from './index.less';
 
 const InsightList = (props) => {
-  const { insightList, dispatch } = props;
+  const { insightList, dispatch, chartId } = props;
   const insightListRef = useRef(null);
-
+  const [insight, setInsight] = useState(insightList);
   useEffect(() => {
     dispatch({
       type: 'insight/getInsightList',
     });
   }, []);
+
+  useEffect(() => {
+    if (chartId !== 'all') {
+      setInsight(insightList.filter((item) => item.key.includes(chartId)));
+    } else {
+      setInsight(insightList);
+    }
+  }, [chartId, insightList]);
 
   const pageScroll = () => {
     if (insightListRef.current === null) return;
@@ -39,11 +47,8 @@ const InsightList = (props) => {
   return (
     <div className={`card ${styles.insightList}`}>
       <div className={styles.insightList__header}>Insight List</div>
-      <div
-        ref={insightListRef}
-        className={styles.insightList__container}
-      >
-        {insightList.map((insight, key) => (
+      <div ref={insightListRef} className={styles.insightList__container}>
+        {insight.map((insight, key) => (
           <div className={styles.insightList__container__item} key={key}>
             {insight.resultTemplate}
           </div>
