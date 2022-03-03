@@ -7,3 +7,9 @@ export async function uploadTemplate(data) {
     data,
   });
 }
+
+export async function updatedTemplate() {
+  return request(`/api/update-template`, {
+    method: 'GET',
+  });
+}

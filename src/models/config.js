@@ -5,7 +5,7 @@ import {
   search,
 } from '@/services/configs';
 import { uploadConfig } from '@/services/uploadConfig';
-import { uploadTemplate } from '@/services/uploadTemplate';
+import { uploadTemplate, updatedTemplate } from '@/services/uploadTemplate';
 import { notification } from 'antd';
 
 export const initialState = {
@@ -21,6 +21,8 @@ export const initialState = {
   internalCustomerList: [],
   matchPercent: 0,
   dataUniq: [],
+  dataInsight: '',
+  statusUpload: true,
 };
 
 export default {
@@ -54,7 +56,6 @@ export default {
     *uploadConfig({ payload }, { call, put }) {
       let response = {};
       try {
-        console.log(payload);
         response = yield call(uploadConfig, payload);
         const {
           statusCode,
@@ -97,20 +98,49 @@ export default {
     },
     *uploadTemplate({ payload }, { call, put }) {
       let response = {};
+      let data = '';
+      let statusUpload = true;
       try {
-        console.log(payload);
         response = yield call(uploadTemplate, payload);
-        const { statusCode, data } = response;
-        if (statusCode !== 200) throw response;
+        const { statusCode } = response;
+        data = response.data;
+        console.log(statusCode);
+        if (statusCode === 200) {
+          statusUpload = false;
+        } else {
+          data = 'faile';
+        }
+        console.log(data);
 
+        if (statusCode !== 200) {
+          throw response;
+        }
         yield put({
           type: 'save',
           payload: {
-            data,
+            dataInsight: data,
+            statusUpload,
           },
         });
         notification.success({
           message: 'Template file uploaded successfully.',
+        });
+      } catch (error) {
+        if (error.message)
+          notification.error({
+            message: error.message,
+          });
+      }
+      return response;
+    },
+    *updatedTemplate({}, { call, put }) {
+      let response = {};
+      try {
+        response = yield call(updatedTemplate);
+        const { statusCode, message } = response;
+        if (statusCode !== 200) throw response;
+        notification.success({
+          message: 'Template file updated successfully.',
         });
       } catch (error) {
         if (error.message)
