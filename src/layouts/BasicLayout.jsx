@@ -92,7 +92,7 @@ const BasicLayout = (props) => {
         ) {
           return defaultDom;
         }
-        if (['/upload-config', '/dashboard'].includes(menuItemProps.path))
+        if (['/upload-config', '/dashboard', '/admin/upload-template'].includes(menuItemProps.path))
           return <Link to={menuItemProps.path}>{defaultDom}</Link>;
         return <div>{defaultDom}</div>;
       }}

@@ -1,6 +1,19 @@
-.title {
-  margin-top: 25px;
-  margin-bottom: 15px;
-  font-weight: 600;
-  font-size: 1.3rem;
+.insightList {
+  padding: 5px 25px 25px;
+
+  &__header {
+    font-weight: 600;
+    font-size: 1.3rem;
+  }
+
+  &__container {
+    height: 280px;
+    // scroll-behavior: smooth;
+    margin-top: 10px;
+    overflow-y: auto;
+    &__item {
+      height: 20px;
+      margin-top: 8px;
+    }
+  }
 }
