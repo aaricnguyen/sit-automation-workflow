@@ -41,7 +41,6 @@ const UploadTemplate = ({ dispatch, dataInsight, statusUpload }) => {
   };
 
   useEffect(() => {
-    console.log('set new data');
     setInsight(dataInsight);
     setDisable(statusUpload);
   }, [dataInsight]);
@@ -62,9 +61,16 @@ const UploadTemplate = ({ dispatch, dataInsight, statusUpload }) => {
               </p>
               <p className="ant-upload-text">Click or drag file to this area to upload</p>
               <p style={{ padding: '20px' }} className="ant-upload-hint">
-                support .json file for uploading a configuration file
+                Support uploading a configuration file in .json format
               </p>
             </Dragger>
+
+            <p style={{ textAlign: 'center', display: 'block', padding: '15px' }}>
+              Click to download example{' '}
+              <a href="/templateFile/template.json" download>
+                template.json
+              </a>
+            </p>
           </div>
         </Row>
       </div>

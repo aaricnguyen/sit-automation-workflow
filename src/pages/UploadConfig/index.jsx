@@ -1,6 +1,7 @@
 import PageLoading from '@/components/PageLoading';
 import SummaryInfo from '@/components/SummaryInfo';
 import UploadChartContainer from '@/components/UploadChartContainer';
+import UploadScaleChartContainer from '@/components/UploadScaleChartContainer';
 import { InboxOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Row, Select, Upload } from 'antd';
@@ -24,7 +25,7 @@ const UploadConfig = ({
   const [custSegment, setCustSegment] = useState(0);
   const [showChart, setShowChart] = useState(false);
   const handleUpload = async (file) => {
-    setShowChart(false)
+    setShowChart(false);
     const formData = new FormData();
     formData.append('file', file);
     formData.append('custSegment', custSegment);
@@ -112,6 +113,7 @@ const UploadConfig = ({
           {showChart && (
             <div style={{ marginTop: '20px' }}>
               <UploadChartContainer isUploadPage={true} />
+              <UploadScaleChartContainer isUploadPage={true} />
             </div>
           )}
         </>

@@ -14,9 +14,13 @@ export const initialState = {
   externalCustomerId: null,
   internalCustomerId: null,
   id: '',
+  idScale: '',
   typeChart: 3,
   chartData: [],
   chartHistories: [],
+  typeChartScale: 1,
+  chartDataScale: [],
+  chartHistoriesScale: [],
   dataSearch: [],
   internalCustomerList: [],
   matchPercent: 0,
@@ -55,6 +59,7 @@ export default {
     },
     *uploadConfig({ payload }, { call, put }) {
       let response = {};
+      console.log(payload);
       try {
         response = yield call(uploadConfig, payload);
         const {
@@ -104,13 +109,11 @@ export default {
         response = yield call(uploadTemplate, payload);
         const { statusCode } = response;
         data = response.data;
-        console.log(statusCode);
         if (statusCode === 200) {
           statusUpload = false;
         } else {
-          data = 'faile';
+          data = 'failed';
         }
-        console.log(data);
 
         if (statusCode !== 200) {
           throw response;
@@ -161,7 +164,7 @@ export default {
         }
         const {
           statusCode,
-          data: { chartData = [], matchPercent },
+          data: { chartData = [], matchPercent, ScaleData = [] },
         } = response;
         // yield call(delay, 100);
         if (statusCode !== 200) throw response;
@@ -170,6 +173,7 @@ export default {
           payload: {
             chartData,
             matchPercent,
+            chartDataScale: ScaleData,
           },
         });
       } catch (error) {

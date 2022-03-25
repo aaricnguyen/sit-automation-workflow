@@ -17,6 +17,8 @@ const UploadChartContainer = ({
   id,
   chartHistories,
   loadingChart,
+  idScale,
+  typeChartScale,
   externalCustomerId,
   internalCustomerId,
   isUploadPage = false,
@@ -32,12 +34,16 @@ const UploadChartContainer = ({
     if (typeChart === 1) {
       data = {
         id: externalCustomerId,
+        idScale,
+        typeChartScale,
       };
     } else if (typeChart === CATEGORY_CHART) {
       data = {
         ...data,
         internalId: id,
         id: externalCustomerId,
+        idScale,
+        typeChartScale,
       };
       dispatch({
         type: 'config/save',
@@ -51,6 +57,8 @@ const UploadChartContainer = ({
         category: data.id,
         id: externalCustomerId,
         internalId: internalCustomerId,
+        idScale,
+        typeChartScale,
       };
     } else if (typeChart === FEATURE_DETAIL_CHART) {
       data = {
@@ -58,13 +66,16 @@ const UploadChartContainer = ({
         category,
         externalId: idChart3,
         internalId: internalCustomerId,
+        idScale,
+        typeChartScale,
       };
     }
+    console.log(data);
     dispatch({
       type: 'config/getDataChart',
       payload: data,
     });
-  }, [id, typeChart]);
+  }, [id, typeChart, typeChartScale]);
 
   const setId = (_id = '') => {
     if (typeChart === numberOfChart) return;
@@ -205,8 +216,7 @@ const UploadChartContainer = ({
           <span
             onClick={() => handleNext()}
             className={
-              typeChart >= chartHistories.length + 2 &&
-              styles.chartContainer__actions__disabled
+              typeChart >= chartHistories.length + 2 && styles.chartContainer__actions__disabled
             }
           >
             Next
@@ -232,6 +242,8 @@ export default connect(
       chartHistories = [],
       typeChart = 1,
       id = '',
+      typeChartScale = 1,
+      idScale = '',
       externalCustomerId = null,
       internalCustomerId = null,
     },
@@ -242,6 +254,8 @@ export default connect(
     internalCustomerId,
     typeChart,
     id,
+    idScale,
+    typeChartScale,
     chartHistories,
     loadingChart: loading.effects['config/getDataChart'],
   }),
