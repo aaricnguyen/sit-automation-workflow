@@ -1,4 +1,4 @@
-import { getOverviewList, getChartData, updateData } from '@/services/configs';
+import { getOverviewList, getChartData, updateData, getScaleDataChart } from '@/services/configs';
 import { notification } from 'antd';
 
 const delay = (timeout) => {
@@ -15,13 +15,17 @@ export const defaultState = {
     totalConfigs: 0,
   },
   typeChart: 1,
+  typeChartScale: 1,
   id: '',
+  idScale: '',
   chartData: [],
+  chartScaleData: [],
   pagination: {
     _page: 1,
     _total: 1,
   },
   chartHistories: [{ typeChart: 1 }],
+  chartScaleHistories: [{ typeChartScale: 1 }],
 };
 
 const GlobalModel = {
@@ -59,7 +63,7 @@ const GlobalModel = {
         const response = yield call(getChartData, payload);
         const {
           statusCode,
-          data: { chartData = [], pagination = {} },
+          data: { chartData = [], pagination = {}, ScaleData = [] },
         } = response;
         yield call(delay, 100);
         if (statusCode !== 200) throw response;
@@ -70,6 +74,27 @@ const GlobalModel = {
               ? chartData.filter((item) => item.cust_id !== 'others')
               : chartData,
             pagination,
+            chartScaleData: ScaleData,
+          },
+        });
+      } catch (error) {
+        if (error.message)
+          notification.error({
+            message: error.message,
+          });
+      }
+    },
+
+    *getScaleDataChart({ payload }, { call, put }) {
+      try {
+        const response = yield call(getScaleDataChart, payload);
+        const { statusCode, data } = response;
+        yield call(delay, 100);
+        if (statusCode !== 200) throw response;
+        yield put({
+          type: 'save',
+          payload: {
+            chartScaleData: data,
           },
         });
       } catch (error) {

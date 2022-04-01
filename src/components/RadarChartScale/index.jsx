@@ -11,32 +11,32 @@ import {
   Tooltip,
 } from 'recharts';
 
-export default function RadarChartItem({
-  chartData = [],
+export default function RadarChartScaleItem({
+  chartScaleData = [],
   idChart2,
   idChart3,
   setId = () => {},
   keyX = 'category',
-  props,
 }) {
+  console.log(chartScaleData);
   return (
     <>
       <ResponsiveContainer width="100%" height={450}>
         <RadarChart
           onClick={(props) => {
             if (props) {
-              setId(props.activePayload[0].payload[keyX]);
+              setId(props.activeLabel);
             }
           }}
           margin={{ bottom: '-25px' }}
           outerRadius={150}
-          data={chartData}
+          data={chartScaleData}
         >
           <PolarGrid />
           <PolarAngleAxis tickFormatter={(e) => startCase(e)} dataKey="category" />
           <PolarRadiusAxis angle={90 - (360 / 13) * 2} />
           <Radar
-            name={`External Customer: ${idChart3}`}
+            name={`External Customer`}
             dataKey="value"
             stroke="#BD10E0"
             strokeWidth="2"
@@ -44,26 +44,19 @@ export default function RadarChartItem({
             fillOpacity={0}
           />
           <Radar
-            name={`Internal Customer: ${idChart2}`}
+            name={`Internal Customer`}
             dataKey="internalValue"
             stroke="#00A0D1"
             strokeWidth="2"
             fill="#00A0D1"
             fillOpacity={0}
           />
-          <Radar
-            name={`No Match`}
-            dataKey="noMatchValue"
-            stroke="red"
-            strokeWidth="2"
-            fill="red"
-            fillOpacity={0.5}
-          />
+
           <Tooltip
             formatter={(value, key) => {
               if (key.includes('No Match')) return [value, key];
-              if (key.includes('Internal')) return [value, `Customer ${startCase(idChart2)}`];
-              return [value, `Customer ${startCase(idChart3)}`];
+              if (key.includes('Internal')) return [value, `Internal Customer`];
+              return [value, `External Customer`];
             }}
             labelFormatter={(e) => startCase(e)}
           />

@@ -14,8 +14,10 @@ const ChartContainer = ({
   totalConfigs,
   dispatch,
   typeChart,
+  typeChartScale,
   pagination,
   id,
+  idScale,
   chartHistories,
   loadingChart,
 }) => {
@@ -34,7 +36,6 @@ const ChartContainer = ({
   const idChart2 = chartHistories.find((item) => item.typeChart === INTERNAL_CHART)?.id;
   const idChart3 = chartHistories.find((item) => item.typeChart === CATEGORY_CHART)?.id;
   const category = chartHistories.find((item) => item.typeChart === FEATURE_CHART)?.id;
-
   useEffect(() => {
     let data = chartHistories.find((item) => item.typeChart === typeChart);
 
@@ -50,6 +51,8 @@ const ChartContainer = ({
       data = {
         ...data,
         internalId: idChart2,
+        typeChartScale,
+        idScale,
       };
     } else if (typeChart === FEATURE_CHART) {
       data = {
@@ -57,6 +60,8 @@ const ChartContainer = ({
         category: data.id,
         id: idChart3,
         internalId: idChart2,
+        typeChartScale,
+        idScale,
       };
     } else if (typeChart === FEATURE_DETAIL_CHART) {
       data = {
@@ -64,14 +69,15 @@ const ChartContainer = ({
         category,
         externalId: idChart3,
         internalId: idChart2,
+        typeChartScale,
+        idScale,
       };
     }
-
     dispatch({
       type: 'dashboard/getDataChart',
       payload: data,
     });
-  }, [id, typeChart, typeDisplay, page, perPage]);
+  }, [id, typeChart, typeDisplay, page, perPage, typeChartScale]);
 
   const setId = (_id = '') => {
     if (typeChart === numberOfChart) return;
@@ -169,7 +175,6 @@ const ChartContainer = ({
         return 'SIT Profiles - Internal Customers Summary';
     }
   };
-
   const _renderChart = () => {
     if (chartData.length === 0 && typeChart !== 4) {
       return <div className={styles.noData}>No data to display</div>;
@@ -278,7 +283,9 @@ export default connect(
       chartData = [],
       chartHistories = [],
       typeChart = 1,
+      typeChartScale = 1,
       id = '',
+      idScale = '',
       pagination,
       overviewList: { totalConfigs = 0 },
     },
@@ -287,7 +294,9 @@ export default connect(
     chartData,
     pagination,
     typeChart,
+    typeChartScale,
     id,
+    idScale,
     chartHistories,
     totalConfigs,
     loadingChart: loading.effects['dashboard/getDataChart'],

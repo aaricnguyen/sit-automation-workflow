@@ -1,4 +1,5 @@
 import ChartContainer from '@/components/ChartContainer';
+import ScaleChartContainer from '@/components/ScaleChartContainer';
 import OverviewList from '@/components/OverviewList';
 import InsightList from '@/components/InsightList';
 import PageLoading from '@/components/PageLoading';
@@ -26,7 +27,6 @@ const Dashboard = ({ loading, dispatch, typeChart, id, chartHistories }) => {
       setChartId('all');
     }
   }, [id, typeChart]);
-
   return (
     <PageContainer>
       <div className={styles.dashboardContainer}>
@@ -36,7 +36,11 @@ const Dashboard = ({ loading, dispatch, typeChart, id, chartHistories }) => {
           <>
             <OverviewList />
             <div className={styles.mainContentWrapper}>
-              <ChartContainer />
+              <div className={styles.ChartContainer}>
+                <ChartContainer />
+                {typeChart >= 3 && <ScaleChartContainer />}
+              </div>
+
               <InsightList chartId={chartId} />
             </div>
           </>

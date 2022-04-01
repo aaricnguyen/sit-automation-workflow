@@ -1,0 +1,122 @@
+[
+  {
+    "template": "% of retail customers using vtp",
+    "key": "vtp + retail"
+  },
+  {
+    "template": "% of retail customers using ssh",
+    "key": "ssh + retail"
+  },
+  {
+    "template": "% of retail customers using ipacl",
+    "key": "ipacl + retail"
+  },
+  {
+    "template": "% of retail customers using dns",
+    "key": "dns + retail"
+  },
+  {
+    "template": "% of retail customers using mpls",
+    "key": "mpls + retail"
+  },
+  {
+    "template": "% of government customers using mdns",
+    "key": "mdns + government"
+  },
+  {
+    "template": "% of government customers using netconf",
+    "key": "netconf + government"
+  },
+  {
+    "template": "% of government customers using ipacl",
+    "key": "ipacl + government"
+  },
+  {
+    "template": "% of government customers using dot1x",
+    "key": "dot1x + government"
+  },
+  {
+    "template": "% of government customers using mpls",
+    "key": "mpls + government"
+  },
+  {
+    "template": "% of healthcare customers using vvlan",
+    "key": "vvlan + healthcare"
+  },
+  {
+    "template": "% of healthcare customers using dot1x",
+    "key": "dot1x + healthcare"
+  },
+  {
+    "template": "% of healthcare customers using ipacl",
+    "key": "ipacl + healthcare"
+  },
+  {
+    "template": "% of healthcare customers using dns",
+    "key": "dns + healthcare"
+  },
+  {
+    "template": "% of healthcare customers using mpls",
+    "key": "mpls + healthcare"
+  },
+  {
+    "template": "% of NGE customers using webauth",
+    "key": "webauth + NGE"
+  },
+  {
+    "template": "% of NGE customers using ssh",
+    "key": "ssh + NGE"
+  },
+  {
+    "template": "% of NGE customers using ipacl",
+    "key": "ipacl + NGE"
+  },
+  {
+    "template": "% of NGE customers using dns",
+    "key": "dns + NGE"
+  },
+  {
+    "template": "% of NGE customers using WRED",
+    "key": "WRED + NGE"
+  },
+  {
+    "template": "% of education customers using autoQos",
+    "key": "autoQos + education"
+  },
+  {
+    "template": "% of education customers using mark",
+    "key": "mark + education"
+  },
+  {
+    "template": "% of education customers using netconf",
+    "key": "netconf + education"
+  },
+  {
+    "template": "% of education customers using dns",
+    "key": "dns + education"
+  },
+  {
+    "template": "% of education customers using mark",
+    "key": "mark + education"
+  },
+  {
+    "template": "% of finance customers using vtp",
+    "key": "vtp + finance"
+  },
+  {
+    "template": "% of finance customers using ssh",
+    "key": "ssh + finance"
+  },
+  {
+    "template": "% of finance customers using mgmt",
+    "key": "mgmt + finance"
+  },
+  {
+    "template": "% of finance customers using telnet",
+    "key": "telnet + finance"
+  },
+  {
+    "template": "% of finance customers using mpls",
+    "key": "mpls + finance"
+  }
+]

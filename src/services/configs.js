@@ -8,6 +8,12 @@ export async function getChartData(data) {
     params: data,
   });
 }
+export async function getScaleDataChart(data) {
+  return request('/api/scale-chart', {
+    method: 'GET',
+    params: data,
+  });
+}
 
 export async function getCustomerCompareByIdChart(data) {
   return request('/api/customer-compare-by-id-chart', {

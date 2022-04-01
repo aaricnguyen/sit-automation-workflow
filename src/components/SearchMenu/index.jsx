@@ -118,7 +118,8 @@ const SearchMenu = (props) => {
   const handleSearch = (e) => {
     const keyword = e.target.value;
     if (!keyword) return;
-    if (e.key === 'key' || e.keyCode === 13) history.push(`/search?q=${keyword.replace("+","%2B")}`);
+    if (e.key === 'key' || e.keyCode === 13)
+      history.push(`/search?q=${keyword.replace('+', '%2B')}`);
   };
 
   return (

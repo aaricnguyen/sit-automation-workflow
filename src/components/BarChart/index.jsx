@@ -75,7 +75,6 @@ export default function BarChartItem({
 
   const isAngle = width >= 900 && chartData.length <= 10;
   const isReponsiveBar = width <= 700 && chartData.length > 10;
-
   React.useEffect(() => {
     window.addEventListener('resize', handleWindowResize);
     return () => window.removeEventListener('resize', handleWindowResize);
