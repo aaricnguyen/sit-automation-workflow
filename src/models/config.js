@@ -5,6 +5,7 @@ import {
   search,
 } from '@/services/configs';
 import { uploadConfig } from '@/services/uploadConfig';
+import { automationFlow } from '@/services/automationFlow';
 import { uploadTemplate, updatedTemplate } from '@/services/uploadTemplate';
 import { notification } from 'antd';
 
@@ -27,6 +28,7 @@ export const initialState = {
   dataUniq: [],
   dataInsight: '',
   statusUpload: true,
+  feature: ""
 };
 
 export default {
@@ -208,6 +210,31 @@ export default {
           });
       }
     },
+
+    *getCheckHealthScore({ payload }, { call, put }) {
+      let response = {};
+      try {
+        response = yield call(automationFlow, payload);
+        const { statusCode, data } = response;
+        if (statusCode !== 200) throw response;
+        yield put({
+          type: 'save',
+          payload: {
+            feature: data
+          }
+        });
+        notification.success({
+          message: 'Check health score successfully.',
+        });
+      } catch (error) {
+        if (error.message) {
+          notification.error({
+            message: error.message,
+          });
+        }
+      }
+      return response;
+    }
   },
   reducers: {
     save(state, action) {

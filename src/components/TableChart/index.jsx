@@ -1,8 +1,10 @@
 import { map } from 'lodash';
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './index.less';
 import { intersection, difference } from 'lodash';
 import { template } from '@/utils/template';
+
+import { getAuthority } from '@/utils/authority';
 
 export default function TableChart({
   data: {
@@ -16,6 +18,7 @@ export default function TableChart({
   setId = () => {},
   typeChart = 4,
 }) {
+  const { role, setRole } = useState(false);
   const differenceData = difference(externalConfig, internalConfig);
   const internalDifferenceData = difference(internalConfig, externalConfig);
   const sameData = intersection(internalConfig, externalConfig);
@@ -51,7 +54,7 @@ export default function TableChart({
           <tbody>
             {differenceData.map((item, index) => (
               <tr
-                onClick={() => showDetail(item)}
+                onClick={getAuthority()[0] !== 'exec' && (() => showDetail(item))}
                 className={`${styles.tableChart__difference} ${styles.hover}`}
                 key={index}
               >
@@ -63,7 +66,7 @@ export default function TableChart({
             {sameData.map((item, index) => (
               <tr
                 className={styles.hover}
-                onClick={() => showDetail(item)}
+                onClick={getAuthority()[0] !== 'exec' && (() => showDetail(item))}
                 key={differenceData.length + index}
               >
                 <td>{item}</td>

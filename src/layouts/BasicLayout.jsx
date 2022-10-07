@@ -10,7 +10,9 @@ import ProLayout from '@ant-design/pro-layout';
 import { getMatchMenu } from '@umijs/route-utils';
 import { Button, Result } from 'antd';
 import React, { useMemo, useRef } from 'react';
+import { Redirect } from 'react-router-dom';
 import { connect, history, Link, useIntl } from 'umi';
+import { getAuthority } from '@/utils/authority';
 import logo from '../assets/pro_logo.svg';
 import './BasicLayout.less';
 
@@ -28,7 +30,7 @@ const noMatch = (
 );
 
 /** Use Authorized check all menu item */
-const menuDataRender = (menuList) =>
+const menuDataRender = (menuList) => 
   menuList.map((item) => {
     const localItem = {
       ...item,
@@ -49,6 +51,7 @@ const BasicLayout = (props) => {
   } = props;
   const menuDataRef = useRef([]);
   /** Init variables */
+  
 
   const authorized = useMemo(
     () =>
@@ -68,6 +71,10 @@ const BasicLayout = (props) => {
   }; // get children authority
 
   const { formatMessage } = useIntl();
+  
+  if (!localStorage.getItem('token')) {
+    return <Redirect to="/login" />
+  }
 
   return (
     <ProLayout
@@ -92,7 +99,7 @@ const BasicLayout = (props) => {
         ) {
           return defaultDom;
         }
-        if (['/upload-config', '/dashboard', '/admin/upload-template'].includes(menuItemProps.path))
+        if (['/upload-config', '/automation-workflow', '/dashboard', '/admin/upload-template'].includes(menuItemProps.path))
           return <Link to={menuItemProps.path}>{defaultDom}</Link>;
         return <div>{defaultDom}</div>;
       }}
@@ -105,12 +112,13 @@ const BasicLayout = (props) => {
       // headerContentRender={({ breadcrumb, matchMenuKeys }) => {
       headerContentRender={() => {
         // return <div className="leftHeader heading-4">{breadcrumb[matchMenuKeys[0]]?.name}</div>;
-        return <div className="leftHeader heading-4">SIT Profile Analyzer </div>;
+        return <div className="leftHeader heading-4">SIT Profile Analyzer</div>;
       }}
       rightContentRender={() => <RightContent />}
       postMenuData={(menuData) => {
-        menuDataRef.current = menuData || [];
-        return menuData || [];
+        const menu = menuData.filter(item => item.authority ? item?.authority[0] !== getAuthority()[0] : item);
+        menuDataRef.current = menu || [];
+        return menu || [];
       }}
       menuHeaderRender={(logoImg, _title) => {
         return (

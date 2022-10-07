@@ -21,7 +21,7 @@ const _renderTitle = (type, externalCustomerId) => {
   }
 };
 
-const SummaryInfo = ({
+const AutomationWorkflow = ({
   totalConfig,
   externalCustomerId,
   dataCombine,
@@ -34,6 +34,7 @@ const SummaryInfo = ({
 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [role, setRole] = useState(false);
+  const [routeCmd, setRouteCmd] = useState({});
   
   const { data = [], type = '' } = dataCombine;
   const showModal = () => {
@@ -77,13 +78,33 @@ const SummaryInfo = ({
       });
     }
   };
+
+  const handleCheckHealthScore = async () => {
+    setRouteCmd({
+      features: totalConfig
+    })
+    /* Mở comment khi API đã xong */
+    // let parserRoute = new  Blob([JSON.stringify(routeCmd)], {
+    //   type: "text/plain"
+    // });
+    // let parserRouteToFile = new File([parserRoute], "parser_file", {
+    //   lastModified: new Date(),
+    //   type: "text/plain"
+    // });
+    // const formData = new FormData();
+    // formData.append('json_output_file', parserRouteToFile, 'route_cmd.json');
+    // await dispatch({
+    //   type: 'config/getCheckHealthScore',
+    //   payload: formData,
+    // });
+    // return '';
+  }
   return (
     <div className={`card`}>
       {isUploadPage && (
         <div className={style.title}>
-          New customer {externalCustomerId} is uploaded with {totalConfig.length} features enabled
-          which are covered {data?.[0]?.value}% by{' '}
-          <a onClick={() => handleShowChart()}> {startCase(data?.[0]?.cust_id)}</a>
+          New customer {externalCustomerId} is uploaded with {totalConfig.length} features
+          {/* <a onClick={() => handleShowChart()}> {startCase(data?.[0]?.cust_id)}</a> */}
         </div>
       )}
       {!isUploadPage && (
@@ -95,29 +116,8 @@ const SummaryInfo = ({
       )}
       <p style={{ overflowWrap: 'break-word' }}>{totalConfig.join(', ')}</p>
 
-      {data.length > 0 && (
-        <>
-          <div className={style.title}>{_renderTitle(type, externalCustomerId)}</div>
-          <p style={{ overflowWrap: 'break-word' }}>
-            {data
-              .map((item) => {
-                return type === NOT_COVERED ? item : `${startCase(item.cust_id)} (${item.value} %)`;
-              })
-              .join(', ')}
-          </p>
-        </>
-      )}
-      {dataUniq && dataUniq.length > 0 && getAuthority().includes('admin') && (
-        <div className={style.title}>
-          Unparsed Configuration: <a onClick={showModal}>Link</a>
-        </div>
-      )}
-      {dataUniq && dataUniq.length > 0 && getAuthority().includes('sit') && (
-        <div className={style.title}>
-          Unparsed Configuration: <a onClick={showModal}>Link</a>
-        </div>
-      )}
-      <Modal
+      <button className={style.checkHealthBtn} onClick={handleCheckHealthScore}>Check Health Score</button>
+      {/* <Modal
         title={`Unparsed Configuration: ${externalCustomerId}`}
         visible={isModalVisible}
         onOk={handleOk}
@@ -125,9 +125,9 @@ const SummaryInfo = ({
         className={style.modal}
         bodyStyle={{ maxHeight: '500px', overflowY: 'scroll' }}
       >
-        {/* {renderContent(dataUniq?.[0]?.dataFile)} */}
         <div dangerouslySetInnerHTML={{ __html: renderContent(dataUniq?.[0]?.dataFile) }} />
-      </Modal>
+      </Modal> */}
+      <p style={{ overflowWrap: 'break-word' }}>{JSON.stringify(routeCmd)}</p>
     </div>
   );
 };
@@ -136,4 +136,4 @@ const SummaryInfo = ({
 
 export default connect(({ config: { internalCustomerId } }) => ({
   internalCustomerId,
-}))(SummaryInfo);
+}))(AutomationWorkflow);

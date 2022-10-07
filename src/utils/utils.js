@@ -28,3 +28,20 @@ export const formatDate = (date) => {
   moment.locale('en-GB');
   return moment(date).format('DDMMM');
 };
+
+export const setCurrentUser = (userInfo) => {
+  localStorage.setItem('user-info', JSON.stringify(userInfo));
+}
+
+export const getCurrentUser = () => {
+  let user;
+  const currentUser = localStorage.getItem('user-info');
+  try {
+    if (currentUser) {
+      user = JSON.parse(currentUser);
+    }
+  } catch (e) {
+    user = currentUser;
+  }
+  return user;
+}

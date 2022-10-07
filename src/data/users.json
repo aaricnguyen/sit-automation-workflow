@@ -1,0 +1,48 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "firstName": "Kapil",
+      "lastName": "Suri",
+      "email": "ksuri@cisco.com",
+      "password": "123456@Ab",
+      "fullname": "Kapil Suri",
+      "title": "Engineering",
+      "role": "escalation",
+      "avatar": "/avatar.jpg"
+    },
+    {
+      "id": 2,
+      "firstName": "Phat",
+      "lastName": "Nguyen",
+      "email": "phat@cisco.com",
+      "password": "123456@Abc",
+      "fullname": "Thanh Phat",
+      "title": "QC",
+      "role": "admin",
+      "avatar": "/avatar.jpg"
+    },
+    {
+      "id": 3,
+      "firstName": "Chung",
+      "lastName": "Mao",
+      "email": "thmao@cisco.com",
+      "password": "123456@Abcd",
+      "fullname": "Chung Thanh Mao",
+      "title": "Engineering",
+      "role": "sit",
+      "avatar": "/avatar.jpg"
+    },
+    {
+      "id": 4,
+      "firstName": "Test",
+      "lastName": "Nguyen",
+      "email": "test@cisco.com",
+      "password": "123456@Abcc",
+      "fullname": "Test Nguyen",
+      "title": "Technical Lead",
+      "role": "exec",
+      "avatar": "/avatar.jpg"
+    }
+  ]
+}

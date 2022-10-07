@@ -1,47 +1,147 @@
-.login {
-  width: 55%;
-  min-width: 310px;
-  .loginForm {
-    margin-top: 38px;
-    input:-webkit-autofill,
-    input:focus:-webkit-autofill {
-      -webkit-box-shadow: 0 0 0 100px @primary-color inset !important;
-      box-shadow: 0 0 0 100px @primary-color inset !important;
-      -webkit-text-fill-color: white !important;
-    }
+// .login {
+//   width: 55%;
+//   min-width: 310px;
+//   .loginForm {
+//     margin-top: 38px;
+//     input:-webkit-autofill,
+//     input:focus:-webkit-autofill {
+//       -webkit-box-shadow: 0 0 0 100px @primary-color inset !important;
+//       box-shadow: 0 0 0 100px @primary-color inset !important;
+//       -webkit-text-fill-color: white !important;
+//     }
 
-    &__input{color:red}
-    :global {
-      .ant-input {
-        all: unset !important;
-        width: 80% !important;
-        margin-top: 16px !important;
-        padding-bottom: 14px !important;
-        font-weight: normal !important;
-        font-size: 18px !important;
-        line-height: 22px;
-        background-color: @primary-color !important;
-        border: none !important;
-        border-bottom: 1px solid #5c677d !important;
-        outline: none !important;
-        color: white !important;
-        ::placeholder, ::-ms-input-placeholder , ::-ms-input-placeholder {
-          /* Chrome, Firefox, Opera, Safari 10.1+ */
-          color: white !important;
-          opacity: 0.5 !important; /* Firefox */
+//     &__input{color:red}
+//     :global {
+//       .ant-input {
+//         all: unset !important;
+//         width: 80% !important;
+//         margin-top: 16px !important;
+//         padding-bottom: 14px !important;
+//         font-weight: normal !important;
+//         font-size: 18px !important;
+//         line-height: 22px;
+//         background-color: @primary-color !important;
+//         border: none !important;
+//         border-bottom: 1px solid #5c677d !important;
+//         outline: none !important;
+//         color: white !important;
+//         ::placeholder, ::-ms-input-placeholder , ::-ms-input-placeholder {
+//           /* Chrome, Firefox, Opera, Safari 10.1+ */
+//           color: white !important;
+//           opacity: 0.5 !important; /* Firefox */
+//         }
+//       }
+
+//       .ant-input:focus {
+//         outline: none !important;
+//       }
+//     }
+//   }
+// }
+
+// .loginBtn {
+//   width: 80%;
+//   background: #0196d7;
+//   border-radius: 10px;
+//   margin-top:36px;
+// }
+
+.loginWrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .loginBox {
+    position: relative;
+    z-index: 5;
+    width: 100%;
+    max-width: 400px;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 48px;
+    text-align: center;
+    box-shadow: 0px 3px 1px -2px rgb(0 9 13 / 20%), 0px 2px 2px 0px rgb(0 9 13 / 15%), 0px 1px 5px 0px rgb(0 9 13 / 20%);
+    .brandTitle {
+      margin-top: 30px;
+      font-size: 24px;
+      color: #049FD9;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      line-height: 20px;
+      .brandSub {
+        font-weight: 300;
+        margin-left: 2px;
+      }
+    }
+    .brandDescription {
+      margin-top: 6px;
+      color: #565659;
+    }
+    .formWrapper {
+      display: inline-block;
+      .dnxShadow {
+        position: relative;
+        .showHide {
+          position: absolute;
+          right: 0;
+          bottom: 13px;
+          font-size: 10px;
+          color: #00A0D1;
+          height: 18px;
+          line-height: 18px;
+          letter-spacing: 0.42px;
+          cursor: pointer;
+          text-align: center;
+        }
+        .dnxInputField {
+          position: relative;
+          margin-top: 30px;
+          margin-bottom: 10px;
+          .formControl {
+            font-size: 14px;
+            padding: 12px 20px;
+            border: none;
+            border-bottom: 1px solid #949494; 
+            width: 260px;
+            min-height: 42px;
+            padding: 0 5px;
+            transition: 0.5s all;
+            outline: none;
+            &:focus {
+              border-color: #049FD9; 
+            }
+          }
+          .controlLabel {
+            position: absolute;
+            top: 50%;
+            left: 5px;
+            color: #545454;
+            font-weight: 300;
+            font-size: 12px;
+            line-height: 18px;
+            letter-spacing: 0.5px;
+            pointer-events: none;
+            transition: 0.25s ease;
+            transform: translateY(-50%);
+            user-select: none;
+          }
+          .formControl:not(:placeholder-shown) + .controlLabel,
+          .formControl:focus + .controlLabel {
+            top: 0;
+            left: 0;
+            padding: 0 5px;
+            display: inline-block;
+            background-color: #fff;
+            color: #27235E;
+          }
         }
       }
-
-      .ant-input:focus {
-        outline: none !important;
+      .loginBtn {
+        margin-top: 20px;
       }
     }
   }
-}
-
-.loginBtn {
-  width: 80%;
-  background: #0196d7;
-  border-radius: 10px;
-  margin-top:36px;
 }

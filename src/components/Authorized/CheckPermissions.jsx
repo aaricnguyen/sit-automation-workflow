@@ -20,6 +20,13 @@ import PromiseRender from './PromiseRender';
  * @param { 通过的组件 | Passing components } target
  * @param { 未通过的组件 | no pass components } Exception
  */
+
+const CURRENT_AUTHORITY = [
+  'admin',
+  'escalation',
+  'sit',
+  'exec'
+]
 const checkPermissions = (authority, currentAuthority, target, Exception) => {
   // No judgment permission. View all by default
   // Retirement authority, return target;
@@ -75,7 +82,7 @@ const checkPermissions = (authority, currentAuthority, target, Exception) => {
 export { checkPermissions };
 
 function check(authority, target, Exception) {
-  return checkPermissions(authority, CURRENT, target, Exception);
+  return checkPermissions(authority, CURRENT_AUTHORITY, target, Exception);
 }
 
 export default check;

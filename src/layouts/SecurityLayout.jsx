@@ -4,7 +4,7 @@ import {
   connect,
   // Redirect
 } from 'umi';
-// import { getToken } from '../utils/token';
+import { getToken } from '../utils/token';
 
 class SecurityLayout extends React.Component {
   constructor(props) {
@@ -14,19 +14,19 @@ class SecurityLayout extends React.Component {
     };
   }
 
-  // componentDidMount() {
-  //   this.setState({
-  //     isReady: true,
-  //   });
-  //   const token = getToken();
-  //   const { dispatch } = this.props;
+  componentDidMount() {
+    this.setState({
+      isReady: true,
+    });
+    const token = getToken();
+    const { dispatch } = this.props;
 
-  //   if (dispatch && token) {
-  //     dispatch({
-  //       type: 'user/fetchCurrent',
-  //     });
-  //   }
-  // }
+    if (dispatch && token) {
+      dispatch({
+        type: 'user/fetchCurrent',
+      });
+    }
+  }
 
   render() {
     const { children } = this.props;

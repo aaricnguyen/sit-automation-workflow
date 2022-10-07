@@ -15,7 +15,7 @@ const AuthLayout = ({ children }) => {
   return (
     <>
       <Layout className={styles.auth}>
-        <Content>
+        {/* <Content>
           <Row>
             <Col lg={13} className={styles.contentLeft}>
               <div className={styles.contentLeft__image}>
@@ -38,7 +38,8 @@ const AuthLayout = ({ children }) => {
               {children}
             </Col>
           </Row>
-        </Content>
+        </Content> */}
+        {children}
       </Layout>
     </>
   );

@@ -3,17 +3,17 @@ export default [
     path: '/',
     component: '../layouts/BlankLayout',
     routes: [
-      // {
-      //   path: '/login',
-      //   component: '../layouts/AuthLayout',
-      //   routes: [
-      //     {
-      //       name: 'login',
-      //       path: '/login',
-      //       component: './Login',
-      //     },
-      //   ],
-      // },
+      {
+        path: '/login',
+        component: '../layouts/AuthLayout',
+        routes: [
+          {
+            name: 'login',
+            path: '/login',
+            component: './Login',
+          },
+        ],
+      },
       {
         path: '/',
         component: '../layouts/SecurityLayout',
@@ -40,6 +40,12 @@ export default [
                 component: './UploadConfig',
               },
               {
+                path: '/automation-workflow',
+                name: 'Automation workflow',
+                icon: '/assets/icons/add-device.svg',
+                component: './AutomationWorkflow',
+              },
+              {
                 path: '/configs',
                 name: 'Configs',
                 icon: '/assets/icons/service-monitor.svg',
@@ -54,11 +60,12 @@ export default [
               {
                 path: '/admin',
                 name: 'Admin',
+                authority: ['sit'],
                 icon: '/assets/icons/manage-users.svg',
                 routes: [
                   {
                     path: '/admin/upload-template',
-                    name: 'Upload Template Insight',
+                    name: 'Upload Template Insight',          
                     component: './Admin/UploadTemplate',
                   },
                 ],

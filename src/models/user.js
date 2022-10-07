@@ -1,4 +1,4 @@
-import { queryCurrent, getListTbAdmin } from '@/services/user';
+import { queryCurrent, getListTbAdmin, queryCurrentTest } from '@/services/user';
 import { setAuthority } from '@/utils/authority';
 import { setToken } from '@/utils/token';
 import { notification } from 'antd';
@@ -6,23 +6,38 @@ import { notification } from 'antd';
 const UserModel = {
   namespace: 'user',
   state: {
-    currentUser: {
-      fullname: 'John Nguyen',
-      title: 'Tester',
-      avatar: '/avatar.jpg',
-    },
+    currentUser: {},
+    /* Important. Don't remove*/
+    // currentUser: {
+    //   fullname: 'John Nguyen',
+    //   title: 'Tester',
+    //   avatar: '/avatar.jpg',
+    // },
+    /* Important. Don't remove*/
     listTbAdmin: [],
   },
   effects: {
     *fetchCurrent(_, { call, put }) {
       try {
-        const response = yield call(queryCurrent);
-        const { statusCode, data = {} } = response;
-        if (statusCode !== 200) throw response;
+        /* Important. Don't remove */
+        // const response = yield call(queryCurrent);
+        /* Important. Don't remove */
+
+        const response = yield call(queryCurrentTest);
+
+        /* Important. Don't remove */
+        // const { statusCode, data = {} } = response;
+        // if (statusCode !== 200) throw response;
+        // yield put({
+        //   type: 'saveCurrentUser',
+        //   payload: data.user,
+        // });
+        /* Important. Don't remove */
+        
         yield put({
           type: 'saveCurrentUser',
-          payload: data.user,
-        });
+          payload: response,
+        })
       } catch (error) {
         if (error.message) {
           setToken('');
