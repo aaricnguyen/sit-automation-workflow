@@ -13,11 +13,11 @@
     },
     {
       "id": 2,
-      "firstName": "Phat",
-      "lastName": "Nguyen",
-      "email": "phat@cisco.com",
-      "password": "123456@Abc",
-      "fullname": "Thanh Phat",
+      "firstName": "Admin",
+      "lastName": "",
+      "email": "admin",
+      "password": "admin",
+      "fullname": "Admin",
       "title": "QC",
       "role": "admin",
       "avatar": "/avatar.jpg"
