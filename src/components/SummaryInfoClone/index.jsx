@@ -35,7 +35,7 @@ const AutomationWorkflow = ({
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [role, setRole] = useState(false);
   const [routeCmd, setRouteCmd] = useState({});
-  
+
   const { data = [], type = '' } = dataCombine;
   const showModal = () => {
     setIsModalVisible(true);
@@ -81,24 +81,24 @@ const AutomationWorkflow = ({
 
   const handleCheckHealthScore = async () => {
     setRouteCmd({
-      features: totalConfig
-    })
+      features: totalConfig,
+    });
     /* Mở comment khi API đã xong */
-    // let parserRoute = new  Blob([JSON.stringify(routeCmd)], {
-    //   type: "text/plain"
-    // });
-    // let parserRouteToFile = new File([parserRoute], "parser_file", {
-    //   lastModified: new Date(),
-    //   type: "text/plain"
-    // });
-    // const formData = new FormData();
-    // formData.append('json_output_file', parserRouteToFile, 'route_cmd.json');
-    // await dispatch({
-    //   type: 'config/getCheckHealthScore',
-    //   payload: formData,
-    // });
+    let parserRoute = new Blob([JSON.stringify(routeCmd)], {
+      type: 'text/plain',
+    });
+    let parserRouteToFile = new File([parserRoute], 'parser_file', {
+      lastModified: new Date(),
+      type: 'text/plain',
+    });
+    const formData = new FormData();
+    formData.append('json_output_file', parserRouteToFile, 'route_cmd.json');
+    await dispatch({
+      type: 'config/getCheckHealthScore',
+      payload: formData,
+    });
     // return '';
-  }
+  };
   return (
     <div className={`card`}>
       {isUploadPage && (
@@ -116,7 +116,9 @@ const AutomationWorkflow = ({
       )}
       <p style={{ overflowWrap: 'break-word' }}>{totalConfig.join(', ')}</p>
 
-      <button className={style.checkHealthBtn} onClick={handleCheckHealthScore}>Check Health Score</button>
+      <button className={style.checkHealthBtn} onClick={handleCheckHealthScore}>
+        Check Health Score
+      </button>
       {/* <Modal
         title={`Unparsed Configuration: ${externalCustomerId}`}
         visible={isModalVisible}
