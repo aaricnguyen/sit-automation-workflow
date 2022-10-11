@@ -116,7 +116,7 @@ function Login(props) {
               <img src={Logo} alt="CISCO LOGO" />
             </h1>
             <h2 className={styles.brandTitle}>
-              Cisco <span className={styles.brandSub}>Pro-Active Deployment Health Checker</span>
+              <span className={styles.brandSub}>Pro-Active Deployment Health Checker</span>
             </h2>
             <p className={styles.brandDescription}>The bridge to possible</p>
             <form method="POST" className={styles.formWrapper} onSubmit={handleSubmit}>
