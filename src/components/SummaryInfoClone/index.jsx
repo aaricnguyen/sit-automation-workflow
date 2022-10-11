@@ -92,7 +92,7 @@ const AutomationWorkflow = ({
       type: 'text/plain',
     });
     const formData = new FormData();
-    formData.append('json_output_file', parserRouteToFile, 'route_cmd.json');
+    formData.append('json_output_file', parserRouteToFile, 'feature_list.json');
     await dispatch({
       type: 'config/getCheckHealthScore',
       payload: formData,
