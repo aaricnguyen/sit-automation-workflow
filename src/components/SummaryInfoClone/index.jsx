@@ -35,34 +35,9 @@ const AutomationWorkflow = ({
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [role, setRole] = useState(false);
   const [routeCmd, setRouteCmd] = useState({});
+  const [dataTable, setDataTable] = useState([]);
 
-  const data_table = [
-    {
-      run_id: '5020',
-      status: 'In Progress',
-      result_log: 'Test Execution is in Progress',
-      health_score: 0,
-    },
-    {
-      run_id: '5020',
-      status: 'In Progress',
-      result_log: 'Test Execution is in Progress',
-      health_score: 0,
-    },
-    {
-      run_id: '5020',
-      status: 'In Progress',
-      result_log: 'Test Execution is in Progress',
-      health_score: 0,
-    },
-    {
-      run_id: '5020',
-      status: 'In Progress',
-      result_log:
-        'https://earms-trade.cisco.com/tradeui/logs/details?ats=%2Fauto%2Ficonatest-bgl%2Fproduction%2Fhcl%2Fpyats3.6&client=web&host=bgl-ads-2455&archive=%2Fauto%2Ficonatest-bgl%2Fproduction%2Fhcl%2Fpyats3.6%2Fusers%2Fsuveerai%2Farchive%2F22-10%2Fcat9kv_hackathon_job.2022Oct06_12:05:58.794837.zip',
-      health_score: 10,
-    },
-  ];
+  let resHealthScore = { s_no: '', status: '', run_id: '', health_score: null, result_log: null };
 
   const { data = [], type = '' } = dataCombine;
   const showModal = () => {
@@ -108,9 +83,12 @@ const AutomationWorkflow = ({
   };
 
   const handleCheckHealthScore = async () => {
+    let res;
     setRouteCmd({
       features: totalConfig,
     });
+    setDataTable([resHealthScore]);
+
     /* Mở comment khi API đã xong */
     let parserRoute = new Blob([JSON.stringify(routeCmd)], {
       type: 'text/plain',
@@ -121,33 +99,42 @@ const AutomationWorkflow = ({
     });
     const formData = new FormData();
     formData.append('json_output_file', parserRouteToFile, 'feature_list.json');
-    await dispatch({
+    res = await dispatch({
       type: 'config/getCheckHealthScore',
       payload: formData,
     });
-    // return '';
-  };
-  return (
-    <div className={`card`}>
-      {isUploadPage && (
-        <div className={style.title}>
-          New customer {externalCustomerId} is uploaded with {totalConfig.length} features
-          {/* <a onClick={() => handleShowChart()}> {startCase(data?.[0]?.cust_id)}</a> */}
-        </div>
-      )}
-      {!isUploadPage && (
-        <div className={style.title}>
-          Customer {externalCustomerId} has {totalConfig.length} features enabled which are covered{' '}
-          {data?.[0]?.value}% by{' '}
-          <a onClick={() => handleShowChart()}> {startCase(data?.[0]?.cust_id)}</a>
-        </div>
-      )}
-      <p style={{ overflowWrap: 'break-word' }}>{totalConfig.join(', ')}</p>
 
-      <button className={style.checkHealthBtn} onClick={handleCheckHealthScore}>
-        Check Health Score
-      </button>
-      {/* <Modal
+    let run_id = Object.keys(res.data)[0];
+    resHealthScore = res.data[run_id];
+
+    console.log('response: ', resHealthScore);
+    setDataTable([resHealthScore]);
+
+    // return ();
+  };
+
+  return (
+    <div>
+      <div className={`card`}>
+        {isUploadPage && (
+          <div className={style.title}>
+            New customer {externalCustomerId} is uploaded with {totalConfig.length} features
+            {/* <a onClick={() => handleShowChart()}> {startCase(data?.[0]?.cust_id)}</a> */}
+          </div>
+        )}
+        {!isUploadPage && (
+          <div className={style.title}>
+            Customer {externalCustomerId} has {totalConfig.length} features enabled which are
+            covered {data?.[0]?.value}% by{' '}
+            <a onClick={() => handleShowChart()}> {startCase(data?.[0]?.cust_id)}</a>
+          </div>
+        )}
+        <p style={{ overflowWrap: 'break-word' }}>{totalConfig.join(', ')}</p>
+
+        <button className={style.checkHealthBtn} onClick={handleCheckHealthScore}>
+          Check Health Score
+        </button>
+        {/* <Modal
         title={`Unparsed Configuration: ${externalCustomerId}`}
         visible={isModalVisible}
         onOk={handleOk}
@@ -157,26 +144,31 @@ const AutomationWorkflow = ({
       >
         <div dangerouslySetInnerHTML={{ __html: renderContent(dataUniq?.[0]?.dataFile) }} />
       </Modal> */}
-      <p style={{ overflowWrap: 'break-word' }}>{JSON.stringify(routeCmd)}</p>
-      <div className="App">
-        <table>
-          <tr>
-            <th>run_id</th>
-            <th>status</th>
-            <th>result_log</th>
-            <th>health_score</th>
-          </tr>
-          {data_table.map((val, key) => {
-            return (
-              <tr key={key}>
-                <td>{val.run_id}</td>
-                <td>{val.status}</td>
-                <td>{val.result_log}</td>
-                <td>{val.health_score}</td>
-              </tr>
-            );
-          })}
-        </table>
+
+        {/* <p style={{ overflowWrap: 'break-word' }}>{JSON.stringify(routeCmd)}</p> */}
+      </div>
+
+      <div className={`card`}>
+        <div className={style.runTable}>
+          <table id={style.runStatus}>
+            <tr>
+              <th>run_id</th>
+              <th>status</th>
+              <th>result_log</th>
+              <th>health_score</th>
+            </tr>
+            {dataTable.map((val, key) => {
+              return (
+                <tr key={key}>
+                  <td>{val.run_id}</td>
+                  <td>{val.status}</td>
+                  <td>{val.result_log}</td>
+                  <td>{val.health_score}</td>
+                </tr>
+              );
+            })}
+          </table>
+        </div>
       </div>
     </div>
   );

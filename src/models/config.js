@@ -28,7 +28,7 @@ export const initialState = {
   dataUniq: [],
   dataInsight: '',
   statusUpload: true,
-  feature: ""
+  feature: '',
 };
 
 export default {
@@ -220,8 +220,8 @@ export default {
         yield put({
           type: 'save',
           payload: {
-            feature: data
-          }
+            feature: data,
+          },
         });
         notification.success({
           message: 'Check health score successfully.',
@@ -233,8 +233,9 @@ export default {
           });
         }
       }
+      console.log('check health response: ', response);
       return response;
-    }
+    },
   },
   reducers: {
     save(state, action) {
