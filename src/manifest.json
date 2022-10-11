@@ -1,6 +1,6 @@
 {
-  "name": "SIT Profile Analyzer",
-  "short_name": "SIT Profile Analyzer",
+  "name": "Pro-Active Deployment Health Checker",
+  "short_name": "Pro-Active Deployment Health Checker",
   "display": "standalone",
   "start_url": "./?utm_source=homescreen",
   "theme_color": "#002140",

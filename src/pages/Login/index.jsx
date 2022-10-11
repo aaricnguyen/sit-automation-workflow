@@ -6,8 +6,8 @@ import styles from './index.less';
 
 const initialValues = {
   username: '',
-  password: ''
-}
+  password: '',
+};
 function Login(props) {
   /* Props */
   const { userLogin = {}, submitting } = props;
@@ -49,16 +49,16 @@ function Login(props) {
   };
 
   const togglePassword = () => {
-    setPasswordShown(prev => !prev)
-  }
+    setPasswordShown((prev) => !prev);
+  };
 
   const handleChange = (e) => {
-    const {name, value} = e.target;
-    setValues(prev => ({
+    const { name, value } = e.target;
+    setValues((prev) => ({
       ...prev,
-      [name]: value
-    }))
-  }
+      [name]: value,
+    }));
+  };
 
   return (
     <>
@@ -115,11 +115,13 @@ function Login(props) {
             <h1>
               <img src={Logo} alt="CISCO LOGO" />
             </h1>
-            <h2 className={styles.brandTitle}>Cisco <span className={styles.brandSub}>SIT Profile Analyzer</span></h2>
+            <h2 className={styles.brandTitle}>
+              Cisco <span className={styles.brandSub}>Pro-Active Deployment Health Checker</span>
+            </h2>
             <p className={styles.brandDescription}>The bridge to possible</p>
-            <form method='POST' className={styles.formWrapper} onSubmit={handleSubmit}>
+            <form method="POST" className={styles.formWrapper} onSubmit={handleSubmit}>
               <div className={styles.dnxShadow}>
-                <div className={styles.dnxInputField}>     
+                <div className={styles.dnxInputField}>
                   <input
                     className={styles.formControl}
                     placeholder=" "
@@ -127,25 +129,37 @@ function Login(props) {
                     name="username"
                     type="text"
                     onChange={handleChange}
-                  /> 
-                  <label className={styles.controlLabel}>Username</label> 
+                  />
+                  <label className={styles.controlLabel}>Username</label>
                 </div>
               </div>
               <div className={styles.dnxShadow}>
-                <div className={styles.dnxInputField}>     
+                <div className={styles.dnxInputField}>
                   <input
                     className={styles.formControl}
                     placeholder=" "
                     id="password"
                     name="password"
-                    type={passwordShown ? "text" : "password"}
+                    type={passwordShown ? 'text' : 'password'}
                     onChange={handleChange}
                   />
-                  <label className={styles.controlLabel}>Password</label> 
+                  <label className={styles.controlLabel}>Password</label>
                 </div>
-                {values.password.length > 0 && (<span className={styles.showHide} onClick={togglePassword}>{passwordShown ? 'HIDE' : 'SHOW'}</span>)}
+                {values.password.length > 0 && (
+                  <span className={styles.showHide} onClick={togglePassword}>
+                    {passwordShown ? 'HIDE' : 'SHOW'}
+                  </span>
+                )}
               </div>
-              <Button type="primary" htmlType='submit' className={styles.loginBtn} disabled={isDisable} onClick={handleSubmit}>Log In</Button>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className={styles.loginBtn}
+                disabled={isDisable}
+                onClick={handleSubmit}
+              >
+                Log In
+              </Button>
             </form>
           </div>
         </div>
