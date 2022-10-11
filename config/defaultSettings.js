@@ -8,7 +8,7 @@ const proSettings = {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'SIT Profile Analyzer',
+  title: 'Pro-Active Deployment Health Checker',
   pwa: false,
   iconfontUrl: '',
 };
