@@ -36,6 +36,34 @@ const AutomationWorkflow = ({
   const [role, setRole] = useState(false);
   const [routeCmd, setRouteCmd] = useState({});
 
+  const data_table = [
+    {
+      run_id: '5020',
+      status: 'In Progress',
+      result_log: 'Test Execution is in Progress',
+      health_score: 0,
+    },
+    {
+      run_id: '5020',
+      status: 'In Progress',
+      result_log: 'Test Execution is in Progress',
+      health_score: 0,
+    },
+    {
+      run_id: '5020',
+      status: 'In Progress',
+      result_log: 'Test Execution is in Progress',
+      health_score: 0,
+    },
+    {
+      run_id: '5020',
+      status: 'In Progress',
+      result_log:
+        'https://earms-trade.cisco.com/tradeui/logs/details?ats=%2Fauto%2Ficonatest-bgl%2Fproduction%2Fhcl%2Fpyats3.6&client=web&host=bgl-ads-2455&archive=%2Fauto%2Ficonatest-bgl%2Fproduction%2Fhcl%2Fpyats3.6%2Fusers%2Fsuveerai%2Farchive%2F22-10%2Fcat9kv_hackathon_job.2022Oct06_12:05:58.794837.zip',
+      health_score: 10,
+    },
+  ];
+
   const { data = [], type = '' } = dataCombine;
   const showModal = () => {
     setIsModalVisible(true);
@@ -130,6 +158,26 @@ const AutomationWorkflow = ({
         <div dangerouslySetInnerHTML={{ __html: renderContent(dataUniq?.[0]?.dataFile) }} />
       </Modal> */}
       <p style={{ overflowWrap: 'break-word' }}>{JSON.stringify(routeCmd)}</p>
+      <div className="App">
+        <table>
+          <tr>
+            <th>run_id</th>
+            <th>status</th>
+            <th>result_log</th>
+            <th>health_score</th>
+          </tr>
+          {data_table.map((val, key) => {
+            return (
+              <tr key={key}>
+                <td>{val.run_id}</td>
+                <td>{val.status}</td>
+                <td>{val.result_log}</td>
+                <td>{val.health_score}</td>
+              </tr>
+            );
+          })}
+        </table>
+      </div>
     </div>
   );
 };

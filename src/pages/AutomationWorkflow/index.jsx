@@ -91,10 +91,10 @@ const UploadConfig = ({
               showChart={showChart}
             />
           </div>
-          <div style={{ marginTop: '20px' }}>
-            <UploadChartContainer isUploadPage={true} />
-            {/* <UploadScaleChartContainer isUploadPage={true} /> */}
-          </div>
+          {/* <div style={{ marginTop: '20px' }}> */}
+          {/* <UploadChartContainer isUploadPage={true} /> */}
+          {/* <UploadScaleChartContainer isUploadPage={true} /> */}
+          {/* </div> */}
         </>
       )}
     </PageContainer>
