@@ -15,8 +15,8 @@ const AutomationWorkflow = (props) => {
   const { runIDList, isUploadPage = false, dispatch } = props;
   const [role, setRole] = useState(false);
   const [dataTable, setDataTable] = useState([]);
-  let resHealthScoreList = [];
-  let resHealthScore = { s_no: '', status: '', run_id: '', health_score: null, result_log: null };
+  // let resHealthScoreList = [];
+  // let resHealthScore = { s_no: '', status: '', run_id: '', health_score: null, result_log: null };
 
   //useEffect
   useEffect(() => {
@@ -58,8 +58,8 @@ const AutomationWorkflow = (props) => {
       });
       console.log('res', res, runID);
 
-      resHealthScore = res.data[runID];
-      resHealthScoreList.push(resHealthScore);
+      let resHealthScore = res.data[runID];
+      // resHealthScoreList.push(resHealthScore);
 
       setDataTable([...dataTable, resHealthScore]);
     });
