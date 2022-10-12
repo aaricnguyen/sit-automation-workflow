@@ -12,3 +12,11 @@ export async function automationFlow(data) {
     data,
   });
 }
+
+export async function checkRunStatus(id) {
+  return axios({
+    url: 'http://10.78.96.78:5010/api/health_status?run_id=' + id,
+    method: 'GET',
+    redirect: 'follow',
+  });
+}

@@ -21,21 +21,23 @@ const _renderTitle = (type, externalCustomerId) => {
   }
 };
 
-let runIDList = [];
 let resHealthScoreList = [];
 let resHealthScore = { s_no: '', status: '', run_id: '', health_score: null, result_log: null };
 
-const AutomationWorkflow = ({
-  totalConfig,
-  externalCustomerId,
-  dataCombine,
-  isUploadPage = false,
-  showChart,
-  dataUniq,
-  setShowChart = () => {},
-  internalCustomerId,
-  dispatch,
-}) => {
+const AutomationWorkflow = (props) => {
+  const {
+    totalConfig,
+    externalCustomerId,
+    runIDList,
+    dataCombine,
+    isUploadPage = false,
+    showChart,
+    dataUniq,
+    setShowChart = () => {},
+    internalCustomerId,
+    dispatch,
+    setRunIDList,
+  } = props;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [role, setRole] = useState(false);
   const [routeCmd, setRouteCmd] = useState({});
@@ -106,8 +108,12 @@ const AutomationWorkflow = ({
     });
 
     let runID = Object.keys(res.data)[0];
-    runIDList.push(runID);
+    if (!runIDList?.includes(runID)) {
+      setRunIDList([...runIDList, runID]);
+    }
+
     resHealthScore = res.data[runID];
+
     resHealthScoreList.push(resHealthScore);
 
     setDataTable([...dataTable, resHealthScore]);
@@ -153,7 +159,7 @@ const AutomationWorkflow = ({
         {/* <p style={{ overflowWrap: 'break-word' }}>{JSON.stringify(routeCmd)}</p> */}
       </div>
 
-      <div className={`card`}>
+      {/* <div className={`card`}>
         <div className={style.runTable}>
           <table id={style.runStatus}>
             <tr>
@@ -174,13 +180,11 @@ const AutomationWorkflow = ({
             })}
           </table>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
 
 // export default SummaryInfo;
 
-export default connect(({ config: { internalCustomerId } }) => ({
-  internalCustomerId,
-}))(AutomationWorkflow);
+export default connect()(AutomationWorkflow);

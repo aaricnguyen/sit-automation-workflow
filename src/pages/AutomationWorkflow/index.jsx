@@ -1,5 +1,6 @@
 import PageLoading from '@/components/PageLoading';
 import SummaryInfo from '@/components/SummaryInfoClone';
+import RunStatusTable from '@/components/SummaryRunTable';
 import UploadChartContainer from '@/components/UploadChartContainer';
 import UploadScaleChartContainer from '@/components/UploadScaleChartContainer';
 import { InboxOutlined } from '@ant-design/icons';
@@ -24,6 +25,7 @@ const UploadConfig = ({
 }) => {
   const [custSegment, setCustSegment] = useState(0);
   const [showChart, setShowChart] = useState(false);
+  const [runIDList, setRunIDList] = useState([]);
 
   const handleUpload = async (file) => {
     setShowChart(false);
@@ -89,12 +91,21 @@ const UploadConfig = ({
               dataUniq={dataUniq}
               setShowChart={setShowChart}
               showChart={showChart}
+              runIDList={runIDList}
+              setRunIDList={setRunIDList}
             />
           </div>
           {/* <div style={{ marginTop: '20px' }}> */}
           {/* <UploadChartContainer isUploadPage={true} /> */}
           {/* <UploadScaleChartContainer isUploadPage={true} /> */}
           {/* </div> */}
+        </>
+      )}
+      {runIDList && (
+        <>
+          <div style={{ marginTop: '20px' }}>
+            <RunStatusTable runIDList={runIDList} />
+          </div>
         </>
       )}
     </PageContainer>

@@ -5,7 +5,7 @@ import {
   search,
 } from '@/services/configs';
 import { uploadConfig } from '@/services/uploadConfig';
-import { automationFlow } from '@/services/automationFlow';
+import { automationFlow, checkRunStatus } from '@/services/automationFlow';
 import { uploadTemplate, updatedTemplate } from '@/services/uploadTemplate';
 import { notification } from 'antd';
 
@@ -236,7 +236,35 @@ export default {
       console.log('check health response: ', response);
       return response;
     },
+
+    *checkRunStatus({ id }, { call, put }) {
+      let response = {};
+      console.log('payload', id);
+      try {
+        response = yield call(checkRunStatus, id);
+        const { statusCode, data } = response;
+        if (statusCode !== 200) throw response;
+        yield put({
+          type: 'save',
+          payload: {
+            feature: data,
+          },
+        });
+        notification.success({
+          message: 'Check health score successfully.',
+        });
+      } catch (error) {
+        if (error.message) {
+          notification.error({
+            message: error.message,
+          });
+        }
+      }
+      console.log('check health response: ', response);
+      return response;
+    },
   },
+
   reducers: {
     save(state, action) {
       return {
