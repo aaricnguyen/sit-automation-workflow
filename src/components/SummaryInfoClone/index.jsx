@@ -112,13 +112,13 @@ const AutomationWorkflow = (props) => {
       setRunIDList([...runIDList, runID]);
     }
 
-    resHealthScore = res.data[runID];
+    // resHealthScore = res.data[runID];
 
-    resHealthScoreList.push(resHealthScore);
+    // resHealthScoreList.push(resHealthScore);
 
-    setDataTable([...dataTable, resHealthScore]);
+    // setDataTable([...dataTable, resHealthScore]);
 
-    console.log('data table: ', dataTable);
+    // console.log('data table: ', dataTable);
     // setDataTable([resHealthScore]);
 
     // return ();

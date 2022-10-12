@@ -7,14 +7,16 @@ import style from './index.less';
 import { getAuthority } from '@/utils/authority';
 import { useEffect } from 'react';
 
-let resHealthScoreList = [];
-let resHealthScore = { s_no: '', status: '', run_id: '', health_score: null, result_log: null };
+// let resHealthScoreList = [];
+// let resHealthScore = { s_no: '', status: '', run_id: '', health_score: null, result_log: null };
 
 const timeOut = 30000;
 const AutomationWorkflow = (props) => {
   const { runIDList, isUploadPage = false, dispatch } = props;
   const [role, setRole] = useState(false);
   const [dataTable, setDataTable] = useState([]);
+  let resHealthScoreList = [];
+  let resHealthScore = { s_no: '', status: '', run_id: '', health_score: null, result_log: null };
 
   //useEffect
   useEffect(() => {
