@@ -21,6 +21,10 @@ const _renderTitle = (type, externalCustomerId) => {
   }
 };
 
+let runIDList = [];
+let resHealthScoreList = [];
+let resHealthScore = { s_no: '', status: '', run_id: '', health_score: null, result_log: null };
+
 const AutomationWorkflow = ({
   totalConfig,
   externalCustomerId,
@@ -36,8 +40,6 @@ const AutomationWorkflow = ({
   const [role, setRole] = useState(false);
   const [routeCmd, setRouteCmd] = useState({});
   const [dataTable, setDataTable] = useState([]);
-
-  let resHealthScore = { s_no: '', status: '', run_id: '', health_score: null, result_log: null };
 
   const { data = [], type = '' } = dataCombine;
   const showModal = () => {
@@ -87,7 +89,6 @@ const AutomationWorkflow = ({
     setRouteCmd({
       features: totalConfig,
     });
-    setDataTable([resHealthScore]);
 
     /* Mở comment khi API đã xong */
     let parserRoute = new Blob([JSON.stringify(routeCmd)], {
@@ -104,11 +105,15 @@ const AutomationWorkflow = ({
       payload: formData,
     });
 
-    let run_id = Object.keys(res.data)[0];
-    resHealthScore = res.data[run_id];
+    let runID = Object.keys(res.data)[0];
+    runIDList.push(runID);
+    resHealthScore = res.data[runID];
+    resHealthScoreList.push(resHealthScore);
 
-    console.log('response: ', resHealthScore);
-    setDataTable([resHealthScore]);
+    setDataTable([...dataTable, resHealthScore]);
+
+    console.log('data table: ', dataTable);
+    // setDataTable([resHealthScore]);
 
     // return ();
   };
