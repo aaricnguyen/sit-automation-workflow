@@ -26,9 +26,13 @@ const UploadConfig = ({
   const [custSegment, setCustSegment] = useState(0);
   const [showChart, setShowChart] = useState(false);
   const [runIDList, setRunIDList] = useState([]);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [featureInfo, setFeatureInfo] = useState({});
 
   const handleUpload = async (file) => {
     setShowChart(false);
+    setIsDisabled(false);
+    setFeatureInfo({});
     const formData = new FormData();
     formData.append('file', file);
     formData.append('custSegment', custSegment);
@@ -93,6 +97,10 @@ const UploadConfig = ({
               showChart={showChart}
               runIDList={runIDList}
               setRunIDList={setRunIDList}
+              isDisabled={isDisabled}
+              setIsDisabled={setIsDisabled}
+              featureInfo={featureInfo}
+              setFeatureInfo={setFeatureInfo}
             />
           </div>
           {/* <div style={{ marginTop: '20px' }}> */}
@@ -104,7 +112,7 @@ const UploadConfig = ({
       {runIDList && (
         <>
           <div style={{ marginTop: '20px' }}>
-            <RunStatusTable runIDList={runIDList} />
+            <RunStatusTable runIDList={runIDList} setIsDisabled={setIsDisabled} />
           </div>
         </>
       )}

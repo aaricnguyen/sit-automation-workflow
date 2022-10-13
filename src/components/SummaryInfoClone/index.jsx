@@ -2,6 +2,7 @@ import { Modal } from 'antd';
 import { startCase } from 'lodash-es';
 import React, { useState } from 'react';
 import { connect } from 'umi';
+import { isEmpty } from 'lodash';
 import style from './index.less';
 
 import { getAuthority } from '@/utils/authority';
@@ -37,6 +38,10 @@ const AutomationWorkflow = (props) => {
     internalCustomerId,
     dispatch,
     setRunIDList,
+    isDisabled,
+    setIsDisabled = () => {},
+    featureInfo,
+    setFeatureInfo = () => {},
   } = props;
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [role, setRole] = useState(false);
@@ -87,6 +92,7 @@ const AutomationWorkflow = (props) => {
   };
 
   const handleCheckHealthScore = async () => {
+    setIsDisabled(true);
     let res;
     setRouteCmd({
       features: totalConfig,
@@ -111,6 +117,7 @@ const AutomationWorkflow = (props) => {
     if (!runIDList?.includes(runID)) {
       setRunIDList([...runIDList, runID]);
     }
+    setFeatureInfo(res.data[runID]);
 
     // resHealthScore = res.data[runID];
 
@@ -123,6 +130,8 @@ const AutomationWorkflow = (props) => {
 
     // return ();
   };
+
+  console.log('features: ', featureInfo);
 
   return (
     <div>
@@ -142,9 +151,19 @@ const AutomationWorkflow = (props) => {
         )}
         <p style={{ overflowWrap: 'break-word' }}>{totalConfig.join(', ')}</p>
 
-        <button className={style.checkHealthBtn} onClick={handleCheckHealthScore}>
+        <button
+          className={style.checkHealthBtn}
+          onClick={handleCheckHealthScore}
+          disabled={isDisabled}
+        >
           Check Health Score
         </button>
+        {!isEmpty(featureInfo) && (
+          <div style={{ display: 'flex' }}>
+            <p>{featureInfo.run_id}</p> - <p>{featureInfo.status}</p>
+          </div>
+        )}
+
         {/* <Modal
         title={`Unparsed Configuration: ${externalCustomerId}`}
         visible={isModalVisible}

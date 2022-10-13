@@ -12,7 +12,7 @@ import { useEffect } from 'react';
 
 const timeOut = 30000;
 const AutomationWorkflow = (props) => {
-  const { runIDList, isUploadPage = false, dispatch } = props;
+  const { runIDList, isUploadPage = false, dispatch, setIsDisabled = () => {} } = props;
   const [role, setRole] = useState(false);
   const [dataTable, setDataTable] = useState([]);
   // let resHealthScoreList = [];
@@ -49,25 +49,24 @@ const AutomationWorkflow = (props) => {
     return result.join('\n');
   };
 
-  const handleCheckRunStatus = (listID) => {
+  const handleCheckRunStatus = async (listID) => {
     console.log('run api', listID);
-    listID.forEach(async (runID) => {
-      const res = await dispatch({
+    const healthScorePromise = listID.map(async (runID) => {
+      return await dispatch({
         type: 'config/checkRunStatus',
         id: runID,
       });
-      console.log('res', res, runID);
-
-      let resHealthScore = res.data[runID];
-      // resHealthScoreList.push(resHealthScore);
-
-      setDataTable([...dataTable, resHealthScore]);
     });
-
-    console.log('data table: ', dataTable);
-    // setDataTable([resHealthScore]);
-
-    // return ();
+    const resHealthScore = await Promise.all(healthScorePromise);
+    let listData = [];
+    listID.forEach((ele) => {
+      resHealthScore.forEach((item) => {
+        if (item !== undefined && item.data[ele] !== undefined) {
+          listData.push(item.data[ele]);
+        }
+      });
+    });
+    setDataTable(listData);
   };
 
   return (
