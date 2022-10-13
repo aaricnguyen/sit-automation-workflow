@@ -213,8 +213,8 @@ const FeatureChartContainer = ({
             <Select.Option value="all">All</Select.Option>
           </Select>
         )}
-        <div className={styles.chartContainer__actions}>
-          {/* <span
+        {/* <div className={styles.chartContainer__actions}>
+          <span
             onClick={() => handlePrevious()}
             className={
               typeChart <= chartHistories[0].typeChart && styles.chartContainer__actions__disabled
@@ -230,16 +230,16 @@ const FeatureChartContainer = ({
             }
           >
             Next
-          </span> */}
-          {/* <span
+          </span>
+          <span
             onClick={() => handlePrevious()}
             className={
               typeChart <= chartHistories[0].typeChart && styles.chartContainer__actions__disabled
             }
           >
             Previous Chart
-          </span> */}
-        </div>
+          </span>
+        </div> */}
       </Row>
       {loadingChart ? (
         <PageLoading />

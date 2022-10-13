@@ -281,7 +281,27 @@ const ChartContainer = ({
             <Select.Option value="all">All</Select.Option>
           </Select>
         )}
+        <div className={styles.chartContainer__actions}>
+          <span
+            onClick={() => handlePrevious()}
+            className={
+              typeChart <= chartHistories[0].typeChart && styles.chartContainer__actions__disabled
+            }
+          >
+            Previous
+          </span>
+          <span
+            onClick={() => handleNext()}
+            className={
+              typeChart >= chartHistories[chartHistories.length - 1].typeChart &&
+              styles.chartContainer__actions__disabled
+            }
+          >
+            Next
+          </span>
+        </div>
       </Row>
+
       {loadingChart ? (
         <PageLoading />
       ) : (
