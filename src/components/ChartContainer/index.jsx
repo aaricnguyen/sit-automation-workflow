@@ -1,4 +1,5 @@
 import BarChart from '@/components/BarChart';
+import BarChartFeature from '@/components/BarChartFeature';
 import { PageLoading } from '@ant-design/pro-layout';
 import { Pagination, Row, Select } from 'antd';
 import { startCase } from 'lodash';
@@ -26,14 +27,13 @@ const ChartContainer = ({
   const [typeDisplay, setTypeDisplay] = useState('top10');
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(20);
-  const [chartDataTopFea, setChartDataTopFea] = useState([]);
-  const [dataPaging, setDataPaging] = useState([]);
   const {
     // SIT_PROFILE_COMPARE,
     INTERNAL_CHART,
     CATEGORY_CHART,
     FEATURE_CHART,
     FEATURE_DETAIL_CHART,
+    FEATURE_BAR_CHART,
   } = TYPE_CHART;
 
   const idChart2 = chartHistories.find((item) => item.typeChart === INTERNAL_CHART)?.id;
@@ -72,6 +72,14 @@ const ChartContainer = ({
         category,
         externalId: idChart3,
         internalId: idChart2,
+        typeChartScale,
+        idScale,
+      };
+    } else if (typeChart === FEATURE_BAR_CHART) {
+      data = {
+        ...data,
+        category,
+        externalId: idChart2,
         typeChartScale,
         idScale,
       };
@@ -139,6 +147,8 @@ const ChartContainer = ({
         return 'Number of configuration enabled';
       case 3:
         return 'Number of configuration enabled';
+      case 6:
+        return 'Feature Count';
       default:
         return 'Number of customers';
     }
@@ -174,10 +184,13 @@ const ChartContainer = ({
         return `${startCase(idChart2)} - ${idChart3} - ${startCase(
           category,
         )} - ${id} Configurations`;
+      case 6:
+        return 'Top Features Chart';
       default:
         return 'SIT Profiles - Internal Customers Summary';
     }
   };
+
   const _renderChart = () => {
     if (chartData.length === 0 && typeChart !== 4) {
       return <div className={styles.noData}>No data to display</div>;
@@ -198,7 +211,35 @@ const ChartContainer = ({
       case 4:
       case 5:
         return <TableChart typeChart={typeChart} setId={setId} data={chartData} />;
-
+      // case 6:
+      //   return (
+      //     <>
+      //       <BarChartFeature
+      //         yLabel={getYLabelOfChart()}
+      //         keyX={keyOfChart()}
+      //         setId={setId}
+      //         // chartData={typeDisplay === 'all' ? dataPaging : chartDataTopFea.slice(0, 10)}
+      //         chartData={chartDataTopFea}
+      //         typeChart={typeChart}
+      //         totalConfigs={totalConfigs}
+      //         key={dataPaging.length}
+      //         domain={getDomain()}
+      //       />
+      //       {typeChart === 6 && typeDisplay === 'all' && (
+      //         <Pagination
+      //           className={styles.pagination}
+      //           showSizeChanger={false}
+      //           responsive={true}
+      //           total={pagination._total}
+      //           showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
+      //           defaultPageSize={perPage}
+      //           defaultCurrent={page}
+      //           // showQuickJumper
+      //           onChange={(current) => setPage(current)}
+      //         />
+      //       )}
+      //     </>
+      //   )
       default:
         return (
           <>
@@ -219,6 +260,7 @@ const ChartContainer = ({
                 showSizeChanger={false}
                 responsive={true}
                 total={pagination._total}
+                // total={chartData.length}
                 showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
                 defaultPageSize={perPage}
                 defaultCurrent={page}
@@ -230,35 +272,6 @@ const ChartContainer = ({
         );
     }
   };
-
-  const getDataChartTopFeature = async () => {
-    await axios({
-      url: 'http://10.78.96.78:5010/api/custom_features?custom_segment=4',
-      method: 'GET',
-      redirect: 'follow',
-    }).then((result) => {
-      setChartDataTopFea(
-        result.data.map((i) => {
-          return {
-            cust_id: i.featureName,
-            value: i.count,
-          };
-        }),
-      );
-      setDataPaging(
-        result.data.slice(0, 20).map((i) => {
-          return {
-            cust_id: i.featureName,
-            value: i.count,
-          };
-        }),
-      );
-    });
-  };
-
-  useEffect(() => getDataChartTopFeature(), []);
-
-  console.log('new====', dataPaging);
   return (
     <div className={styles.chartContainer}>
       <Row justify={typeChart === INTERNAL_CHART ? 'space-between' : 'end'}>
@@ -268,33 +281,6 @@ const ChartContainer = ({
             <Select.Option value="all">All</Select.Option>
           </Select>
         )}
-        <div className={styles.chartContainer__actions}>
-          {/* <span
-            onClick={() => handlePrevious()}
-            className={
-              typeChart <= chartHistories[0].typeChart && styles.chartContainer__actions__disabled
-            }
-          >
-            Previous
-          </span>
-          <span
-            onClick={() => handleNext()}
-            className={
-              typeChart >= chartHistories[chartHistories.length - 1].typeChart &&
-              styles.chartContainer__actions__disabled
-            }
-          >
-            Next
-          </span> */}
-          <span
-            onClick={() => handlePrevious()}
-            className={
-              typeChart <= chartHistories[0].typeChart && styles.chartContainer__actions__disabled
-            }
-          >
-            Previous Chart
-          </span>
-        </div>
       </Row>
       {loadingChart ? (
         <PageLoading />
@@ -302,41 +288,6 @@ const ChartContainer = ({
         <>
           <div className={styles.chartContainer__title}>{_renderTitleChart()}</div>
           {_renderChart()}
-          {typeChart === 2 && (
-            <>
-              <div className={styles.chartContainer__title}>{'Top Features Chart'}</div>
-              {dataPaging.length > 0 && (
-                <BarChart
-                  yLabel={'Top Features Chart'}
-                  keyX={keyOfChart()}
-                  setId={setId}
-                  chartData={typeDisplay === 'all' ? dataPaging : chartDataTopFea.slice(0, 10)}
-                  typeChart={typeChart}
-                  totalConfigs={totalConfigs}
-                  key={dataPaging.length}
-                  domain={getDomain()}
-                />
-              )}
-              {typeDisplay === 'all' && (
-                <Pagination
-                  className={styles.pagination}
-                  showSizeChanger={false}
-                  responsive={true}
-                  total={chartDataTopFea.length}
-                  showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
-                  defaultPageSize={perPage}
-                  defaultCurrent={page}
-                  // showQuickJumper
-                  onChange={(current) => {
-                    setPage(current);
-                    setDataPaging(
-                      chartDataTopFea.slice(current * perPage, current * perPage + perPage),
-                    );
-                  }}
-                />
-              )}
-            </>
-          )}
         </>
       )}
     </div>

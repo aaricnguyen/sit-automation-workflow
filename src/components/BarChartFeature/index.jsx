@@ -20,11 +20,11 @@ const CustomTooltip = ({ active, payload, label }) => {
     return (
       <div className="custom-tooltip">
         <div className="custom-tooltip__item">
-          <span>Customer :</span>
+          <span>Feature:</span>
           <span>{startCase(label)}</span>
         </div>
         <div className="custom-tooltip__item">
-          <span>Value :</span>
+          <span>Count:</span>
           <span>{data.value}</span>
         </div>
         {/* {'valueOf100' in data && (
@@ -100,7 +100,8 @@ export default function BarChartItem({
             interval={0}
           >
             <Label
-              value={keyX === 'cust_id' ? 'Customer' : keyX}
+              // value={keyX === 'cust_id' ? 'Fe' : keyX}
+              value={'Features'}
               offset={0}
               position="insideBottomRight"
             />

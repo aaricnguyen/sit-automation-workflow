@@ -1,5 +1,6 @@
 import ChartContainer from '@/components/ChartContainer';
 import ScaleChartContainer from '@/components/ScaleChartContainer';
+import FeatureChartContainer from '@/components/FeatureChartContainer';
 import OverviewList from '@/components/OverviewList';
 import InsightList from '@/components/InsightList';
 import PageLoading from '@/components/PageLoading';
@@ -38,6 +39,7 @@ const Dashboard = ({ loading, dispatch, typeChart, id, chartHistories }) => {
             <div className={styles.mainContentWrapper}>
               <div className={styles.ChartContainer}>
                 <ChartContainer />
+                {typeChart === 2 && <FeatureChartContainer />}
                 {typeChart >= 3 && <ScaleChartContainer />}
               </div>
 

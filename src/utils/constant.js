@@ -4,6 +4,7 @@ export const TYPE_CHART = {
   CATEGORY_CHART: 3,
   FEATURE_CHART: 4,
   FEATURE_DETAIL_CHART: 5,
+  FEATURE_BAR_CHART: 6,
 };
 
 export const SEARCH_CASE = {
