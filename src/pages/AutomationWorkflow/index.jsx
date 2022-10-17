@@ -1,6 +1,6 @@
 import PageLoading from '@/components/PageLoading';
 import SummaryInfo from '@/components/SummaryInfoClone';
-import RunStatusTable from '@/components/SummaryRunTable';
+import SummaryRunTable from '@/components/SummaryRunTable';
 import UploadChartContainer from '@/components/UploadChartContainer';
 import UploadScaleChartContainer from '@/components/UploadScaleChartContainer';
 import { InboxOutlined } from '@ant-design/icons';
@@ -103,18 +103,12 @@ const UploadConfig = ({
               setFeatureInfo={setFeatureInfo}
             />
           </div>
-          {/* <div style={{ marginTop: '20px' }}> */}
-          {/* <UploadChartContainer isUploadPage={true} /> */}
-          {/* <UploadScaleChartContainer isUploadPage={true} /> */}
-          {/* </div> */}
         </>
       )}
       {runIDList && (
-        <>
-          <div style={{ marginTop: '20px' }}>
-            <RunStatusTable runIDList={runIDList} setIsDisabled={setIsDisabled} />
-          </div>
-        </>
+        <div style={{ marginTop: '20px' }}>
+          <SummaryRunTable runIDList={runIDList} />
+        </div>
       )}
     </PageContainer>
   );

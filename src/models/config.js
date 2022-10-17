@@ -260,7 +260,7 @@ export default {
           });
         }
       }
-      console.log('check health response: ', response);
+      // console.log('check health response: ', response);
       return response;
     },
   },

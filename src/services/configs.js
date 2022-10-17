@@ -1,4 +1,5 @@
 import request from '@/utils/request';
+import axios from 'axios';
 
 // =============== chart ===============
 
@@ -50,5 +51,13 @@ export async function getInternalCustomers(data) {
   return request(`/api/internal-customers`, {
     method: 'GET',
     params: data,
+  });
+}
+
+export async function getDataChartTopFeature() {
+  return axios({
+    url: 'http://10.78.96.78:5010/api/custom_features?custom_segment=4',
+    method: 'GET',
+    redirect: 'follow',
   });
 }

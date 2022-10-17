@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { startCase } from 'lodash';
 import { connect } from 'umi';
 import axios from 'axios';
+import { getDataChartTopFeature } from '@/services/configs';
 import RadarChartScale from '../RadarChartScale';
 import styles from './index.less';
 import { TYPE_CHART } from '@/utils/constant';
@@ -176,32 +177,49 @@ const FeatureChartContainer = ({
   //   </div>
   // );
 
-  const getDataChartTopFeature = async () => {
-    await axios({
-      url: 'http://10.78.96.78:5010/api/custom_features?custom_segment=4',
-      method: 'GET',
-      redirect: 'follow',
-    }).then((result) => {
-      setChartDataTopFea(
-        result.data.map((i) => {
-          return {
-            cust_id: i.featureName,
-            value: i.count,
-          };
-        }),
-      );
-      setDataPaging(
-        result.data.slice(0, 20).map((i) => {
-          return {
-            cust_id: i.featureName,
-            value: i.count,
-          };
-        }),
-      );
-    });
+  const handleGetDataChartTopFeature = async () => {
+    const { data } = await getDataChartTopFeature();
+    setChartDataTopFea(
+      data.map((i) => {
+        return {
+          cust_id: i.featureName,
+          value: i.count,
+        };
+      }),
+    );
+    setDataPaging(
+      data.slice(0, 20).map((i) => {
+        return {
+          cust_id: i.featureName,
+          value: i.count,
+        };
+      }),
+    );
+    // await axios({
+    //   url: 'http://10.78.96.78:5010/api/custom_features?custom_segment=4',
+    //   method: 'GET',
+    //   redirect: 'follow',
+    // }).then((result) => {
+    //   setChartDataTopFea(
+    //     result.data.map((i) => {
+    //       return {
+    //         cust_id: i.featureName,
+    //         value: i.count,
+    //       };
+    //     }),
+    //   );
+    //   setDataPaging(
+    //     result.data.slice(0, 20).map((i) => {
+    //       return {
+    //         cust_id: i.featureName,
+    //         value: i.count,
+    //       };
+    //     }),
+    //   );
+    // });
   };
 
-  useEffect(() => getDataChartTopFeature(), []);
+  useEffect(() => handleGetDataChartTopFeature(), []);
 
   // console.log('new====', dataPaging);
   return (

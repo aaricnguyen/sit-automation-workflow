@@ -98,7 +98,6 @@ const AutomationWorkflow = (props) => {
       features: totalConfig,
     });
 
-    /* Mở comment khi API đã xong */
     let parserRoute = new Blob([JSON.stringify(routeCmd)], {
       type: 'text/plain',
     });
@@ -118,17 +117,6 @@ const AutomationWorkflow = (props) => {
       setRunIDList([...runIDList, runID]);
     }
     setFeatureInfo(res.data[runID]);
-
-    // resHealthScore = res.data[runID];
-
-    // resHealthScoreList.push(resHealthScore);
-
-    // setDataTable([...dataTable, resHealthScore]);
-
-    // console.log('data table: ', dataTable);
-    // setDataTable([resHealthScore]);
-
-    // return ();
   };
 
   console.log('features: ', featureInfo);
@@ -163,47 +151,9 @@ const AutomationWorkflow = (props) => {
             <p>{featureInfo.run_id}</p> - <p>{featureInfo.status}</p>
           </div>
         )}
-
-        {/* <Modal
-        title={`Unparsed Configuration: ${externalCustomerId}`}
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        className={style.modal}
-        bodyStyle={{ maxHeight: '500px', overflowY: 'scroll' }}
-      >
-        <div dangerouslySetInnerHTML={{ __html: renderContent(dataUniq?.[0]?.dataFile) }} />
-      </Modal> */}
-
-        {/* <p style={{ overflowWrap: 'break-word' }}>{JSON.stringify(routeCmd)}</p> */}
       </div>
-
-      {/* <div className={`card`}>
-        <div className={style.runTable}>
-          <table id={style.runStatus}>
-            <tr>
-              <th>run_id</th>
-              <th>status</th>
-              <th>result_log</th>
-              <th>health_score</th>
-            </tr>
-            {dataTable.map((val, key) => {
-              return (
-                <tr key={key}>
-                  <td>{val.run_id}</td>
-                  <td>{val.status}</td>
-                  <td>{val.result_log}</td>
-                  <td>{val.health_score}</td>
-                </tr>
-              );
-            })}
-          </table>
-        </div>
-      </div> */}
     </div>
   );
 };
-
-// export default SummaryInfo;
 
 export default connect()(AutomationWorkflow);
