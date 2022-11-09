@@ -34,6 +34,7 @@ const ChartContainer = ({
     FEATURE_CHART,
     FEATURE_DETAIL_CHART,
     FEATURE_BAR_CHART,
+    FEATURE_COUNT_BAR_CHART,
   } = TYPE_CHART;
 
   const idChart2 = chartHistories.find((item) => item.typeChart === INTERNAL_CHART)?.id;
@@ -76,6 +77,14 @@ const ChartContainer = ({
         idScale,
       };
     } else if (typeChart === FEATURE_BAR_CHART) {
+      data = {
+        ...data,
+        category,
+        externalId: idChart2,
+        typeChartScale,
+        idScale,
+      };
+    } else if (typeChart === FEATURE_COUNT_BAR_CHART) {
       data = {
         ...data,
         category,

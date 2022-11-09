@@ -54,6 +54,13 @@ export async function getInternalCustomers(data) {
   });
 }
 
+//  =============== get top count ===============
+export async function getExternalFeatureCountBySegment({ cust_segment = 1 }) {
+  return request(`/api/customer-feature-count-by-segment?custom_segment=${cust_segment}`, {
+    method: 'GET',
+  });
+}
+
 export async function getDataChartTopFeature() {
   return axios({
     url: 'http://10.78.96.78:5010/api/custom_features?custom_segment=4',
