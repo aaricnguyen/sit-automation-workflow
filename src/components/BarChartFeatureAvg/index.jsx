@@ -27,6 +27,10 @@ const CustomTooltip = ({ active, payload, label }) => {
           <span>Avg Count:</span>
           <span>{data.value}</span>
         </div>
+        <div className="custom-tooltip__item">
+          <span>Max Count:</span>
+          <span>{data.value_max}</span>
+        </div>
       </div>
     );
   }
@@ -121,11 +125,17 @@ export default function BarChartItem({
             />
           )}
           <CartesianGrid vertical={false} />
-          <Bar
+          {/* <Bar
             dataKey="value"
             fill={typeChart === 1 ? '#BD10E0' : '#00A0D1'}
             barSize={chartData.length < 20 ? 50 : 40}
-          />
+          /> */}
+
+          <YAxis yAxisId="left" orientation="value" hide="true" />
+          <YAxis yAxisId="right" orientation="value_max" hide="true" />
+          <Bar yAxisId="left" dataKey="value" fill={typeChart === 1 ? '#BD10E0' : '#00A0D1'} />
+          <Bar yAxisId="right" dataKey="value_max" fill="#82ca9d" />
+
           {typeChart === 3 && <Bar dataKey="internalValue" fill="#BD10E0" barSize={50} />}
         </BarChart>
       </ResponsiveContainer>

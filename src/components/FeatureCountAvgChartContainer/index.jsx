@@ -192,7 +192,7 @@ const FeatureCountChartContainer = ({
       fdata.map((i) => {
         return {
           cust_id: i.feature,
-          // value: i.max,
+          value_max: i.max,
           value: i.avg,
         };
       }),
@@ -202,7 +202,7 @@ const FeatureCountChartContainer = ({
       fdata.slice(0, 20).map((i) => {
         return {
           cust_id: i.feature,
-          // value: i.max,
+          value_max: i.max,
           value: i.avg,
         };
       }),
