@@ -24,7 +24,7 @@ const CustomTooltip = ({ active, payload, label }) => {
           <span>{startCase(label)}</span>
         </div>
         <div className="custom-tooltip__item">
-          <span>Total Count:</span>
+          <span>Total:</span>
           <span>{data.value}</span>
         </div>
       </div>
@@ -79,7 +79,7 @@ export default function BarChartItem({
           >
             <Label
               // value={keyX === 'cust_id' ? 'Fe' : keyX}
-              value={'Feature Count Name'}
+              value={'Feature Name'}
               offset={0}
               position="insideBottomRight"
             />

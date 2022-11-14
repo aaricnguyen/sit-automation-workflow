@@ -38,8 +38,8 @@ const FeatureCountChartContainer = ({
 
   const SEGMENT_MAP = {
     retail: 1,
-    govt: 2,
-    health: 3,
+    government: 2,
+    healthcare: 3,
     nge: 4,
     education: 5,
     finance: 6,
@@ -136,13 +136,13 @@ const FeatureCountChartContainer = ({
       <>
         <div className={styles.chartContainer__title}>{`${startCase(
           idChart2,
-        )} - Top Feature Count Chart`}</div>
+        )} - Top Feature Chart`}</div>
         {dataPaging.length > 0 && (
           <BarChartFeatureCount
-            yLabel={'Feature Count Sum Number'}
+            yLabel={'Feature Sum Number'}
             keyX={'cust_id'}
             setId={setId}
-            chartData={typeDisplay === 'all' ? dataPaging : chartDataTopFea.slice(0, 19)}
+            chartData={typeDisplay === 'all' ? dataPaging : chartDataTopFea.slice(0, 20)}
             typeChart={7}
             // totalConfigs={totalConfigs}
             key={dataPaging.length}
@@ -162,10 +162,7 @@ const FeatureCountChartContainer = ({
             onChange={(current) => {
               setPage(current);
               setDataPaging(
-                chartDataTopFea.slice(
-                  (current - 1) * perPage,
-                  (current - 1) * perPage + perPage - 1,
-                ),
+                chartDataTopFea.slice((current - 1) * perPage, (current - 1) * perPage + perPage),
               );
             }}
           />
@@ -185,11 +182,30 @@ const FeatureCountChartContainer = ({
       return;
     }
     const { data } = await getExternalFeatureCountBySegment({ cust_segment: cust_segment });
-    let fdata = Object.values(data);
-    fdata = fdata.sort((a, b) => b.sum - a.sum);
+    let fdata = data['categories'];
+    let totalConfigs = [];
+    let chart_data = {};
+    Object.values(fdata).forEach((element) => {
+      totalConfigs.push(...element);
+    });
+
+    let feature_set = new Set(totalConfigs);
+    let feature_list = [...feature_set];
+    console.log('feature_list', feature_list);
+    feature_list.forEach((feature) => {
+      chart_data[feature] = {};
+      chart_data[feature]['feature'] = feature;
+      chart_data[feature]['sum'] = totalConfigs.filter((x) => x === feature).length;
+    });
+
+    console.log('chart data', chart_data);
+    // console.log('total configs: ', totalConfigs)
+    // fdata = fdata.sort((a, b) => b.sum - a.sum);
     // console.log("data: ", fdata);
+    let fchart_data = Object.values(chart_data).sort((a, b) => b.sum - a.sum);
+
     setChartDataTopFea(
-      fdata.map((i) => {
+      fchart_data.map((i) => {
         return {
           cust_id: i.feature,
           value: i.sum,
@@ -198,7 +214,7 @@ const FeatureCountChartContainer = ({
     );
 
     setDataPaging(
-      fdata.slice(0, 20).map((i) => {
+      fchart_data.slice(0, 20).map((i) => {
         return {
           cust_id: i.feature,
           value: i.sum,
@@ -209,7 +225,6 @@ const FeatureCountChartContainer = ({
 
   useEffect(() => handleGetDataChartTopFeature(), []);
 
-  // console.log('new====', dataPaging);
   return (
     <div className={styles.chartContainer}>
       <Row justify={typeChart === FEATURE_COUNT_BAR_CHART ? 'space-between' : 'end'}>
