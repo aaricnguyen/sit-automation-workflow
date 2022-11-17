@@ -35,7 +35,7 @@ export default [
               },
               {
                 path: '/global25',
-                name: 'Global',
+                name: 'Global Insights',
                 icon: '/assets/icons/manage-users.svg',
                 component: './Global25',
               },
