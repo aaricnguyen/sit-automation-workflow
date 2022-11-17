@@ -27,6 +27,7 @@ const FeatureCountChartContainer = ({
   const [dataPaging, setDataPaging] = useState([]);
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(20);
+  const [paramURL, setParamURL] = useState({});
   const {
     // SIT_PROFILE_COMPARE,
     INTERNAL_CHART,
@@ -174,18 +175,20 @@ const FeatureCountChartContainer = ({
     );
   };
 
-  let cust_segment = undefined;
-
   if (idChart2.toLowerCase() in SEGMENT_MAP) {
-    cust_segment = SEGMENT_MAP[idChart2.toLowerCase()];
+    if (paramURL.custom_segment !== SEGMENT_MAP[idChart2.toLowerCase()]) {
+      setParamURL((state) => {
+        return { ...state, custom_segment: SEGMENT_MAP[idChart2.toLowerCase()] };
+      });
+    }
   }
 
-  const handleGetDataChartTopFeature = async () => {
-    if (cust_segment === undefined) {
+  const handleGetDataChartTopFeature = async (e = {}) => {
+    if (!paramURL.custom_segment) {
       return;
     }
-    const { data } = await getExternalFeatureCountBySegment({ cust_segment: cust_segment });
-    let fdata = Object.values(data);
+    const { data } = await getExternalFeatureCountBySegment(paramURL);
+    let fdata = Object.values(data['featureCounts']);
     fdata = fdata.sort((a, b) => b.avg - a.avg);
     // console.log("data: ", fdata);
     setChartDataTopFea(
@@ -209,7 +212,7 @@ const FeatureCountChartContainer = ({
     );
   };
 
-  useEffect(() => handleGetDataChartTopFeature(), []);
+  useEffect(() => handleGetDataChartTopFeature(), [paramURL]);
 
   // console.log('new====', dataPaging);
   return (

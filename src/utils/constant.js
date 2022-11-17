@@ -5,6 +5,7 @@ export const TYPE_CHART = {
   FEATURE_CHART: 4,
   FEATURE_DETAIL_CHART: 5,
   FEATURE_BAR_CHART: 6,
+  FEATURE_COUNT_BAR_CHART: 7,
 };
 
 export const SEARCH_CASE = {

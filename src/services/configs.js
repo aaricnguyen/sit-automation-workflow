@@ -55,8 +55,22 @@ export async function getInternalCustomers(data) {
 }
 
 //  =============== get top count ===============
-export async function getExternalFeatureCountBySegment({ cust_segment = 1 }) {
-  return request(`/api/customer-feature-count-by-segment?custom_segment=${cust_segment}`, {
+export async function getExternalFeatureCountBySegment(data) {
+  return request(`/api/customer-feature-count-by-segment`, {
+    method: 'GET',
+    params: data,
+  });
+}
+
+export async function getExternalFeatureConfigBySegment(data) {
+  return request(`/api/customer-feature-config-by-segment`, {
+    method: 'GET',
+    params: data,
+  });
+}
+
+export async function handleGetDataGlobalFeature25() {
+  return request(`/api/global-top-feature-25`, {
     method: 'GET',
   });
 }

@@ -5,7 +5,10 @@ import React, { useEffect, useState } from 'react';
 import { includes, startCase } from 'lodash';
 import { connect } from 'umi';
 import axios from 'axios';
-import { getExternalFeatureCountBySegment } from '@/services/configs';
+import {
+  getExternalFeatureConfigBySegment,
+  getExternalFeatureCountBySegment,
+} from '@/services/configs';
 import RadarChartScale from '../RadarChartScale';
 import styles from './index.less';
 import { TYPE_CHART } from '@/utils/constant';
@@ -20,6 +23,7 @@ const FeatureCountChartContainer = ({
   chartScaleHistories,
   chartHistories,
   loadingChart,
+  config = {},
 }) => {
   const numberOfChart = Object.keys(TYPE_CHART).length;
   const [typeDisplay, setTypeDisplay] = useState('top20');
@@ -27,6 +31,7 @@ const FeatureCountChartContainer = ({
   const [dataPaging, setDataPaging] = useState([]);
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(20);
+  const [paramURL, setParamURL] = useState({});
   const {
     // SIT_PROFILE_COMPARE,
     INTERNAL_CHART,
@@ -171,17 +176,27 @@ const FeatureCountChartContainer = ({
     );
   };
 
-  let cust_segment = undefined;
-
   if (idChart2.toLowerCase() in SEGMENT_MAP) {
-    cust_segment = SEGMENT_MAP[idChart2.toLowerCase()];
+    if (paramURL.custom_segment !== SEGMENT_MAP[idChart2.toLowerCase()]) {
+      setParamURL((state) => {
+        return { ...state, custom_segment: SEGMENT_MAP[idChart2.toLowerCase()] };
+      });
+    }
   }
 
   const handleGetDataChartTopFeature = async () => {
-    if (cust_segment === undefined) {
+    if (!paramURL.custom_segment) {
       return;
     }
-    const { data } = await getExternalFeatureCountBySegment({ cust_segment: cust_segment });
+    let handleAPIURL = async () => {};
+    const { isexternalCustomersConfig } = config;
+
+    if (!isexternalCustomersConfig) {
+      handleAPIURL = getExternalFeatureCountBySegment;
+    } else {
+      handleAPIURL = getExternalFeatureConfigBySegment;
+    }
+    const { data } = await handleAPIURL(paramURL);
     let fdata = data['categories'];
     let totalConfigs = [];
     let chart_data = {};
@@ -223,17 +238,35 @@ const FeatureCountChartContainer = ({
     );
   };
 
-  useEffect(() => handleGetDataChartTopFeature(), []);
+  const handleChangeParamURL = (valueObj) => {
+    setParamURL((state) => {
+      return { ...state, ...valueObj };
+    });
+  };
+  useEffect(() => handleGetDataChartTopFeature(), [paramURL]);
 
   return (
     <div className={styles.chartContainer}>
-      <Row justify={typeChart === FEATURE_COUNT_BAR_CHART ? 'space-between' : 'end'}>
+      <Row
+        justify={typeChart === FEATURE_COUNT_BAR_CHART ? 'space-between' : 'end'}
+        className={styles.dropdownLeft}
+      >
         {typeChart === FEATURE_COUNT_BAR_CHART && (
           <Select onChange={(e) => setTypeDisplay(e)} defaultValue={typeDisplay}>
             <Select.Option value="top20">Top 20</Select.Option>
             <Select.Option value="all">All</Select.Option>
           </Select>
         )}
+      </Row>
+      <Row className={styles.dropdownRight}>
+        <Select defaultValue={'All'} onChange={(e) => handleChangeParamURL({ sw: e })}>
+          <Select.Option value="">All</Select.Option>
+          <Select.Option value="92">9200</Select.Option>
+          <Select.Option value="93">9300</Select.Option>
+          <Select.Option value="94">9400</Select.Option>
+          <Select.Option value="95">9500</Select.Option>
+          <Select.Option value="96">9600</Select.Option>
+        </Select>
       </Row>
       {loadingChart ? <PageLoading /> : <>{_renderChart()}</>}
     </div>

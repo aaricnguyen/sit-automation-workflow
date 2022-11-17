@@ -100,13 +100,15 @@ const BasicLayout = (props) => {
         }
         if (
           [
+            '/global25',
             '/upload-config',
             '/automation-workflow',
             '/dashboard',
             '/admin/upload-template',
           ].includes(menuItemProps.path)
-        )
-          return <Link to={menuItemProps.path}>{defaultDom}</Link>;
+        ) {
+        }
+        return <Link to={menuItemProps.path}>{defaultDom}</Link>;
         return <div>{defaultDom}</div>;
       }}
       menuDataRender={menuDataRender}

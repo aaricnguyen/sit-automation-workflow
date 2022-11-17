@@ -44,6 +44,21 @@ const Dashboard = ({ loading, dispatch, typeChart, id, chartHistories }) => {
                 {/* {typeChart === 2 && <FeatureChartContainer />} */}
                 {typeChart === 2 && <FeatureCountChartContainer />}
                 {typeChart === 2 && <FeatureScaleChartContainer />}
+                {typeChart === 2 && (
+                  <FeatureScaleChartContainer
+                    config={{
+                      isexternalCustomersConfig: true,
+                    }}
+                  />
+                )}
+                {typeChart === 2 && (
+                  <FeatureCountChartContainer
+                    config={{
+                      isexternalCustomersConfig: true,
+                    }}
+                  />
+                )}
+
                 {typeChart >= 3 && <ScaleChartContainer />}
               </div>
 

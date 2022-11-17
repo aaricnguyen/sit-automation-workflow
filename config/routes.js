@@ -34,6 +34,12 @@ export default [
                 component: './Dashboard',
               },
               {
+                path: '/global25',
+                name: 'Global',
+                icon: '/assets/icons/manage-users.svg',
+                component: './Global25',
+              },
+              {
                 path: '/upload-config',
                 name: 'Upload configuration file',
                 icon: '/assets/icons/add-device.svg',
@@ -65,7 +71,7 @@ export default [
                 routes: [
                   {
                     path: '/admin/upload-template',
-                    name: 'Upload Template Insight',          
+                    name: 'Upload Template Insight',
                     component: './Admin/UploadTemplate',
                   },
                 ],

@@ -17,6 +17,7 @@ export default function RadarChartScaleItem({
   idChart3,
   setId = () => {},
   keyX = 'category',
+  onClick = () => {},
 }) {
   console.log(chartScaleData);
   return (
@@ -24,8 +25,8 @@ export default function RadarChartScaleItem({
       <ResponsiveContainer width="100%" height={450}>
         <RadarChart
           onClick={(props) => {
-            if (props) {
-              setId(props.activeLabel);
+            if (onClick) {
+              onClick(props);
             }
           }}
           margin={{ bottom: '-25px' }}

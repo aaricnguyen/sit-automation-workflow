@@ -1,13 +1,19 @@
 import BarChartScale from '@/components/BarChartScale';
 import { TYPE_CHART } from '@/utils/constant';
 import { PageLoading } from '@ant-design/pro-layout';
-import { Row } from 'antd';
+import { Pagination, Row, Select } from 'antd';
 import { startCase } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import RadarChartScaleAvg from '../RadarChartScaleAvg';
 import styles from './index.less';
-import { getExternalFeatureCountBySegment } from '@/services/configs';
+import {
+  getExternalFeatureConfigBySegment,
+  getExternalFeatureCountBySegment,
+} from '@/services/configs';
+import FeatureCountAvgChartContainer from '../FeatureCountAvgChartContainer';
+import BarChartItem from '../BarChartFeatureAvg';
+import BarChartFeatureCount from '@/components/BarChartFeatureCount';
 
 const FeatureScaleChartContainer = ({
   dispatch,
@@ -21,10 +27,19 @@ const FeatureScaleChartContainer = ({
   isUploadPage = false,
   externalCustomerId,
   internalCustomerId,
+  config = {},
 }) => {
   const numberOfChart = 5;
   const { CATEGORY_CHART, FEATURE_CHART, FEATURE_DETAIL_CHART, INTERNAL_CHART } = TYPE_CHART;
   const [chartDataFeaCat, setChartDataFeaCat] = useState([]);
+  const [chartDataFeaCount, setChartDataFeaCount] = useState([]);
+  const [dataPaging, setDataPaging] = useState([]);
+  const [typeChartSwitch, setTypeChart] = useState('feaCat');
+  const [typeDisplay, setTypeDisplay] = useState('20');
+  const [perPage, setPerPage] = useState(20);
+  const [page, setPage] = useState(1);
+  const [paramURL, setParamURL] = useState({});
+
   const category = chartHistories.find((item) => item.typeChartScale === FEATURE_CHART)?.id;
 
   const setId = (_id = '') => {
@@ -65,17 +80,7 @@ const FeatureScaleChartContainer = ({
   };
 
   const handlePrevious = () => {
-    if (typeChartScale > 1 && typeChartScale <= numberOfChart) {
-      const historyChart = chartScaleHistories.find(
-        (item) => item.typeChartScale === typeChartScale - 1,
-      );
-      dispatch({
-        type: 'config/save',
-        payload: {
-          typeChartScale: typeChartScale - 1,
-        },
-      });
-    }
+    setTypeChart('feaCat');
   };
 
   const getYLabelOfChart = () => {
@@ -116,6 +121,11 @@ const FeatureScaleChartContainer = ({
         return `${startCase(internalCustomerId)} - ${idChart3} Scale Comparision`;
     }
   };
+  const handleChartScaleAvg = (value) => {
+    setTypeChart('feaCount');
+    const activeLabel = value.activeLabel;
+    // setChartDataFeaCount(value.activeLabel)
+  };
 
   const _renderChart = () => {
     if (chartDataFeaCat.length === 0 && typeChartScale !== 4) {
@@ -137,27 +147,71 @@ const FeatureScaleChartContainer = ({
     //   );
     // }
     return (
-      <RadarChartScaleAvg
-        setId={setId}
-        keyX={keyOfChart()}
-        idChart3={idChart2}
-        idChart2={internalCustomerId}
-        chartScaleData={chartDataFeaCat}
-      />
+      <>
+        {typeChartSwitch === 'feaCat' && (
+          <RadarChartScaleAvg
+            key="feaCat"
+            chartScaleData={chartDataFeaCat}
+            idChart2={idChart2}
+            onClick={handleChartScaleAvg}
+          />
+        )}
+        {/* {typeChartSwitch === 'feaCount' && <BarChartItem yLabel='Feature Count Avg Number' keyX={'cust_id'} key='feaCount' chartData={chartDataFeaCount} idChart2={idChart2} onClick={handleChartScaleAvg} />
+        }  */}
+        {typeChartSwitch === 'feaCount' && dataPaging.length > 0 && (
+          <BarChartItem
+            yLabel={'Feature Sum Number'}
+            keyX={'cust_id'}
+            setId={setId}
+            chartData={typeDisplay === 'all' ? dataPaging : chartDataFeaCount.slice(0, 20)}
+            typeChart={7}
+            // totalConfigs={totalConfigs}
+            key={dataPaging.length}
+            // domain={getDomain()}
+          />
+        )}
+        {typeChartSwitch === 'feaCount' && typeDisplay === 'all' && (
+          <Pagination
+            className={styles.pagination}
+            showSizeChanger={false}
+            responsive={true}
+            total={chartDataFeaCount.length}
+            showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
+            defaultPageSize={perPage}
+            defaultCurrent={page}
+            // showQuickJumper
+            onChange={(current) => {
+              setPage(current);
+              setDataPaging(
+                chartDataFeaCount.slice((current - 1) * perPage, (current - 1) * perPage + perPage),
+              );
+            }}
+          />
+        )}
+      </>
     );
   };
 
-  let cust_segment = undefined;
-
   if (idChart2.toLowerCase() in SEGMENT_MAP) {
-    cust_segment = SEGMENT_MAP[idChart2.toLowerCase()];
+    if (paramURL.custom_segment !== SEGMENT_MAP[idChart2.toLowerCase()]) {
+      setParamURL((state) => {
+        return { ...state, custom_segment: SEGMENT_MAP[idChart2.toLowerCase()] };
+      });
+    }
   }
 
-  const handleGetDataChartFeatureCat = async () => {
-    if (cust_segment === undefined) {
+  const handleGetDataChartFeatureCat = async (e = {}) => {
+    if (!paramURL.custom_segment) {
       return;
     }
-    const { data } = await getExternalFeatureCountBySegment({ cust_segment: cust_segment });
+    const { isexternalCustomersConfig } = config;
+    let handleAPIURL = async () => {};
+    if (!isexternalCustomersConfig) {
+      handleAPIURL = getExternalFeatureCountBySegment;
+    } else {
+      handleAPIURL = getExternalFeatureConfigBySegment;
+    }
+    const { data } = await handleAPIURL(paramURL);
     let fdata = data['categories'];
     let chart_data = {};
 
@@ -182,9 +236,36 @@ const FeatureScaleChartContainer = ({
         };
       }),
     );
-  };
 
-  useEffect(() => handleGetDataChartFeatureCat(), []);
+    let fcdata = Object.values(data['featureCounts']);
+    fcdata = fcdata.sort((a, b) => b.avg - a.avg);
+    // console.log("data: ", fdata);
+    setChartDataFeaCount(
+      fcdata.map((i) => {
+        return {
+          cust_id: i.feature,
+          value_max: i.max,
+          value: i.avg,
+        };
+      }),
+    );
+
+    setDataPaging(
+      fcdata.slice(0, 20).map((i) => {
+        return {
+          cust_id: i.feature,
+          value_max: i.max,
+          value: i.avg,
+        };
+      }),
+    );
+  };
+  const handleChangeParamURL = (valueObj) => {
+    setParamURL((state) => {
+      return { ...state, ...valueObj };
+    });
+  };
+  useEffect(() => handleGetDataChartFeatureCat(), [paramURL]);
 
   return (
     <div className={styles.chartContainer}>
@@ -192,11 +273,29 @@ const FeatureScaleChartContainer = ({
         <div className={styles.chartContainer__actions}>
           <span
             onClick={() => handlePrevious()}
-            className={typeChartScale <= 1 && styles.chartContainer__actions__disabled}
+            className={typeChartSwitch === 'feaCat' && styles.chartContainer__actions__disabled}
           >
             Previous
           </span>
         </div>
+      </Row>
+      <Row className={styles.dropdownLeft}>
+        {typeChartSwitch !== 'feaCat' && (
+          <Select onChange={(e) => setTypeDisplay(e)} defaultValue={typeDisplay}>
+            <Select.Option value="top20">Top 20</Select.Option>
+            <Select.Option value="all">All</Select.Option>
+          </Select>
+        )}
+      </Row>
+      <Row className={styles.dropdownRight}>
+        <Select defaultValue={'All'} onChange={(e) => handleChangeParamURL({ sw: e })}>
+          <Select.Option value="">All</Select.Option>
+          <Select.Option value="92">9200</Select.Option>
+          <Select.Option value="93">9300</Select.Option>
+          <Select.Option value="94">9400</Select.Option>
+          <Select.Option value="95">9500</Select.Option>
+          <Select.Option value="96">9600</Select.Option>
+        </Select>
       </Row>
       {loadingChart ? (
         <PageLoading />

@@ -85,7 +85,7 @@ export default function BarChartItem({
             />
           </XAxis>
           <YAxis
-            domain={domain}
+            // domain={domain}
             tickLine={false}
             axisLine={false}
             label={{

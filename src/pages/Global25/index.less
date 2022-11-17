@@ -1,0 +1,34 @@
+@import '~antd/es/style/themes/default.less';
+
+.dashboardContainer {
+  .check-icon {
+    width: 15px;
+    height: 15px;
+  }
+
+  .mainContentWrapper {
+    display: flex;
+    gap: 20px;
+    & > div:first-child {
+      width: 60%;
+      min-height: 650px;
+    }
+
+    & > div:last-child {
+      width: 40%;
+      max-height: 650px;
+    }
+  }
+}
+
+@media screen and (max-width: @screen-lg) {
+  .dashboardContainer {
+    .mainContentWrapper {
+      flex-wrap: wrap;
+      & > div:first-child,
+      & > div:last-child {
+        width: 100% !important;
+      }
+    }
+  }
+}
