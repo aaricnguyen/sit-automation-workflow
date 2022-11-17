@@ -8,7 +8,7 @@ const proSettings = {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'Pro-Active Deployment Health Checker',
+  title: 'Deployment Insights',
   pwa: false,
   iconfontUrl: '',
 };

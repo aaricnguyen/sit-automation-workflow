@@ -120,7 +120,7 @@ const BasicLayout = (props) => {
       // headerContentRender={({ breadcrumb, matchMenuKeys }) => {
       headerContentRender={() => {
         // return <div className="leftHeader heading-4">{breadcrumb[matchMenuKeys[0]]?.name}</div>;
-        return <div className="leftHeader heading-4">Pro-Active Deployment Health Checker</div>;
+        return <div className="leftHeader heading-4">Deployment Insights</div>;
       }}
       rightContentRender={() => <RightContent />}
       postMenuData={(menuData) => {

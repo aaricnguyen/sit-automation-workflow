@@ -24,7 +24,7 @@ const AuthLayout = ({ children }) => {
               </div>
               <div className={styles.contentLeft__logo}>
                 <img src={Logo} alt="logo" />
-                <div className={styles.contentLeft__logo__text}>Pro-Active Deployment Health Checker</div>
+                <div className={styles.contentLeft__logo__text}>Deployment Insights</div>
               </div>
               <div className={styles.contentLeft__text}>
                 <div className="heading-1">Tomorrow Starts Here!</div>

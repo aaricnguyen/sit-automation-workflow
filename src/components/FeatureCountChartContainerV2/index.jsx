@@ -40,12 +40,10 @@ const FeatureCountChartContainer = ({ config = {} }) => {
     }
     return (
       <>
-        <div className={styles.chartContainer__title}>{`${startCase(
-          'global',
-        )} - Top Feature Chart`}</div>
+        <div className={styles.chartContainer__title}>{`Top Features`}</div>
         {dataPaging.length > 0 && (
           <BarChartFeatureCount
-            yLabel={'Feature Sum Number'}
+            yLabel={'Percentage Number'}
             keyX={'cust_id'}
             chartData={typeDisplay === 'all' ? dataPaging : chartDataTopFea.slice(0, 20)}
             typeChart={7}
@@ -103,7 +101,7 @@ const FeatureCountChartContainer = ({ config = {} }) => {
         value: fdata[i],
       };
     });
-    console.log('test', test);
+    // console.log('test', test);
     setChartDataTopFea(
       fdataArr.map((i) => {
         return {
