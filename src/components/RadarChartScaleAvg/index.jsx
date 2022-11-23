@@ -58,7 +58,7 @@ export default function RadarChartScaleItem({
             formatter={(value, key) => {
               if (key.includes('No Match')) return [value, key];
               if (key.includes('Internal')) return [value, `Internal Customer`];
-              return [value, `Total config`];
+              return [value, `Total feature count`];
             }}
             labelFormatter={(e) => startCase(e)}
           />

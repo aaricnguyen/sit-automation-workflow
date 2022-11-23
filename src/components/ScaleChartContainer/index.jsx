@@ -89,6 +89,8 @@ const ScaleChartContainer = ({
 
   const keyOfChart = () => {
     switch (typeChartScale) {
+      case 2:
+        return 'category';
       case 3:
         return 'category';
       default:

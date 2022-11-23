@@ -43,7 +43,7 @@ export default function RadarChartItem({
             fill="#BD10E0"
             fillOpacity={0}
           />
-          {/* <Radar
+          <Radar
             name={`Internal Customer: ${idChart2}`}
             dataKey="internalValue"
             stroke="#00A0D1"
@@ -58,7 +58,7 @@ export default function RadarChartItem({
             strokeWidth="2"
             fill="red"
             fillOpacity={0.5}
-          /> */}
+          />
           <Tooltip
             formatter={(value, key) => {
               if (key.includes('No Match')) return [value, key];
