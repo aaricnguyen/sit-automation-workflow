@@ -11,9 +11,8 @@ import {
   getExternalFeatureConfigBySegment,
   getExternalFeatureCountBySegment,
 } from '@/services/configs';
-import FeatureCountAvgChartContainer from '../FeatureCountAvgChartContainer';
-import BarChartItem from '../BarChartFeatureAvg';
 import BarChartFeatureCount from '@/components/BarChartFeatureCount';
+import BarChartScaleItem from '@/components/BarChartScale';
 
 const FeatureScaleChartContainer = ({
   dispatch,
@@ -39,8 +38,9 @@ const FeatureScaleChartContainer = ({
   const [perPage, setPerPage] = useState(20);
   const [page, setPage] = useState(1);
   const [paramURL, setParamURL] = useState({});
+  const [categoriesList, setCategoriesList] = useState([]);
 
-  const category = chartHistories.find((item) => item.typeChartScale === FEATURE_CHART)?.id;
+  const [category, setCategory] = useState('');
 
   const setId = (_id = '') => {
     if (typeChartScale === numberOfChart) return;
@@ -132,21 +132,21 @@ const FeatureScaleChartContainer = ({
     if (chartDataFeaCat.length === 0 && typeChartScale !== 4) {
       return <div className={styles.noData}>No data to display</div>;
     }
-    console.log(typeChartScale);
-    // if (typeChartScale === 2) {
-    //   return (
-    //     <>
-    //       <BarChartScale
-    //         yLabel={getYLabelOfChart()}
-    //         keyX={keyOfChart()}
-    //         setId={setId}
-    //         chartScaleData={chartDataFeaCat}
-    //         typeChartScale={typeChartScale}
-    //         idChart2={internalCustomerId}
-    //       />
-    //     </>
-    //   );
-    // }
+    const categoryFilter = categoriesList.find((item) => item.scaleFeatureType === category) || {};
+    const templateFilterCount = categoryFilter.scaleFeatures || '';
+    let max = 0;
+    const chartDataFeaCountFilter = chartDataFeaCount.filter((item) => {
+      if (max < item.value_max) {
+        max = item.value_max;
+      }
+      if (!templateFilterCount) {
+        return true;
+      }
+      const { cust_id = '' } = item;
+      return templateFilterCount.includes(cust_id);
+    });
+    const lengthMax = max.toString().length;
+    max = Math.ceil(max / Math.pow(10, lengthMax - 1)) * Math.pow(10, lengthMax - 1);
     return (
       <>
         {typeChartSwitch === 'feaCat' && (
@@ -159,37 +159,48 @@ const FeatureScaleChartContainer = ({
         )}
         {/* {typeChartSwitch === 'feaCount' && <BarChartItem yLabel='Feature Count Avg Number' keyX={'cust_id'} key='feaCount' chartData={chartDataFeaCount} idChart2={idChart2} onClick={handleChartScaleAvg} />
         }  */}
-        {typeChartSwitch === 'feaCount' && dataPaging.length > 0 && (
-          <BarChartItem
-            yLabel={'Feature Sum Number'}
+        {typeChartSwitch === 'feaCount' && chartDataFeaCountFilter.length > 0 && (
+          <BarChartScaleItem
+            yLabel={'Feature Count'}
             keyX={'cust_id'}
+            key1="value"
+            key2="value_max"
+            name1="Avg Count"
+            name2="Max Count"
             setId={setId}
-            chartData={typeDisplay === 'all' ? dataPaging : chartDataFeaCount.slice(0, 20)}
+            chartScaleData={chartDataFeaCountFilter.filter((item, index) => {
+              const min = (page - 1) * perPage;
+              const max = min + perPage;
+              if (index >= min && index < max) {
+                return true;
+              }
+            })}
             typeChart={7}
             // totalConfigs={totalConfigs}
-            key={dataPaging.length}
-            // domain={getDomain()}
+            key={chartDataFeaCountFilter.length}
+            barSize={20}
+            maxBarSize={20}
+            domain={[0, max]}
           />
         )}
-        {typeChartSwitch === 'feaCount' && typeDisplay === 'all' && chartDataFeaCount.length > 0 && (
-          <Pagination
-            className={styles.pagination}
-            showSizeChanger={false}
-            responsive={true}
-            total={chartDataFeaCount.length}
-            showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
-            defaultPageSize={perPage}
-            defaultCurrent={page}
-            // showQuickJumper
-            key={page}
-            onChange={(current) => {
-              setPage(current);
-              setDataPaging(
-                chartDataFeaCount.slice((current - 1) * perPage, (current - 1) * perPage + perPage),
-              );
-            }}
-          />
-        )}
+        {typeChartSwitch === 'feaCount' &&
+          typeDisplay === 'all' &&
+          chartDataFeaCountFilter.length > 0 && (
+            <Pagination
+              className={styles.pagination}
+              showSizeChanger={false}
+              responsive={true}
+              total={chartDataFeaCountFilter.length}
+              showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
+              defaultPageSize={perPage}
+              defaultCurrent={page}
+              // showQuickJumper
+              key={page}
+              onChange={(current) => {
+                setPage(current);
+              }}
+            />
+          )}
       </>
     );
   };
@@ -216,19 +227,14 @@ const FeatureScaleChartContainer = ({
     const { data } = await handleAPIURL(paramURL);
     let fdata = data['categories'] || {};
     let chart_data = {};
+    setCategoriesList(data['categoriesScale'] || []);
 
     let cat_list = Object.keys(fdata);
-    console.log('feature_list', cat_list);
     cat_list.forEach((category) => {
       chart_data[category] = {};
       chart_data[category]['category'] = category;
       chart_data[category]['sum'] = fdata[category].length;
     });
-
-    console.log('chart data', chart_data);
-    // console.log('total configs: ', totalConfigs)
-    // fdata = fdata.sort((a, b) => b.sum - a.sum);
-    // console.log("data: ", fdata);
     let fchart_data = Object.values(chart_data);
     setChartDataFeaCat(
       fchart_data.map((i) => {
@@ -240,7 +246,7 @@ const FeatureScaleChartContainer = ({
     );
 
     let fcdata = Object.values(data['featureCounts'] ? data['featureCounts'] : {}) || [];
-    fcdata = fcdata.sort((a, b) => b.avg - a.avg);
+    fcdata = fcdata.sort((a, b) => b.max - a.max);
     // console.log("data: ", fdata);
     setChartDataFeaCount(
       fcdata.map((i) => {
@@ -267,6 +273,10 @@ const FeatureScaleChartContainer = ({
       return { ...state, ...valueObj };
     });
     setPage(1);
+  };
+  const handleChangeCategory = (value) => {
+    setPage(1);
+    setCategory(value);
   };
   useEffect(() => handleGetDataChartFeatureCat(), [paramURL]);
 
@@ -300,6 +310,31 @@ const FeatureScaleChartContainer = ({
           <Select.Option value="96">9600</Select.Option>
         </Select>
       </Row>
+      {typeChartSwitch !== 'feaCat' && (
+        <Row className={styles.dropdownRight} style={{ marginRight: '20px' }}>
+          <Select
+            defaultValue={'Categories'}
+            onChange={handleChangeCategory}
+            style={{ width: 120, textTransform: 'capitalize' }}
+          >
+            <Select.Option key={'all'} value={''}>
+              Select All
+            </Select.Option>
+            {categoriesList.map((category) => {
+              // eslint-disable-next-line react/jsx-key
+              return (
+                <Select.Option
+                  key={category.scaleFeatureType}
+                  value={category.scaleFeatureType}
+                  style={{ textTransform: 'capitalize' }}
+                >
+                  {category.scaleFeatureType}
+                </Select.Option>
+              );
+            })}
+          </Select>
+        </Row>
+      )}
       {loadingChart ? (
         <PageLoading />
       ) : (

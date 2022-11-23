@@ -13,10 +13,18 @@ import {
 
 export default function BarChartScaleItem({
   chartScaleData = [],
+  key1,
+  key2,
+  name1,
+  name2,
+  barSize,
+  maxBarSize,
+  yLabel,
+  keyX,
+  domain = ['auto', 'auto'],
   // setId = () => {},
   // yLabel = '',
   // keyX = 'cust_id',
-  // domain = ['auto', 'auto'],
   // typeChartScale = 1,
   // idChart2 = null,
   // idChart3 = null,
@@ -40,28 +48,49 @@ export default function BarChartScaleItem({
           height={400}
           data={chartScaleData}
           margin={{
-            top: 5,
+            top: 20,
             right: 30,
             left: 20,
             bottom: 5,
           }}
+          barSize={barSize ? barSize : 'auto'}
+          maxBarSize={maxBarSize ? barSize : 'auto'}
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             height={200}
             angle={-45}
             tickLine={false}
-            dataKey="category"
+            dataKey={keyX ? keyX : 'category'}
             textAnchor={'end'}
             verticalAnchor="end"
             width={200}
             interval={0}
           />
-          <YAxis />
+          <YAxis
+            domain={domain}
+            tickLine={false}
+            axisLine={false}
+            label={{
+              value: yLabel,
+              angle: -90,
+              position: 'left',
+              offset: 0,
+              style: { textAnchor: 'middle' },
+            }}
+          />
           <Tooltip />
           <Legend />
-          <Bar name="External Custommer" dataKey="value" fill="#BD10E0" />
-          <Bar name="Internal Custommer" dataKey="internalValue" fill="#00A0D1" />
+          <Bar
+            name={name1 ? name1 : 'External Custommer'}
+            dataKey={key1 ? key1 : 'value'}
+            fill="#BD10E0"
+          />
+          <Bar
+            name={name2 ? name2 : 'Internal Custommer'}
+            dataKey={key2 ? key2 : 'internalValue'}
+            fill="#00A0D1"
+          />
         </BarChart>
       </ResponsiveContainer>
     </div>

@@ -47,6 +47,8 @@ export default function BarChartItem({
   typeChart = 1,
   idChart2 = null,
   idChart3 = null,
+  barSize,
+  maxBarSize,
 }) {
   const [width, setWidth] = React.useState(window.innerWidth);
   const handleWindowResize = () => {
@@ -71,6 +73,8 @@ export default function BarChartItem({
           width={900}
           height={400}
           data={chartData}
+          barSize={barSize ? barSize : 'auto'}
+          maxBarSize={maxBarSize ? maxBarSize : 'auto'}
         >
           <XAxis
             height={100}

@@ -2,14 +2,12 @@ import BarChartFeatureCount from '@/components/BarChartFeatureCount';
 import { PageLoading } from '@ant-design/pro-layout';
 import { Pagination, Row, Select } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { includes, startCase } from 'lodash';
+import { startCase } from 'lodash';
 import { connect } from 'umi';
-import axios from 'axios';
 import {
   getExternalFeatureConfigBySegment,
   getExternalFeatureCountBySegment,
 } from '@/services/configs';
-import RadarChartScale from '../RadarChartScale';
 import styles from './index.less';
 import { TYPE_CHART } from '@/utils/constant';
 import HorizontalBarChartFeatureCount from '../HorizontalBarChartFeatureCount';
@@ -87,29 +85,34 @@ const HorizontalFeatureCountChartContainer = ({
     }
   };
   const _renderChart = () => {
-    if (chartDataTopFea.length === 0) {
+    const chartDataTopFeaFilter = chartDataTopFea.filter((item) => item.cust_id.includes(category));
+    if (chartDataTopFeaFilter.length === 0) {
       return <div className={styles.noData}>No data to display</div>;
     }
     return (
       <>
         <div className={styles.chartContainer__title}>{_renderTitleChart()}</div>
-        {dataPaging.length > 0 && (
+        {chartDataTopFeaFilter.length > 0 && (
           <HorizontalBarChartFeatureCount
             yLabel={'Feature Sum Number'}
             keyX={'cust_id'}
             setId={setId}
-            chartData={typeDisplay === 'all' ? dataPaging : chartDataTopFea.slice(0, 20)}
+            chartData={chartDataTopFeaFilter.filter((item, index) => {
+              const min = (page - 1) * perPage;
+              const max = min + perPage;
+              if (index >= min && index < max) {
+                return true;
+              }
+            })}
             typeChart={7}
-            // totalConfigs={totalConfigs}
-            key={dataPaging.length}
           />
         )}
-        {typeDisplay === 'all' && chartDataTopFea.length > 0 && (
+        {typeDisplay === 'all' && chartDataTopFeaFilter.length > 0 && (
           <Pagination
             className={styles.pagination}
             showSizeChanger={false}
             responsive={true}
-            total={chartDataTopFea.length}
+            total={chartDataTopFeaFilter.length}
             showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
             defaultPageSize={perPage}
             defaultCurrent={page}
@@ -117,9 +120,6 @@ const HorizontalFeatureCountChartContainer = ({
             key={page}
             onChange={(current) => {
               setPage(current);
-              setDataPaging(
-                chartDataTopFea.slice((current - 1) * perPage, (current - 1) * perPage + perPage),
-              );
             }}
           />
         )}
@@ -169,12 +169,7 @@ const HorizontalFeatureCountChartContainer = ({
       );
     });
 
-    let fchart_data = Object.values(chart_data)
-      .sort((a, b) => b.percent - a.percent)
-      .filter((item) => {
-        const { feature = '' } = item;
-        return feature.includes(category);
-      });
+    let fchart_data = Object.values(chart_data).sort((a, b) => b.percent - a.percent);
 
     setChartDataTopFea(
       fchart_data.map((i) => {
@@ -184,9 +179,11 @@ const HorizontalFeatureCountChartContainer = ({
         };
       }),
     );
-
+    const fchart_dataConvert = fchart_data.filter((i) => {
+      return i.feature.includes(category);
+    });
     setDataPaging(
-      fchart_data.slice(0, 20).map((i) => {
+      fchart_dataConvert.slice(0, 20).map((i) => {
         return {
           cust_id: i.feature,
           value: i.percent,
@@ -206,7 +203,7 @@ const HorizontalFeatureCountChartContainer = ({
     setPage(1);
     setCategory(value);
   };
-  useEffect(() => handleGetDataChartTopFeature(), [paramURL, category]);
+  useEffect(() => handleGetDataChartTopFeature(), [paramURL]);
   return (
     <div className={styles.chartContainer}>
       <Row
@@ -237,7 +234,6 @@ const HorizontalFeatureCountChartContainer = ({
           style={{ width: 120, textTransform: 'capitalize' }}
         >
           <Select.Option key={'all'} value={''}>
-            {' '}
             Select All
           </Select.Option>
           ;
