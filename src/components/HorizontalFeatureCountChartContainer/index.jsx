@@ -12,9 +12,10 @@ import {
 import RadarChartScale from '../RadarChartScale';
 import styles from './index.less';
 import { TYPE_CHART } from '@/utils/constant';
+import HorizontalBarChartFeatureCount from '../HorizontalBarChartFeatureCount';
 
 let typeChart = 7;
-const FeatureCountChartContainer = ({
+const HorizontalFeatureCountChartContainer = ({
   chartScaleData,
   dispatch,
   typeChartScale,
@@ -32,14 +33,11 @@ const FeatureCountChartContainer = ({
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(20);
   const [paramURL, setParamURL] = useState({});
-  const {
-    // SIT_PROFILE_COMPARE,
-    INTERNAL_CHART,
-    CATEGORY_CHART,
-    FEATURE_CHART,
-    FEATURE_DETAIL_CHART,
-    FEATURE_COUNT_BAR_CHART,
-  } = TYPE_CHART;
+  const [categoriesList, setCategoriesList] = useState([]);
+  const [category, setCategory] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const { INTERNAL_CHART, FEATURE_COUNT_BAR_CHART } = TYPE_CHART;
 
   const SEGMENT_MAP = {
     retail: 1,
@@ -54,20 +52,6 @@ const FeatureCountChartContainer = ({
   };
 
   const idChart2 = chartHistories.find((item) => item.typeChart === INTERNAL_CHART)?.id;
-  const idChart3 = chartHistories.find((item) => item.typeChart === CATEGORY_CHART)?.id;
-  const category = chartHistories.find((item) => item.typeChart === FEATURE_CHART)?.id;
-
-  // console.log("chart id: ", idChart2)
-  // console.log("segment map: ", SEGMENT_MAP)
-
-  // useEffect(() => {
-  //   let data = chartScaleHistories.find((item) => item.typeChartScale === typeChartScale);
-
-  //   dispatch({
-  //     type: 'dashboard/getScaleDataChart',
-  //     payload: data,
-  //   });
-  // }, [idScale, typeChartScale]);
 
   const setId = (_id = '') => {
     if (typeChartScale === numberOfChart) return;
@@ -90,39 +74,6 @@ const FeatureCountChartContainer = ({
     });
   };
 
-  const handlePrevious = () => {
-    if (typeChartScale > 1 && typeChartScale <= numberOfChart) {
-      const historyChart = chartScaleHistories.find(
-        (item) => item.typeChartScale === typeChartScale - 1,
-      );
-      dispatch({
-        type: 'dashboard/save',
-        payload: historyChart,
-      });
-    }
-  };
-
-  const getYLabelOfChart = () => {
-    switch (typeChartScale) {
-      case 2:
-        if (idScale !== 'others') return 'Match percentage (%)';
-        return 'Number of configuration enabled';
-      case 3:
-        return 'Number of configuration enabled';
-      default:
-        return 'Number of customers';
-    }
-  };
-
-  const keyOfChart = () => {
-    switch (typeChartScale) {
-      case 3:
-        return 'category';
-      default:
-        return 'cust_id';
-    }
-  };
-
   const _renderTitleChart = () => {
     const { isexternalCustomersConfig } = config;
 
@@ -143,7 +94,7 @@ const FeatureCountChartContainer = ({
       <>
         <div className={styles.chartContainer__title}>{_renderTitleChart()}</div>
         {dataPaging.length > 0 && (
-          <BarChartFeatureCount
+          <HorizontalBarChartFeatureCount
             yLabel={'Feature Sum Number'}
             keyX={'cust_id'}
             setId={setId}
@@ -151,7 +102,6 @@ const FeatureCountChartContainer = ({
             typeChart={7}
             // totalConfigs={totalConfigs}
             key={dataPaging.length}
-            // domain={getDomain()}
           />
         )}
         {typeDisplay === 'all' && chartDataTopFea.length > 0 && (
@@ -186,6 +136,7 @@ const FeatureCountChartContainer = ({
   }
 
   const handleGetDataChartTopFeature = async () => {
+    setLoading(true);
     if (!paramURL.custom_segment) {
       return;
     }
@@ -201,13 +152,14 @@ const FeatureCountChartContainer = ({
     let fdata = data['categories'] || {};
     let totalConfigs = [];
     let chart_data = {};
+    setCategoriesList(data['CATEGORIES'] || []);
+
     Object.values(fdata).forEach((element) => {
       totalConfigs.push(...element);
     });
 
     let feature_set = new Set(totalConfigs);
     let feature_list = [...feature_set];
-    console.log('feature_list', feature_list);
     feature_list.forEach((feature) => {
       chart_data[feature] = {};
       chart_data[feature]['feature'] = feature;
@@ -217,12 +169,12 @@ const FeatureCountChartContainer = ({
       );
     });
 
-    console.log('chart data', chart_data);
-    console.log("ata['count']", data['count']);
-    // console.log('total configs: ', totalConfigs)
-    // fdata = fdata.sort((a, b) => b.sum - a.sum);
-    // console.log("data: ", fdata);
-    let fchart_data = Object.values(chart_data).sort((a, b) => b.percent - a.percent);
+    let fchart_data = Object.values(chart_data)
+      .sort((a, b) => b.percent - a.percent)
+      .filter((item) => {
+        const { feature = '' } = item;
+        return feature.includes(category);
+      });
 
     setChartDataTopFea(
       fchart_data.map((i) => {
@@ -241,6 +193,7 @@ const FeatureCountChartContainer = ({
         };
       }),
     );
+    setLoading(false);
   };
 
   const handleChangeParamURL = (valueObj) => {
@@ -249,8 +202,11 @@ const FeatureCountChartContainer = ({
     });
     setPage(1);
   };
-  useEffect(() => handleGetDataChartTopFeature(), [paramURL]);
-
+  const handleChangeCategory = (value) => {
+    setPage(1);
+    setCategory(value);
+  };
+  useEffect(() => handleGetDataChartTopFeature(), [paramURL, category]);
   return (
     <div className={styles.chartContainer}>
       <Row
@@ -274,7 +230,32 @@ const FeatureCountChartContainer = ({
           <Select.Option value="96">9600</Select.Option>
         </Select>
       </Row>
-      {loadingChart ? <PageLoading /> : <>{_renderChart()}</>}
+      <Row className={styles.dropdownRight} style={{ marginRight: '20px' }}>
+        <Select
+          defaultValue={'Categories'}
+          onChange={handleChangeCategory}
+          style={{ width: 120, textTransform: 'capitalize' }}
+        >
+          <Select.Option key={'all'} value={''}>
+            {' '}
+            Select All
+          </Select.Option>
+          ;
+          {categoriesList.map((category) => {
+            // eslint-disable-next-line react/jsx-key
+            return (
+              <Select.Option
+                key={category.key}
+                value={category.key}
+                style={{ textTransform: 'capitalize' }}
+              >
+                {category.value}
+              </Select.Option>
+            );
+          })}
+        </Select>
+      </Row>
+      {loadingChart || loading ? <PageLoading /> : <>{_renderChart()}</>}
     </div>
   );
 };
@@ -299,4 +280,4 @@ export default connect(
     chartScaleHistories,
     loadingChart: loading.effects['dashboard/getDataChart'],
   }),
-)(React.memo(FeatureCountChartContainer));
+)(React.memo(HorizontalFeatureCountChartContainer));

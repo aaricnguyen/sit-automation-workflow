@@ -110,17 +110,18 @@ const FeatureScaleChartContainer = ({
   };
 
   const _renderTitleChart = () => {
-    switch (typeChartScale) {
-      case 1:
-        return `${startCase(internalCustomerId)} - ${externalCustomerId} - Scale Comparision`;
-      case 2:
-        return `${startCase(
-          internalCustomerId,
-        )} - ${externalCustomerId} - ${idScale} - Scale Comparison`;
+    const { isexternalCustomersConfig } = config;
+
+    switch (isexternalCustomersConfig) {
+      case true:
+        return `${startCase(idChart2)} - Top Feature Count - Profile Based`;
+      case false:
+        return `${startCase(idChart2)} - Top Feature Count - Customer Based`;
       default:
-        return `${startCase(internalCustomerId)} - ${idChart3} Scale Comparision`;
+        return `${startCase(idChart2)} - Top Feature Count - Customer Based`;
     }
   };
+
   const handleChartScaleAvg = (value) => {
     setTypeChart('feaCount');
     const activeLabel = value.activeLabel;
@@ -170,7 +171,7 @@ const FeatureScaleChartContainer = ({
             // domain={getDomain()}
           />
         )}
-        {typeChartSwitch === 'feaCount' && typeDisplay === 'all' && (
+        {typeChartSwitch === 'feaCount' && typeDisplay === 'all' && chartDataFeaCount.length > 0 && (
           <Pagination
             className={styles.pagination}
             showSizeChanger={false}
@@ -180,6 +181,7 @@ const FeatureScaleChartContainer = ({
             defaultPageSize={perPage}
             defaultCurrent={page}
             // showQuickJumper
+            key={page}
             onChange={(current) => {
               setPage(current);
               setDataPaging(
@@ -212,7 +214,7 @@ const FeatureScaleChartContainer = ({
       handleAPIURL = getExternalFeatureConfigBySegment;
     }
     const { data } = await handleAPIURL(paramURL);
-    let fdata = data['categories'];
+    let fdata = data['categories'] || {};
     let chart_data = {};
 
     let cat_list = Object.keys(fdata);
@@ -237,7 +239,7 @@ const FeatureScaleChartContainer = ({
       }),
     );
 
-    let fcdata = Object.values(data['featureCounts']);
+    let fcdata = Object.values(data['featureCounts'] ? data['featureCounts'] : {}) || [];
     fcdata = fcdata.sort((a, b) => b.avg - a.avg);
     // console.log("data: ", fdata);
     setChartDataFeaCount(
@@ -264,6 +266,7 @@ const FeatureScaleChartContainer = ({
     setParamURL((state) => {
       return { ...state, ...valueObj };
     });
+    setPage(1);
   };
   useEffect(() => handleGetDataChartFeatureCat(), [paramURL]);
 
@@ -301,9 +304,7 @@ const FeatureScaleChartContainer = ({
         <PageLoading />
       ) : (
         <>
-          <div className={styles.chartContainer__title}>{`${startCase(
-            idChart2,
-          )} - Category Chart`}</div>
+          <div className={styles.chartContainer__title}>{_renderTitleChart()}</div>
           {_renderChart()}
         </>
       )}

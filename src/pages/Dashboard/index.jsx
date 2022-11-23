@@ -10,6 +10,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import styles from './index.less';
+import HorizontalFeatureCountChartContainer from '@/components/HorizontalFeatureCountChartContainer';
 
 const Dashboard = ({ loading, dispatch, typeChart, id, chartHistories }) => {
   const [chartId, setChartId] = useState('all');
@@ -42,17 +43,17 @@ const Dashboard = ({ loading, dispatch, typeChart, id, chartHistories }) => {
               <div className={styles.ChartContainer}>
                 <ChartContainer />
                 {/* {typeChart === 2 && <FeatureChartContainer />} */}
-                {typeChart === 2 && <FeatureCountChartContainer />}
-                {typeChart === 2 && <FeatureScaleChartContainer />}
+                {/* {typeChart === 2 && <FeatureCountChartContainer />}
+                {typeChart === 2 && <FeatureScaleChartContainer />} */}
                 {typeChart === 2 && (
-                  <FeatureScaleChartContainer
+                  <HorizontalFeatureCountChartContainer
                     config={{
                       isexternalCustomersConfig: true,
                     }}
                   />
                 )}
                 {typeChart === 2 && (
-                  <FeatureCountChartContainer
+                  <FeatureScaleChartContainer
                     config={{
                       isexternalCustomersConfig: true,
                     }}

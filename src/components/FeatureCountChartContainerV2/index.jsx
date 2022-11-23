@@ -5,34 +5,24 @@ import React, { useEffect, useState } from 'react';
 import { includes, startCase } from 'lodash';
 import { connect } from 'umi';
 import axios from 'axios';
-import {
-  getExternalFeatureConfigBySegment,
-  getExternalFeatureCountBySegment,
-  handleGetDataGlobalFeature25,
-} from '@/services/configs';
+import { handleGetDataGlobalFeature25 } from '@/services/configs';
 import styles from './index.less';
-import { TYPE_CHART } from '@/utils/constant';
+import HorizontalBarChartFeatureCount from '../HorizontalBarChartFeatureCount';
+import { Label } from 'recharts';
 
-let typeChart = 7;
-const FeatureCountChartContainer = ({ config = {} }) => {
+const FeatureCountChartContainer = () => {
   const [typeDisplay, setTypeDisplay] = useState('top20');
   const [chartDataTopFea, setChartDataTopFea] = useState([]);
   const [dataPaging, setDataPaging] = useState([]);
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(20);
   const [platformList, setPlatformList] = useState([]);
+  const [categoriesList, setCategoriesList] = useState([]);
+  const [category, setCategory] = useState('');
+
   const [sw, setSw] = useState('');
   const [listGlobalTopFeature25, setListGlobalTopFeature25] = useState({});
   const [isloadingChart, setisLoadingChart] = useState(true);
-
-  const {
-    // SIT_PROFILE_COMPARE,
-    INTERNAL_CHART,
-    CATEGORY_CHART,
-    FEATURE_CHART,
-    FEATURE_DETAIL_CHART,
-    FEATURE_COUNT_BAR_CHART,
-  } = TYPE_CHART;
 
   const _renderChart = () => {
     if (chartDataTopFea.length === 0) {
@@ -42,7 +32,7 @@ const FeatureCountChartContainer = ({ config = {} }) => {
       <>
         <div className={styles.chartContainer__title}>{`Top Features`}</div>
         {dataPaging.length > 0 && (
-          <BarChartFeatureCount
+          <HorizontalBarChartFeatureCount
             yLabel={'Percentage Number'}
             keyX={'cust_id'}
             chartData={typeDisplay === 'all' ? dataPaging : chartDataTopFea.slice(0, 20)}
@@ -52,7 +42,7 @@ const FeatureCountChartContainer = ({ config = {} }) => {
             // domain={getDomain()}
           />
         )}
-        {typeDisplay === 'all' && (
+        {typeDisplay === 'all' && chartDataTopFea.length > 0 && (
           <Pagination
             className={styles.pagination}
             showSizeChanger={false}
@@ -61,6 +51,8 @@ const FeatureCountChartContainer = ({ config = {} }) => {
             showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
             defaultPageSize={perPage}
             defaultCurrent={page}
+            current={page}
+            // key={page}
             // showQuickJumper
             onChange={(current) => {
               setPage(current);
@@ -77,14 +69,22 @@ const FeatureCountChartContainer = ({ config = {} }) => {
   const handleGetDataChartTopFeature = async () => {
     const { data } = await handleGetDataGlobalFeature25();
     setListGlobalTopFeature25(data);
-    console.log(data);
+    if (!data) {
+      return;
+    }
     setSw(data['platformList'][0]);
     setPlatformList(data['platformList']);
+    setCategoriesList(data['CATEGORIES']);
     setisLoadingChart(false);
   };
 
-  const handleSetSW = (value) => {
+  const handleChangeSW = (value) => {
+    setPage(1);
     setSw(value);
+  };
+  const handleChangeCategory = (value) => {
+    setPage(1);
+    setCategory(value);
   };
 
   useEffect(() => {
@@ -92,16 +92,11 @@ const FeatureCountChartContainer = ({ config = {} }) => {
       return;
     }
     let fdata = listGlobalTopFeature25['features'][sw] || {};
-    const fdataArr = Object.keys(fdata).sort((a, b) => {
-      return fdata[b] - fdata[a];
-    });
-    const test = fdataArr.map((i) => {
-      return {
-        cust_id: i,
-        value: fdata[i],
-      };
-    });
-    // console.log('test', test);
+    const fdataArr = Object.keys(fdata)
+      .sort((a, b) => {
+        return fdata[b] - fdata[a];
+      })
+      .filter((item) => item.includes(category));
     setChartDataTopFea(
       fdataArr.map((i) => {
         return {
@@ -119,27 +114,51 @@ const FeatureCountChartContainer = ({ config = {} }) => {
         };
       }),
     );
-  }, [sw, listGlobalTopFeature25]);
-  useEffect(() => handleGetDataChartTopFeature(), []);
+  }, [sw, listGlobalTopFeature25, category]);
 
+  useEffect(() => handleGetDataChartTopFeature(), []);
   return (
     <div className={styles.chartContainer}>
-      <Row
-        justify={typeChart === FEATURE_COUNT_BAR_CHART ? 'space-between' : 'end'}
-        className={styles.dropdownLeft}
-      >
-        {typeChart === FEATURE_COUNT_BAR_CHART && (
-          <Select onChange={(e) => setTypeDisplay(e)} defaultValue={typeDisplay}>
-            <Select.Option value="top20">Top 20</Select.Option>
-            <Select.Option value="all">All</Select.Option>
-          </Select>
-        )}
+      <Row justify={'space-between'} className={styles.dropdownLeft}>
+        <Select onChange={(e) => setTypeDisplay(e)} defaultValue={typeDisplay}>
+          <Select.Option value="top20">Top 20</Select.Option>
+          <Select.Option value="all">Show All</Select.Option>
+        </Select>
       </Row>
       <Row className={styles.dropdownRight}>
-        <Select defaultValue={'All'} onChange={(e) => handleSetSW(e)}>
+        <Select defaultValue={'Platforms'} onChange={(e) => handleChangeSW(e)}>
           {platformList.map((platform) => {
             // eslint-disable-next-line react/jsx-key
-            return <Select.Option value={platform}>{platform}</Select.Option>;
+            return (
+              <Select.Option key={platform} value={platform}>
+                {platform}
+              </Select.Option>
+            );
+          })}
+        </Select>
+      </Row>
+      <Row className={styles.dropdownRight}>
+        <Select
+          defaultValue={'Categories'}
+          onChange={handleChangeCategory}
+          style={{ width: 120, textTransform: 'capitalize' }}
+        >
+          <Select.Option key={'all'} value={''}>
+            {' '}
+            Select All
+          </Select.Option>
+          ;
+          {categoriesList.map((category) => {
+            // eslint-disable-next-line react/jsx-key
+            return (
+              <Select.Option
+                key={category.key}
+                value={category.key}
+                style={{ textTransform: 'capitalize' }}
+              >
+                {category.value}
+              </Select.Option>
+            );
           })}
         </Select>
       </Row>
