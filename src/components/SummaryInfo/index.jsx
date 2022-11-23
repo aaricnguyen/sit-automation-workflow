@@ -34,7 +34,7 @@ const SummaryInfo = ({
 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [role, setRole] = useState(false);
-  
+
   const { data = [], type = '' } = dataCombine;
   const showModal = () => {
     setIsModalVisible(true);
@@ -81,15 +81,16 @@ const SummaryInfo = ({
     <div className={`card`}>
       {isUploadPage && (
         <div className={style.title}>
-          New customer {externalCustomerId} is uploaded with {totalConfig.length} features enabled
-          which are covered {data?.[0]?.value}% by{' '}
+          {/* New customer {externalCustomerId} is uploaded with {totalConfig.length} features enabled
+          which are covered {data?.[0]?.value}% by{' '} */}
+          New customer {externalCustomerId} is uploaded with {totalConfig.length} features enabled:
           <a onClick={() => handleShowChart()}> {startCase(data?.[0]?.cust_id)}</a>
         </div>
       )}
       {!isUploadPage && (
         <div className={style.title}>
           Customer {externalCustomerId} has {totalConfig.length} features enabled which are covered{' '}
-          {data?.[0]?.value}% by{' '}
+          {data?.[0]?.value}% by :
           <a onClick={() => handleShowChart()}> {startCase(data?.[0]?.cust_id)}</a>
         </div>
       )}
