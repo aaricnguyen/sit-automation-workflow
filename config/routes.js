@@ -56,12 +56,14 @@ export default [
                 name: 'Configs',
                 icon: '/assets/icons/service-monitor.svg',
                 component: './Dashboard',
+                hideInMenu: true,
               },
               {
                 path: '/internal-sit-profiles',
                 name: 'Internal SIT Profiles',
                 icon: '/assets/icons/device-controller.svg',
                 component: './Dashboard',
+                hideInMenu: true,
               },
               {
                 path: '/admin',
