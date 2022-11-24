@@ -123,25 +123,28 @@ const FeatureCountChartContainer = ({
     }
   };
 
-  const _renderTitleChart = () => {
+  const _renderTitleChart = (total) => {
     const { isexternalCustomersConfig } = config;
 
     switch (isexternalCustomersConfig) {
       case true:
-        return `${startCase(idChart2)} - Top Feature - Profile Based`;
+        return `Top Feature Count \n[Based on ${total} ${startCase(idChart2)} Config files]`;
       case false:
-        return `${startCase(idChart2)} - Top Feature - Customer Based`;
+        return `${startCase(idChart2)} - Top Feature Count - Customer Based`;
       default:
-        return `${startCase(idChart2)} - Top Feature - Customer Based`;
+        return `${startCase(idChart2)} - Top Feature Count - Customer Based`;
     }
   };
+
   const _renderChart = () => {
     if (chartDataTopFea.length === 0) {
       return <div className={styles.noData}>No data to display</div>;
     }
     return (
       <>
-        <div className={styles.chartContainer__title}>{_renderTitleChart()}</div>
+        <div className={styles.chartContainer__title}>
+          {_renderTitleChart(chartDataTopFea[0] ? chartDataTopFea[0].total : 0)}
+        </div>
         {dataPaging.length > 0 && (
           <BarChartFeatureCount
             yLabel={'Feature Sum Number'}
@@ -215,10 +218,11 @@ const FeatureCountChartContainer = ({
       chart_data[feature]['percent'] = Math.round(
         (Number(chart_data[feature]['sum']) * 100) / Number(data['count']),
       );
+      chart_data[feature]['total'] = Number(data['count']);
     });
 
-    console.log('chart data', chart_data);
-    console.log("ata['count']", data['count']);
+    // console.log('chart data', chart_data);
+    // console.log("ata['count']", data['count']);
     // console.log('total configs: ', totalConfigs)
     // fdata = fdata.sort((a, b) => b.sum - a.sum);
     // console.log("data: ", fdata);
@@ -229,6 +233,7 @@ const FeatureCountChartContainer = ({
         return {
           cust_id: i.feature,
           value: i.percent,
+          total: i.total,
         };
       }),
     );
@@ -238,6 +243,7 @@ const FeatureCountChartContainer = ({
         return {
           cust_id: i.feature,
           value: i.percent,
+          total: i.total,
         };
       }),
     );

@@ -72,18 +72,19 @@ const HorizontalFeatureCountChartContainer = ({
     });
   };
 
-  const _renderTitleChart = () => {
+  const _renderTitleChart = (total) => {
     const { isexternalCustomersConfig } = config;
 
     switch (isexternalCustomersConfig) {
       case true:
-        return `${startCase(idChart2)} - Top Feature - Profile Based`;
+        return `Top Feature Count \n[Based on ${total} ${startCase(idChart2)} Config files]`;
       case false:
-        return `${startCase(idChart2)} - Top Feature - Customer Based`;
+        return `${startCase(idChart2)} - Top Feature Count - Customer Based`;
       default:
-        return `${startCase(idChart2)} - Top Feature - Customer Based`;
+        return `${startCase(idChart2)} - Top Feature Count - Customer Based`;
     }
   };
+
   const _renderChart = () => {
     const chartDataTopFeaFilter = chartDataTopFea.filter((item) => item.cust_id.includes(category));
     if (chartDataTopFeaFilter.length === 0) {
@@ -91,7 +92,9 @@ const HorizontalFeatureCountChartContainer = ({
     }
     return (
       <>
-        <div className={styles.chartContainer__title}>{_renderTitleChart()}</div>
+        <div className={styles.chartContainer__title}>
+          {_renderTitleChart(chartDataTopFea[0] ? chartDataTopFea[0].total : 0)}
+        </div>
         {chartDataTopFeaFilter.length > 0 && (
           <HorizontalBarChartFeatureCount
             yLabel={'Feature Sum Number'}
@@ -167,6 +170,7 @@ const HorizontalFeatureCountChartContainer = ({
       chart_data[feature]['percent'] = Math.round(
         (Number(chart_data[feature]['sum']) * 100) / Number(data['count']),
       );
+      chart_data[feature]['total'] = Number(data['count']);
     });
 
     let fchart_data = Object.values(chart_data).sort((a, b) => b.percent - a.percent);
@@ -176,6 +180,7 @@ const HorizontalFeatureCountChartContainer = ({
         return {
           cust_id: i.feature,
           value: i.percent,
+          total: i.total,
         };
       }),
     );
