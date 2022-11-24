@@ -18,7 +18,6 @@ export default function RadarChartScaleItem({
   setId = () => {},
   keyX = 'category',
 }) {
-  console.log(chartScaleData);
   return (
     <>
       <ResponsiveContainer width="100%" height={450}>

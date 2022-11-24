@@ -32,7 +32,6 @@ const FeatureScaleChartContainer = ({
   const { CATEGORY_CHART, FEATURE_CHART, FEATURE_DETAIL_CHART, INTERNAL_CHART } = TYPE_CHART;
   const [chartDataFeaCat, setChartDataFeaCat] = useState([]);
   const [chartDataFeaCount, setChartDataFeaCount] = useState([]);
-  const [dataPaging, setDataPaging] = useState([]);
   const [typeChartSwitch, setTypeChart] = useState('feaCat');
   const [typeDisplay, setTypeDisplay] = useState('20');
   const [perPage, setPerPage] = useState(20);
@@ -41,7 +40,7 @@ const FeatureScaleChartContainer = ({
   const [categoriesList, setCategoriesList] = useState([]);
 
   const [category, setCategory] = useState('');
-
+  const [loading, setLoading] = useState(false);
   const setId = (_id = '') => {
     if (typeChartScale === numberOfChart) return;
 
@@ -64,8 +63,6 @@ const FeatureScaleChartContainer = ({
   };
 
   const idChart2 = chartHistories.find((item) => item.typeChart === INTERNAL_CHART)?.id;
-
-  console.log(idChart2);
 
   const SEGMENT_MAP = {
     retail: 1,
@@ -109,12 +106,12 @@ const FeatureScaleChartContainer = ({
     }
   };
 
-  const _renderTitleChart = () => {
+  const _renderTitleChart = (total) => {
     const { isexternalCustomersConfig } = config;
 
     switch (isexternalCustomersConfig) {
       case true:
-        return `${startCase(idChart2)} - Top Feature Count - Profile Based`;
+        return `Top Feature Count \n[Based on ${total} ${startCase(idChart2)} Config files]`;
       case false:
         return `${startCase(idChart2)} - Top Feature Count - Customer Based`;
       default:
@@ -133,13 +130,14 @@ const FeatureScaleChartContainer = ({
       return <div className={styles.noData}>No data to display</div>;
     }
     const categoryFilter = categoriesList.find((item) => item.scaleFeatureType === category) || {};
-    const templateFilterCount = categoryFilter.scaleFeatures || '';
+    const templateFilterCount = categoryFilter.scaleFeatures;
     let max = 0;
     const chartDataFeaCountFilter = chartDataFeaCount.filter((item) => {
       if (max < item.value_max) {
         max = item.value_max;
       }
-      if (!templateFilterCount) {
+      if (templateFilterCount === undefined) {
+        //Select All, templateFilterCount is undefined, do not filter
         return true;
       }
       const { cust_id = '' } = item;
@@ -217,6 +215,7 @@ const FeatureScaleChartContainer = ({
     if (!paramURL.custom_segment) {
       return;
     }
+    setLoading(true);
     const { isexternalCustomersConfig } = config;
     let handleAPIURL = async () => {};
     if (!isexternalCustomersConfig) {
@@ -247,26 +246,18 @@ const FeatureScaleChartContainer = ({
 
     let fcdata = Object.values(data['featureCounts'] ? data['featureCounts'] : {}) || [];
     fcdata = fcdata.sort((a, b) => b.max - a.max);
-    // console.log("data: ", fdata);
     setChartDataFeaCount(
       fcdata.map((i) => {
         return {
           cust_id: i.feature,
           value_max: i.max,
           value: i.avg,
+          total: i.total,
         };
       }),
     );
 
-    setDataPaging(
-      fcdata.slice(0, 20).map((i) => {
-        return {
-          cust_id: i.feature,
-          value_max: i.max,
-          value: i.avg,
-        };
-      }),
-    );
+    setLoading(false);
   };
   const handleChangeParamURL = (valueObj) => {
     setParamURL((state) => {
@@ -335,11 +326,13 @@ const FeatureScaleChartContainer = ({
           </Select>
         </Row>
       )}
-      {loadingChart ? (
+      {loadingChart || loading ? (
         <PageLoading />
       ) : (
         <>
-          <div className={styles.chartContainer__title}>{_renderTitleChart()}</div>
+          <div className={styles.chartContainer__title}>
+            {_renderTitleChart(chartDataFeaCount[0] ? chartDataFeaCount[0].total : 0)}
+          </div>
           {_renderChart()}
         </>
       )}
