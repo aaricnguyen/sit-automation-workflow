@@ -77,11 +77,11 @@ const HorizontalFeatureCountChartContainer = ({
 
     switch (isexternalCustomersConfig) {
       case true:
-        return `Top Feature Count \n[Based on ${total} ${startCase(idChart2)} Config files]`;
+        return `Top Feature \n[Based on ${total} ${startCase(idChart2)} Config files]`;
       case false:
-        return `${startCase(idChart2)} - Top Feature Count - Customer Based`;
+        return `${startCase(idChart2)} - Top Feature - Customer Based`;
       default:
-        return `${startCase(idChart2)} - Top Feature Count - Customer Based`;
+        return `${startCase(idChart2)} - Top Feature - Customer Based`;
     }
   };
 
