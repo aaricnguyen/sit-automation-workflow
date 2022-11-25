@@ -34,6 +34,7 @@ const HorizontalFeatureCountChartContainer = ({
   const [categoriesList, setCategoriesList] = useState([]);
   const [category, setCategory] = useState('');
   const [loading, setLoading] = useState(false);
+  const [listIgnoreFeatures, setListIgnoreFeatures] = useState([]);
 
   const { INTERNAL_CHART, FEATURE_COUNT_BAR_CHART } = TYPE_CHART;
 
@@ -86,7 +87,25 @@ const HorizontalFeatureCountChartContainer = ({
   };
 
   const _renderChart = () => {
-    const chartDataTopFeaFilter = chartDataTopFea.filter((item) => item.cust_id.includes(category));
+    let ignoreFeatures;
+    if (category) {
+      const categoryObj = categoriesList.find((item) => item.key === category);
+      ignoreFeatures = listIgnoreFeatures.find((item) => {
+        const { value = '' } = categoryObj || {};
+        const { area } = item || {};
+        if (!area) {
+          return false;
+        }
+        return area.toUpperCase() === value.toUpperCase();
+      });
+    }
+    const chartDataTopFeaFilter = chartDataTopFea.filter((item) => {
+      let isIgnore = false;
+      if (ignoreFeatures) {
+        isIgnore = ignoreFeatures.feature_list.includes(item.cust_id);
+      }
+      return item.cust_id.includes(category) && !isIgnore;
+    });
     if (chartDataTopFeaFilter.length === 0) {
       return <div className={styles.noData}>No data to display</div>;
     }
@@ -156,6 +175,7 @@ const HorizontalFeatureCountChartContainer = ({
     let totalConfigs = [];
     let chart_data = {};
     setCategoriesList(data['CATEGORIES'] || []);
+    setListIgnoreFeatures(data['listIgnoreFeatures'] || []);
 
     Object.values(fdata).forEach((element) => {
       totalConfigs.push(...element);

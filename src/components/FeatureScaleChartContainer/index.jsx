@@ -121,7 +121,7 @@ const FeatureScaleChartContainer = ({
 
   const handleChartScaleAvg = (value) => {
     setTypeChart('feaCount');
-    const activeLabel = value.activeLabel;
+    // const activeLabel = value.activeLabel;
     // setChartDataFeaCount(value.activeLabel)
   };
 
