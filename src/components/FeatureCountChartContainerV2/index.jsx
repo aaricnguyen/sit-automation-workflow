@@ -117,6 +117,7 @@ const FeatureCountChartContainer = () => {
   }, [sw, listGlobalTopFeature25, category]);
 
   useEffect(() => handleGetDataChartTopFeature(), []);
+  console.log('');
   return (
     <div className={styles.chartContainer}>
       <Row justify={'space-between'} className={styles.dropdownLeft}>
