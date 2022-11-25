@@ -52,7 +52,7 @@ export default function HorizontalBarChartFeatureCount({
           // width={500}
           // height={300}
           data={chartData}
-          margin={{ top: 20, right: 20, left: 70, bottom: 5 }}
+          margin={{ top: 20, right: 20, left: 80, bottom: 5 }}
           layout="vertical"
           barSize={15}
           maxBarSize={15}

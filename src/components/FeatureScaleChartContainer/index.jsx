@@ -285,7 +285,13 @@ const FeatureScaleChartContainer = ({
       </Row>
       <Row className={styles.dropdownLeft}>
         {typeChartSwitch !== 'feaCat' && (
-          <Select onChange={(e) => setTypeDisplay(e)} defaultValue={typeDisplay}>
+          <Select
+            onChange={(e) => {
+              setTypeDisplay(e);
+              setPage(1);
+            }}
+            defaultValue={typeDisplay}
+          >
             <Select.Option value="top20">Top 20</Select.Option>
             <Select.Option value="all">All</Select.Option>
           </Select>

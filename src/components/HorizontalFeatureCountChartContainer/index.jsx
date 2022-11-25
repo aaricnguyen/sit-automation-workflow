@@ -101,10 +101,12 @@ const HorizontalFeatureCountChartContainer = ({
     }
     const chartDataTopFeaFilter = chartDataTopFea.filter((item) => {
       let isIgnore = false;
+      const itemKey = item.cust_id.split('_')[0];
+      const isCategory = category ? itemKey === category : true;
       if (ignoreFeatures) {
         isIgnore = ignoreFeatures.feature_list.includes(item.cust_id);
       }
-      return item.cust_id.includes(category) && !isIgnore;
+      return isCategory && !isIgnore;
     });
     if (chartDataTopFeaFilter.length === 0) {
       return <div className={styles.noData}>No data to display</div>;
@@ -178,7 +180,7 @@ const HorizontalFeatureCountChartContainer = ({
     setListIgnoreFeatures(data['listIgnoreFeatures'] || []);
 
     Object.values(fdata).forEach((element) => {
-      totalConfigs.push(...element);
+      totalConfigs.push.apply(totalConfigs, element);
     });
 
     let feature_set = new Set(totalConfigs);
@@ -236,7 +238,13 @@ const HorizontalFeatureCountChartContainer = ({
         className={styles.dropdownLeft}
       >
         {typeChart === FEATURE_COUNT_BAR_CHART && (
-          <Select onChange={(e) => setTypeDisplay(e)} defaultValue={typeDisplay}>
+          <Select
+            onChange={(e) => {
+              setTypeDisplay(e);
+              setPage(1);
+            }}
+            defaultValue={typeDisplay}
+          >
             <Select.Option value="top20">Top 20</Select.Option>
             <Select.Option value="all">All</Select.Option>
           </Select>
