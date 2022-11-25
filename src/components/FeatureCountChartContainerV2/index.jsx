@@ -18,8 +18,7 @@ const FeatureCountChartContainer = () => {
   const [perPage, setPerPage] = useState(20);
   const [platformList, setPlatformList] = useState([]);
   const [categoriesList, setCategoriesList] = useState([]);
-  const [category, setCategory] = useState({});
-  const [listIgnoreFeatures, setListIgnoreFeatures] = useState([]);
+  const [category, setCategory] = useState('');
 
   const [sw, setSw] = useState('');
   const [listGlobalTopFeature25, setListGlobalTopFeature25] = useState({});
@@ -76,7 +75,6 @@ const FeatureCountChartContainer = () => {
     setSw(data['platformList'][0]);
     setPlatformList(data['platformList']);
     setCategoriesList(data['CATEGORIES']);
-    setListIgnoreFeatures(data['listIgnoreFeatures']);
     setisLoadingChart(false);
   };
 
@@ -84,17 +82,9 @@ const FeatureCountChartContainer = () => {
     setPage(1);
     setSw(value);
   };
-  const handleChangeCategory = (props) => {
-    try {
-      let categoryConvert = { key: '', value: '' };
-      if (props) {
-        categoryConvert = JSON.parse(props);
-      }
-      setPage(1);
-      setCategory(categoryConvert);
-    } catch (error) {
-      console.error(error);
-    }
+  const handleChangeCategory = (value) => {
+    setPage(1);
+    setCategory(value);
   };
 
   useEffect(() => {
@@ -102,21 +92,11 @@ const FeatureCountChartContainer = () => {
       return;
     }
     let fdata = listGlobalTopFeature25['features'][sw] || {};
-    const ignoreFeatures = listIgnoreFeatures.find(
-      (item) => item.area.toUpperCase() === category.value.toUpperCase(),
-    );
     const fdataArr = Object.keys(fdata)
       .sort((a, b) => {
         return fdata[b] - fdata[a];
       })
-      .filter((item) => {
-        const isCategory = item.includes(category.key || '');
-        let isIgnore = false;
-        if (ignoreFeatures) {
-          isIgnore = ignoreFeatures.feature_list.includes(item);
-        }
-        return isCategory && !isIgnore;
-      });
+      .filter((item) => item.includes(category));
     setChartDataTopFea(
       fdataArr.map((i) => {
         return {
@@ -173,7 +153,7 @@ const FeatureCountChartContainer = () => {
             return (
               <Select.Option
                 key={category.key}
-                value={JSON.stringify(category)}
+                value={category.key}
                 style={{ textTransform: 'capitalize' }}
               >
                 {category.value}
