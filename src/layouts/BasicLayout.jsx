@@ -125,7 +125,7 @@ const BasicLayout = (props) => {
       rightContentRender={() => <RightContent />}
       postMenuData={(menuData) => {
         const menu = menuData.filter((item) =>
-          item.authority ? item?.authority[0] !== getAuthority()[0] : item,
+          item.authority ? item?.authority.includes(getAuthority()[0]) : item,
         );
         menuDataRef.current = menu || [];
         return menu || [];
@@ -135,7 +135,11 @@ const BasicLayout = (props) => {
           <>
             <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
               {logoImg}
-              {!collapsed && <SearchMenu />}
+              {!collapsed && ['admin', 'sitEngineer'].includes(getAuthority()[0]) ? (
+                <SearchMenu />
+              ) : (
+                <div style={{ marginTop: '25px', width: '280px' }}> </div>
+              )}
             </div>
           </>
         );

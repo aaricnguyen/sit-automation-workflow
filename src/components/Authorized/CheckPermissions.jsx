@@ -1,5 +1,5 @@
 import React from 'react';
-import { CURRENT } from './renderAuthorize'; // eslint-disable-next-line import/no-cycle
+// import { CURRENT } from './renderAuthorize';
 
 import PromiseRender from './PromiseRender';
 
@@ -21,12 +21,7 @@ import PromiseRender from './PromiseRender';
  * @param { 未通过的组件 | no pass components } Exception
  */
 
-const CURRENT_AUTHORITY = [
-  'admin',
-  'escalation',
-  'sit',
-  'exec'
-]
+const CURRENT_AUTHORITY = ['admin', 'tacEngineer', 'sitEngineer', 'default'];
 const checkPermissions = (authority, currentAuthority, target, Exception) => {
   // No judgment permission. View all by default
   // Retirement authority, return target;

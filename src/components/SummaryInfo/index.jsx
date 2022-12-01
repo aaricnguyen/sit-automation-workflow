@@ -108,16 +108,16 @@ const SummaryInfo = ({
           </p>
         </>
       )}
-      {dataUniq && dataUniq.length > 0 && getAuthority().includes('admin') && (
+      {dataUniq && dataUniq.length > 0 && ['admin', 'sitEngineer'].includes(getAuthority()[0]) && (
         <div className={style.title}>
           Unparsed Configuration: <a onClick={showModal}>Link</a>
         </div>
       )}
-      {dataUniq && dataUniq.length > 0 && getAuthority().includes('sit') && (
+      {/* {dataUniq && dataUniq.length > 0 && getAuthority().includes('sit') && (
         <div className={style.title}>
           Unparsed Configuration: <a onClick={showModal}>Link</a>
         </div>
-      )}
+      )} */}
       <Modal
         title={`Unparsed Configuration: ${externalCustomerId}`}
         visible={isModalVisible}

@@ -1,9 +1,21 @@
+.title {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  font-weight: 600;
+  font-size: 1.3rem;
+  line-height: 30px;
+  text-align: center;
+}
+
 .chartContainer {
-  min-height: 500px;
+  // min-height: 500px;
+  position: relative;
   padding: 30px;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+
   &__title {
     margin-top: 15px;
     margin-bottom: 25px;
@@ -41,15 +53,15 @@
 }
 
 .noData {
+  margin-top: 50px;
   color: rgb(136, 132, 132);
   font-size: 18px;
-  margin-top: 50px;
   text-align: center;
 }
 
-.pagination{
+.pagination {
   display: flex;
-  justify-content:center;
   flex-wrap: wrap;
+  justify-content: center;
   margin-top: 25px;
 }

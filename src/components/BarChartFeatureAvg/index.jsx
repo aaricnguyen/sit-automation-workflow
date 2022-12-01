@@ -64,7 +64,7 @@ export default function BarChartItem({
     return () => window.removeEventListener('resize', handleWindowResize);
   }, []);
   return (
-    <div className="chartResponsive">
+    <div className="chartResponsive hiddenScroll">
       <ResponsiveContainer width={!isReponsiveBar ? '100%' : 50 * chartData.length} height={500}>
         <BarChart
           onClick={(props) => {

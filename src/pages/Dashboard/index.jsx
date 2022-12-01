@@ -10,6 +10,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'umi';
 import styles from './index.less';
+import { getAuthority } from '@/utils/authority';
 import HorizontalFeatureCountChartContainer from '@/components/HorizontalFeatureCountChartContainer';
 
 const Dashboard = ({ loading, dispatch, typeChart, id, chartHistories }) => {
@@ -63,7 +64,11 @@ const Dashboard = ({ loading, dispatch, typeChart, id, chartHistories }) => {
                 {typeChart >= 3 && <ScaleChartContainer />}
               </div>
 
-              <InsightList chartId={chartId} />
+              {['default', 'tacEngineer'].includes(getAuthority()[0]) ? (
+                <></>
+              ) : (
+                <InsightList chartId={chartId} />
+              )}
             </div>
           </>
         )}

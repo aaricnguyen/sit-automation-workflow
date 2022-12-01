@@ -54,7 +54,7 @@ export default function TableChart({
           <tbody>
             {differenceData.map((item, index) => (
               <tr
-                onClick={getAuthority()[0] !== 'exec' && (() => showDetail(item))}
+                onClick={getAuthority()[0] !== 'default' && (() => showDetail(item))}
                 className={`${styles.tableChart__difference} ${styles.hover}`}
                 key={index}
               >
@@ -66,7 +66,7 @@ export default function TableChart({
             {sameData.map((item, index) => (
               <tr
                 className={styles.hover}
-                onClick={getAuthority()[0] !== 'exec' && (() => showDetail(item))}
+                onClick={getAuthority()[0] !== 'default' && (() => showDetail(item))}
                 key={differenceData.length + index}
               >
                 <td>{item}</td>

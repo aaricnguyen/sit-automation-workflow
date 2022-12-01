@@ -40,7 +40,7 @@ export default function HorizontalBarChartFeatureCount({
   keyX = 'feature',
 }) {
   return (
-    <div className="chartResponsive">
+    <div className="chartResponsive hiddenScroll">
       <ResponsiveContainer
         width="100%"
         height={500}
@@ -52,7 +52,7 @@ export default function HorizontalBarChartFeatureCount({
           // width={500}
           // height={300}
           data={chartData}
-          margin={{ top: 20, right: 20, left: 80, bottom: 5 }}
+          margin={{ top: 0, right: 20, left: 80, bottom: 0 }}
           layout="vertical"
           barSize={15}
           maxBarSize={15}

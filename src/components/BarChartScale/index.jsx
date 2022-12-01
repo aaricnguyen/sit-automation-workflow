@@ -41,7 +41,7 @@ export default function BarChartScaleItem({
     return () => window.removeEventListener('resize', handleWindowResize);
   }, []);
   return (
-    <div className="chartResponsive">
+    <div className="chartResponsive hiddenScroll">
       <ResponsiveContainer width={'100%'} height={500}>
         <BarChart
           width={900}

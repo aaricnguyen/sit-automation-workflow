@@ -44,12 +44,14 @@ export default [
                 name: 'Upload configuration file',
                 icon: '/assets/icons/add-device.svg',
                 component: './UploadConfig',
+                authority: ['admin', 'sitEngineer', 'tacEngineer'],
               },
               {
                 path: '/automation-workflow',
                 name: 'Automation workflow',
                 icon: '/assets/icons/add-device.svg',
                 component: './AutomationWorkflow',
+                hideInMenu: true,
               },
               {
                 path: '/configs',
@@ -68,7 +70,7 @@ export default [
               {
                 path: '/admin',
                 name: 'Admin',
-                authority: ['sit'],
+                authority: ['admin'],
                 icon: '/assets/icons/manage-users.svg',
                 routes: [
                   {

@@ -220,35 +220,6 @@ const ChartContainer = ({
       case 4:
       case 5:
         return <TableChart typeChart={typeChart} setId={setId} data={chartData} />;
-      // case 6:
-      //   return (
-      //     <>
-      //       <BarChartFeature
-      //         yLabel={getYLabelOfChart()}
-      //         keyX={keyOfChart()}
-      //         setId={setId}
-      //         // chartData={typeDisplay === 'all' ? dataPaging : chartDataTopFea.slice(0, 10)}
-      //         chartData={chartDataTopFea}
-      //         typeChart={typeChart}
-      //         totalConfigs={totalConfigs}
-      //         key={dataPaging.length}
-      //         domain={getDomain()}
-      //       />
-      //       {typeChart === 6 && typeDisplay === 'all' && (
-      //         <Pagination
-      //           className={styles.pagination}
-      //           showSizeChanger={false}
-      //           responsive={true}
-      //           total={pagination._total}
-      //           showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
-      //           defaultPageSize={perPage}
-      //           defaultCurrent={page}
-      //           // showQuickJumper
-      //           onChange={(current) => setPage(current)}
-      //         />
-      //       )}
-      //     </>
-      //   )
       default:
         return (
           <>
@@ -281,14 +252,19 @@ const ChartContainer = ({
         );
     }
   };
+
+  //  Aaric - Dec 1 - Hide the Top customer chart - typeChart = INTERNAL_CHART
   return (
     <div className={styles.chartContainer}>
-      <Row justify={typeChart === INTERNAL_CHART ? 'space-between' : 'end'}>
-        {typeChart === INTERNAL_CHART && (
+      <Row justify={typeChart === INTERNAL_CHART ? 'end' : 'end'}>
+        {/* {typeChart === INTERNAL_CHART && (
           <Select onChange={(e) => setTypeDisplay(e)} defaultValue={typeDisplay}>
             <Select.Option value="top10">Top 10</Select.Option>
             <Select.Option value="all">All</Select.Option>
           </Select>
+        )} */}
+        {typeChart === INTERNAL_CHART && (
+          <div className={styles.title}>{`${startCase(id)} Segment`}</div>
         )}
         <div className={styles.chartContainer__actions}>
           <span
@@ -315,8 +291,12 @@ const ChartContainer = ({
         <PageLoading />
       ) : (
         <>
-          <div className={styles.chartContainer__title}>{_renderTitleChart()}</div>
-          {_renderChart()}
+          {typeChart != INTERNAL_CHART && (
+            <>
+              <div className={styles.chartContainer__title}>{_renderTitleChart()}</div>
+              {_renderChart()}
+            </>
+          )}
         </>
       )}
     </div>

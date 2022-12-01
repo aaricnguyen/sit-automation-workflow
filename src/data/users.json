@@ -2,13 +2,13 @@
   "users": [
     {
       "id": 1,
-      "firstName": "Kapil",
-      "lastName": "Suri",
-      "email": "ksuri@cisco.com",
-      "password": "123456@Ab",
-      "fullname": "Kapil Suri",
+      "firstName": "Def",
+      "lastName": "Eng",
+      "email": "def",
+      "password": "123456",
+      "fullname": "Def Engineering",
       "title": "Engineering",
-      "role": "escalation",
+      "role": "default",
       "avatar": "/avatar.jpg"
     },
     {
@@ -18,8 +18,30 @@
       "email": "admin",
       "password": "admin",
       "fullname": "Admin",
-      "title": "QC",
+      "title": "Admin",
       "role": "admin",
+      "avatar": "/avatar.jpg"
+    },
+    {
+      "id": 3,
+      "firstName": "Tac",
+      "lastName": "Eng",
+      "email": "teng@cisco.com",
+      "password": "123456@Abcd",
+      "fullname": "Tac Eng",
+      "title": "Engineering",
+      "role": "tacEngineer",
+      "avatar": "/avatar.jpg"
+    },
+    {
+      "id": 3,
+      "firstName": "Sit",
+      "lastName": "Eng",
+      "email": "seng@cisco.com",
+      "password": "123456@Abcd",
+      "fullname": "Sit Eng",
+      "title": "Engineering",
+      "role": "sitEngineer",
       "avatar": "/avatar.jpg"
     },
     {
@@ -30,18 +52,18 @@
       "password": "123456@Abcd",
       "fullname": "Chung Thanh Mao",
       "title": "Engineering",
-      "role": "sit",
+      "role": "tacEngineer",
       "avatar": "/avatar.jpg"
     },
     {
       "id": 4,
-      "firstName": "Test",
+      "firstName": "Aaric",
       "lastName": "Nguyen",
-      "email": "test@cisco.com",
+      "email": "angu@cisco.com",
       "password": "123456@Abcc",
-      "fullname": "Test Nguyen",
+      "fullname": "Aaric Nguyen",
       "title": "Technical Lead",
-      "role": "exec",
+      "role": "admin",
       "avatar": "/avatar.jpg"
     }
   ]
