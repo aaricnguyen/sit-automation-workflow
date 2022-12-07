@@ -82,3 +82,26 @@ export async function getDataChartTopFeature() {
     redirect: 'follow',
   });
 }
+
+// ------------------------------USERS----------------------------------
+
+export async function getUser(data) {
+  return request(`/api/get-user`, {
+    method: 'GET',
+    params: data,
+  });
+}
+
+export async function addUser(data) {
+  return request(`/api/add-user`, {
+    method: 'GET',
+    params: data,
+  });
+}
+
+export async function updateUser(data) {
+  return request(`/api/update-user`, {
+    method: 'GET',
+    params: data,
+  });
+}

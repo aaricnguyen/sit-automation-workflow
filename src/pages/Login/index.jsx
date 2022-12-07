@@ -24,7 +24,8 @@ function Login(props) {
   }, [status, submitting]);
 
   useEffect(() => {
-    if (values.username.length > 0 && values.password.length > 0) {
+    // if (values.username.length > 0 && values.password.length > 0) {
+    if (values.username.length > 0) {
       setIsDisable(false);
     } else {
       setIsDisable(true);
@@ -43,7 +44,7 @@ function Login(props) {
     e.preventDefault();
     const { dispatch } = props;
     dispatch({
-      type: 'login/loginLocal',
+      type: 'login/loginLocalNoPass',
       payload: values,
     });
   };
@@ -133,7 +134,7 @@ function Login(props) {
                   <label className={styles.controlLabel}>Username</label>
                 </div>
               </div>
-              <div className={styles.dnxShadow}>
+              {/* <div className={styles.dnxShadow}>
                 <div className={styles.dnxInputField}>
                   <input
                     className={styles.formControl}
@@ -150,7 +151,7 @@ function Login(props) {
                     {passwordShown ? 'HIDE' : 'SHOW'}
                   </span>
                 )}
-              </div>
+              </div> */}
               <Button
                 type="primary"
                 htmlType="submit"
@@ -168,9 +169,9 @@ function Login(props) {
   );
 }
 
-export default connect(({ login, loginLocal, loading }) => ({
-  userLogin: loginLocal,
-  submitting: loading.effects['login/loginLocal'],
+export default connect(({ login, loginLocalNoPass, loading }) => ({
+  userLogin: loginLocalNoPass,
+  submitting: loading.effects['login/loginLocalNoPass'],
   // userLogin: login,
   // submitting: loading.effects['login/login'],
 }))(Login);

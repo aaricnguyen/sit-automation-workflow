@@ -54,11 +54,11 @@ class AvatarDropdown extends React.Component {
         </Menu.Item>
       </Menu>
     );
-    return currentUser && currentUser.fullname ? (
+    return currentUser && currentUser.full_name ? (
       <HeaderDropdown overlay={menuHeaderDropdown}>
         <div className={`${styles.action} ${styles.account}`}>
           <div className={`${styles.description} anticon`}>
-            <div className={`${styles.description__name}`}>{currentUser.fullname}</div>
+            <div className={`${styles.description__name}`}>{currentUser.full_name}</div>
             <div className={`${styles.description__title}`}>{currentUser.title}</div>
           </div>
           <Avatar size={45} className={styles.avatar} src={currentUser.avatar} alt="avatar" />
