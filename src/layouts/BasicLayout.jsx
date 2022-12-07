@@ -15,6 +15,7 @@ import { connect, history, Link, useIntl } from 'umi';
 import { getAuthority } from '@/utils/authority';
 import logo from '../assets/pro_logo.svg';
 import './BasicLayout.less';
+import VisitCounter from '@/components/VisitCounter';
 
 const noMatch = (
   <Result
@@ -120,7 +121,14 @@ const BasicLayout = (props) => {
       // headerContentRender={({ breadcrumb, matchMenuKeys }) => {
       headerContentRender={() => {
         // return <div className="leftHeader heading-4">{breadcrumb[matchMenuKeys[0]]?.name}</div>;
-        return <div className="leftHeader heading-4">Deployment Insights</div>;
+        return (
+          <div className="containerHeader">
+            <div className="leftHeader heading-4">Deployment Insights</div>
+            <div className="wrapVisitCounter">
+              <VisitCounter />
+            </div>
+          </div>
+        );
       }}
       rightContentRender={() => <RightContent />}
       postMenuData={(menuData) => {

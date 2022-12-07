@@ -105,3 +105,9 @@ export async function updateUser(data) {
     params: data,
   });
 }
+
+export async function getTotalVisitCount() {
+  return request(`/api/get-total-visit-count`, {
+    method: 'GET',
+  });
+}

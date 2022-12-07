@@ -36,6 +36,7 @@ const Model = {
         }
         userData = JSON.parse(JSON.stringify(userData)).data[0];
         console.log('response5: ', userData);
+        updateUser({ user_id: user_id, visit_count: parseInt(userData.visit_count) + 1 });
         setToken(response.token);
         setAuthority(userData.role);
         setCurrentUser(userData);
