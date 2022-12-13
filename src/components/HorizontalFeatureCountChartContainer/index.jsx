@@ -180,7 +180,8 @@ const HorizontalFeatureCountChartContainer = ({
     setListIgnoreFeatures(data['listIgnoreFeatures'] || []);
 
     Object.values(fdata).forEach((element) => {
-      totalConfigs.push.apply(totalConfigs, element);
+      // totalConfigs.push.apply(totalConfigs, element); this code cause the max exist
+      totalConfigs = [...totalConfigs, ...element];
     });
 
     let feature_set = new Set(totalConfigs);
