@@ -133,8 +133,8 @@ const FeatureScaleChartContainer = ({
     const templateFilterCount = categoryFilter.scaleFeatures;
     let max = 0;
     const chartDataFeaCountFilter = chartDataFeaCount.filter((item) => {
-      if (max < item.value_max) {
-        max = item.value_max;
+      if (max < Number(item.value_max)) {
+        max = Number(item.value_max);
       }
       if (templateFilterCount === undefined) {
         //Select All, templateFilterCount is undefined, do not filter
